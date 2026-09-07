@@ -1,0 +1,117 @@
+# =====================================================================
+# Catalogo de servicos da ELEV
+# ---------------------------------------------------------------------
+# `preco` e `prazo` comecam null de proposito: o agente NUNCA inventa
+# valor nem prazo. Enquanto estiver null, ele responde que a equipe
+# envia o orcamento depois de entender o escopo.
+# `perguntas_chave` sao as perguntas que o agente usa para qualificar
+# um interessado nesse servico especifico.
+# =====================================================================
+
+- id: sites
+  nome: Criacao de sites
+  resumo: >-
+    Site institucional ou pagina de vendas feita sob medida, rapida,
+    adaptada para celular e preparada para aparecer no Google.
+  para_quem: Negocios sem site, ou com site antigo, lento ou desatualizado.
+  inclui:
+    - Layout proprio, adaptado ao celular
+    - Textos organizados junto com o cliente
+    - Formulario de contato e botao de WhatsApp
+    - Publicacao no ar e treinamento basico de uso
+  nao_inclui:
+    - Producao de fotos e videos profissionais
+    - Gestao de trafego pago
+  prazo: null
+  preco: null
+  perguntas_chave:
+    - Voce ja tem site hoje ou seria o primeiro?
+    - Ja tem dominio registrado (o endereco .com.br)?
+    - O objetivo principal e apresentar a empresa ou gerar contato e venda?
+    - Ja tem logo, fotos e textos, ou precisa criar do zero?
+
+- id: cardapio_digital
+  nome: Cardapio digital
+  resumo: >-
+    Cardapio online acessado por QR Code, com fotos, precos e categorias,
+    que o proprio dono atualiza sem depender de ninguem.
+  para_quem: Restaurantes, lanchonetes, bares, cafeterias e delivery.
+  inclui:
+    - Cardapio online com categorias, fotos e precos
+    - QR Code para mesa, balcao e material impresso
+    - Painel para o cliente atualizar itens e precos
+    - Envio do pedido para o WhatsApp do estabelecimento
+  nao_inclui:
+    - Integracao com sistema de PDV ou impressora fiscal
+    - Pagamento online dentro do cardapio
+  prazo: null
+  preco: null
+  perguntas_chave:
+    - Quantos itens tem o cardapio hoje, mais ou menos?
+    - Voce trabalha com delivery, salao ou os dois?
+    - Ja tem fotos dos pratos?
+    - Quem vai atualizar os precos no dia a dia?
+
+- id: agendamento
+  nome: Sistema de agendamento
+  resumo: >-
+    Pagina de agendamento onde o cliente escolhe servico, profissional e
+    horario sozinho, com confirmacao e lembrete automatico.
+  para_quem: Saloes, barbearias, clinicas, estudios, consultorios e prestadores de servico.
+  inclui:
+    - Pagina de agendamento com horarios disponiveis
+    - Cadastro de servicos, duracao e profissionais
+    - Confirmacao e lembrete automatico para o cliente
+    - Painel com a agenda do dia
+  nao_inclui:
+    - Emissao de nota fiscal
+    - Controle financeiro e de estoque
+  prazo: null
+  preco: null
+  perguntas_chave:
+    - Quantos profissionais atendem hoje?
+    - Como os clientes marcam horario atualmente?
+    - Quantos atendimentos por semana, mais ou menos?
+    - Precisa cobrar sinal ou pagamento antecipado no agendamento?
+
+- id: whatsapp
+  nome: Integracao com WhatsApp
+  resumo: >-
+    Conexao do WhatsApp do negocio com o site, o cardapio ou o sistema de
+    agendamento, para que pedido, contato e confirmacao cheguem direto na conversa.
+  para_quem: Negocios que ja atendem pelo WhatsApp e perdem contato por desorganizacao.
+  inclui:
+    - Botao e link direto de WhatsApp nos canais da empresa
+    - Mensagens automaticas de confirmacao e recebimento
+    - Organizacao do fluxo de atendimento
+  nao_inclui:
+    - Disparo de mensagens em massa ou lista fria (a ELEV nao faz spam)
+    - Compra de listas de contatos
+  prazo: null
+  preco: null
+  perguntas_chave:
+    - Quantas mensagens voce recebe por dia, mais ou menos?
+    - Quantas pessoas respondem o WhatsApp hoje?
+    - O que mais te atrapalha hoje no atendimento?
+    - Voce usa WhatsApp comum ou WhatsApp Business?
+
+- id: ia
+  nome: Solucoes digitais com inteligencia artificial
+  resumo: >-
+    Automacoes com IA aplicadas ao negocio: atendimento que responde duvidas
+    frequentes, triagem de contatos e organizacao de informacoes.
+  para_quem: Negocios com volume de atendimento repetitivo ou processo manual demais.
+  inclui:
+    - Levantamento do processo atual
+    - Agente treinado com as informacoes reais do negocio
+    - Registro dos atendimentos e encaminhamento para uma pessoa quando necessario
+  nao_inclui:
+    - Envio automatico de mensagens nao solicitadas
+    - Substituicao completa do atendimento humano
+  prazo: null
+  preco: null
+  perguntas_chave:
+    - Qual processo hoje toma mais tempo da sua equipe?
+    - Quais perguntas seus clientes mais repetem?
+    - Voce ja usa alguma ferramenta de automacao?
+    - Quantas pessoas trabalham nesse atendimento hoje?

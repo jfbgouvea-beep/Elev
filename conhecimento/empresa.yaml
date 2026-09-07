@@ -1,0 +1,45 @@
+# =====================================================================
+# ELEV - Dados institucionais
+# ---------------------------------------------------------------------
+# REGRA DE OURO: o agente SÓ pode afirmar o que estiver escrito aqui.
+# Campo com valor `null` significa "ainda não cadastrado" -> o agente
+# responde que precisa verificar com a equipe. NUNCA preencha com
+# suposicao: um campo vazio e mais seguro que um campo errado.
+# =====================================================================
+
+nome: ELEV
+tipo: Agencia de solucoes digitais para negocios
+descricao_curta: >-
+  A ELEV cria solucoes digitais para pequenos e medios negocios: sites,
+  cardapios digitais, sistemas de agendamento, integracao com WhatsApp e
+  automacoes com inteligencia artificial.
+
+# --- PREENCHER (deixe null enquanto nao for informacao oficial) -------
+fundacao: null
+cidade: null
+regiao_atendimento: null          # ex.: "Todo o Brasil, atendimento remoto"
+site: null
+email_contato: null
+whatsapp_oficial: null
+instagram: null
+horario_atendimento: null         # ex.: "Segunda a sexta, 9h as 18h"
+prazo_medio_resposta: null        # ex.: "ate 1 dia util"
+
+# Como a ELEV trabalha (processo). Cada item precisa ser verdadeiro.
+como_trabalhamos:
+  - Conversa inicial para entender o negocio e o objetivo
+  - Proposta com escopo, prazo e investimento definidos por escrito
+  - Desenvolvimento com acompanhamento do cliente
+  - Entrega, treinamento de uso e suporte combinado em contrato
+
+diferenciais:
+  - Solucao sob medida para o tamanho do negocio, sem pacote engessado
+  - Uso de inteligencia artificial aplicada ao atendimento e a operacao
+  - Interlocucao direta com quem constroi, sem intermediarios
+
+# Assuntos que o agente NAO trata e deve encaminhar para a equipe.
+fora_do_escopo:
+  - Fechamento de contrato e assinatura
+  - Negociacao de valores e descontos
+  - Suporte tecnico de cliente ja ativo
+  - Questoes juridicas, fiscais ou de pagamento

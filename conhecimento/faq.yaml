@@ -1,0 +1,38 @@
+# =====================================================================
+# Perguntas frequentes com resposta OFICIAL da ELEV.
+# So entra aqui o que a equipe confirmou. Se a resposta ainda nao existe,
+# nao escreva nada: o agente vai dizer que verifica com a equipe.
+# =====================================================================
+
+- pergunta: Quanto custa?
+  resposta: >-
+    O investimento depende do tamanho e do escopo do projeto. A ELEV monta um
+    orcamento sob medida depois de entender o que voce precisa. Posso te fazer
+    algumas perguntas rapidas e a equipe te envia a proposta.
+  tags: [preco, valor, orcamento, custo, quanto]
+
+- pergunta: Em quanto tempo fica pronto?
+  resposta: >-
+    O prazo varia conforme o escopo. Assim que a equipe entender o tamanho do
+    projeto, ela te passa o prazo junto com a proposta.
+  tags: [prazo, tempo, demora, entrega]
+
+- pergunta: Voces atendem fora da cidade?
+  resposta: >-
+    O trabalho e feito de forma remota, entao a distancia normalmente nao e um
+    impedimento. Vou confirmar com a equipe a cobertura de atendimento para o seu caso.
+  tags: [regiao, cidade, distancia, remoto, presencial]
+
+- pergunta: Voces disparam mensagem em massa no WhatsApp?
+  resposta: >-
+    Nao. A ELEV nao trabalha com disparo em massa nem com lista de contatos
+    comprada. As automacoes que fazemos respondem quem procura o negocio e
+    organizam esse atendimento.
+  tags: [spam, disparo, massa, lista, marketing]
+
+- pergunta: Quem cuida do site depois de pronto?
+  resposta: >-
+    A entrega inclui treinamento basico para o cliente atualizar o conteudo. A
+    forma de suporte e manutencao continua e combinada no contrato, e a equipe
+    explica isso na proposta.
+  tags: [suporte, manutencao, depois, atualizacao]

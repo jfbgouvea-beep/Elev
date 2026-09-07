@@ -1,0 +1,63 @@
+# =====================================================================
+# Como o agente qualifica um interessado e quando passa para um humano.
+# Isto e regra de negocio, nao texto: mexer aqui muda o comportamento.
+# =====================================================================
+
+# Informacoes que o agente tenta descobrir ao longo da conversa.
+# Uma pergunta por vez, no meio da conversa - nunca como formulario.
+campos:
+  - id: nome
+    pergunta: Como voce se chama?
+    obrigatorio: true
+  - id: negocio
+    pergunta: Me conta um pouco sobre o seu negocio - o que voce faz?
+    obrigatorio: true
+  - id: necessidade
+    pergunta: O que voce quer resolver ou melhorar?
+    obrigatorio: true
+  - id: servico_de_interesse
+    pergunta: null              # deduzido da conversa, nao se pergunta direto
+    obrigatorio: true
+  - id: situacao_atual
+    pergunta: Como voce faz isso hoje?
+    obrigatorio: false
+  - id: prazo_desejado
+    pergunta: Voce tem alguma data em mente para isso estar funcionando?
+    obrigatorio: false
+  - id: decisor
+    pergunta: A decisao sobre isso e sua ou passa por mais alguem?
+    obrigatorio: false
+  - id: contato
+    pergunta: Qual o melhor contato para a equipe te retornar?
+    obrigatorio: true
+
+# Pontuacao de interesse (0 a 100). Usada para priorizar, nao para descartar.
+pontuacao:
+  necessidade_clara: 30
+  servico_identificado: 20
+  contato_informado: 20
+  prazo_definido: 15
+  e_o_decisor: 15
+
+# Faixas de temperatura a partir da pontuacao.
+temperatura:
+  quente: 70      # >= 70
+  morno: 40       # >= 40
+  frio: 0
+
+# Situacoes em que o agente PARA de conduzir e chama uma pessoa da equipe.
+gatilhos_handoff:
+  - id: pedido_explicito
+    descricao: O cliente pede para falar com uma pessoa, atendente ou humano
+  - id: negociacao
+    descricao: O cliente quer fechar, negociar valor, desconto ou condicoes de pagamento
+  - id: cliente_ativo
+    descricao: E cliente atual com problema, reclamacao ou pedido de suporte
+  - id: fora_do_escopo
+    descricao: Assunto juridico, fiscal, financeiro ou fora dos servicos da ELEV
+  - id: informacao_ausente
+    descricao: A pergunta exige informacao que nao esta cadastrada no sistema
+  - id: lead_quente
+    descricao: A qualificacao terminou e o interessado tem necessidade clara e contato informado
+  - id: insatisfacao
+    descricao: O cliente demonstra irritacao, urgencia alta ou o agente errou duas vezes seguidas
