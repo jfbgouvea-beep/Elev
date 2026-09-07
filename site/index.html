@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELEV — Eleve seu negócio</title>
+<meta name="description" content="A ELEV cria soluções digitais para pequenos negócios: sites, cardápios digitais, agendamento online, integração com WhatsApp e soluções com inteligência artificial.">
+<meta name="theme-color" content="#070A12">
+<meta property="og:title" content="ELEV — Eleve seu negócio">
+<meta property="og:description" content="Soluções digitais modernas para pequenos negócios atraírem mais clientes, organizarem seus serviços e crescerem.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+/* ============================================================
+   ELEV — identidade extraída da logo oficial
+   ciano #22D3FF no vértice, azul elétrico #1E5CF5 na base,
+   forma ascendente com corte diagonal.
+   Tema escuro único e deliberado: toda cor é pintada explicitamente.
+   ============================================================ */
+:root{
+  color-scheme: dark;
+
+  --ground:      #070A12;
+  --ground-2:    #0A0E1A;
+  --surface:     #0E1424;
+  --surface-2:   #131B2E;
+  --line:        #1C2438;
+  --line-strong: #2B3654;
+
+  --ink:   #F2F5FA;
+  --ink-2: #A8B2C6;
+  --ink-3: #6D7890;
+
+  --cyan:      #22D3FF;
+  --blue:      #1E5CF5;
+  --blue-deep: #0B36C9;
+  --grad: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 62%, var(--blue-deep) 100%);
+
+  --r-sm: 10px;
+  --r:    16px;
+  --r-lg: 22px;
+
+  --wrap: 1180px;
+  --pad: clamp(20px, 5vw, 40px);
+  --sec: clamp(76px, 9vw, 132px);
+
+  --t: cubic-bezier(.2,.7,.3,1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+
+body{
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 17px/1.65 Manrope, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3{
+  font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-stretch: 112%;
+  letter-spacing: -.022em;
+  text-wrap: balance;
+  margin: 0;
+  line-height: 1.08;
+}
+p{ margin: 0; }
+a{ color: inherit; text-decoration: none; }
+img, svg{ display: block; max-width: 100%; }
+[hidden]{ display: none !important; }   /* sem isso, o alt da logo ausente vaza na tela */
+::selection{ background: rgba(34,211,255,.26); }
+
+:focus-visible{
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.wrap{ width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
+.sec{ padding-block: var(--sec); position: relative; }
+
+/* eyebrow ------------------------------------------------------ */
+.eyebrow{
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+.eyebrow::before{
+  content: "";
+  width: 22px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan));
+}
+
+.sec-head{ max-width: 62ch; margin-bottom: clamp(40px, 5vw, 64px); }
+.sec-head h2{ font-size: clamp(30px, 4.4vw, 46px); }
+.sec-head p{ color: var(--ink-2); margin-top: 16px; font-size: clamp(16px, 1.6vw, 18px); }
+
+/* botões ------------------------------------------------------- */
+.btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  font: 600 15.5px/1 Manrope, sans-serif;
+  letter-spacing: -.01em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform .28s var(--t), box-shadow .28s var(--t),
+              background-color .28s var(--t), border-color .28s var(--t), color .28s var(--t);
+  will-change: transform;
+}
+.btn-primary{
+  background: var(--grad);
+  color: #04060D;
+  font-weight: 700;
+  box-shadow: 0 10px 34px -14px rgba(30,92,245,.9);
+}
+.btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 18px 44px -14px rgba(34,211,255,.65); }
+.btn-ghost{
+  background: rgba(255,255,255,.03);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+.btn-ghost:hover{ transform: translateY(-2px); border-color: rgba(34,211,255,.5); background: rgba(34,211,255,.06); }
+.btn svg{ width: 17px; height: 17px; flex: none; }
+
+@media (prefers-reduced-motion: reduce){
+  .btn:hover{ transform: none; }
+}
+
+/* header ------------------------------------------------------- */
+.header{
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(7,10,18,.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .3s var(--t), background-color .3s var(--t);
+}
+.header.stuck{ border-bottom-color: var(--line); background: rgba(7,10,18,.9); }
+.header-in{
+  display: flex; align-items: center; gap: 24px;
+  height: 74px;
+}
+.brand{ display: flex; align-items: center; gap: 11px; margin-right: auto; }
+.brand .mark{ height: 32px; width: auto; }
+.brand .word{
+  font-family: Archivo, sans-serif;
+  font-weight: 800; font-stretch: 118%;
+  font-size: 21px; letter-spacing: .14em;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.nav{ display: flex; align-items: center; gap: 30px; }
+.nav a{
+  font-size: 15px; color: var(--ink-2);
+  transition: color .2s var(--t);
+  position: relative; padding-block: 4px;
+}
+.nav a::after{
+  content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
+  background: var(--grad); transition: right .3s var(--t);
+}
+.nav a:hover{ color: var(--ink); }
+.nav a:hover::after{ right: 0; }
+.header .btn{ padding: 11px 20px; font-size: 14.5px; }
+
+.menu-btn{
+  display: none;
+  width: 42px; height: 42px; padding: 0;
+  align-items: center; justify-content: center;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line-strong);
+  border-radius: 12px; color: var(--ink); cursor: pointer;
+}
+.menu-btn svg{ width: 20px; height: 20px; }
+
+@media (max-width: 900px){
+  .nav, .header .btn-desktop{ display: none; }
+  .menu-btn{ display: inline-flex; }
+  .header-in{ height: 66px; }
+}
+
+/* menu mobile */
+.drawer{
+  position: fixed; inset: 0; z-index: 70;
+  background: rgba(4,6,12,.86);
+  backdrop-filter: blur(8px);
+  display: grid; place-items: start stretch;
+  padding: 84px var(--pad) 32px;
+  opacity: 0; visibility: hidden;
+  transition: opacity .3s var(--t), visibility .3s var(--t);
+}
+.drawer[data-open="true"]{ opacity: 1; visibility: visible; }
+.drawer nav{ display: grid; gap: 4px; align-content: start; }
+.drawer nav a{
+  font-family: Archivo, sans-serif; font-weight: 600; font-stretch: 108%;
+  font-size: 25px; padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.drawer .btn{ margin-top: 28px; width: 100%; }
+.drawer-close{
+  position: absolute; top: 14px; right: var(--pad);
+  width: 44px; height: 44px; display: grid; place-items: center;
+  background: rgba(255,255,255,.04); border: 1px solid var(--line-strong);
+  border-radius: 12px; color: var(--ink); cursor: pointer;
+}
+
+/* hero --------------------------------------------------------- */
+.hero{
+  position: relative;
+  padding-top: clamp(56px, 8vw, 92px);
+  padding-bottom: clamp(72px, 9vw, 120px);
+  overflow: hidden;
+}
+.hero-bg{ position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* malha técnica, apagando nas bordas */
+.hero-bg .grid{
+  position: absolute; inset: -1px;
+  background-image:
+    linear-gradient(to right, rgba(120,150,220,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120,150,220,.07) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(120% 78% at 50% 8%, #000 8%, transparent 72%);
+          mask-image: radial-gradient(120% 78% at 50% 8%, #000 8%, transparent 72%);
+}
+/* brilhos que respiram — a única animação ambiente da página */
+.hero-bg .glow{
+  position: absolute; border-radius: 50%;
+  filter: blur(90px);
+  animation: breathe 14s ease-in-out infinite;
+}
+.hero-bg .glow.a{
+  width: min(52vw, 620px); aspect-ratio: 1;
+  top: -22%; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, rgba(30,92,245,.42), transparent 68%);
+}
+.hero-bg .glow.b{
+  width: min(38vw, 440px); aspect-ratio: 1;
+  top: 2%; left: 50%; translate: -50% 0;
+  background: radial-gradient(circle, rgba(34,211,255,.24), transparent 66%);
+  animation-delay: -7s;
+}
+@keyframes breathe{
+  0%, 100%{ opacity: .72; transform: scale(1); }
+  50%     { opacity: 1;   transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-bg .glow{ animation: none; }
+}
+
+.hero-in{ position: relative; text-align: center; display: grid; justify-items: center; }
+
+.hero-logo{ margin-bottom: clamp(26px, 4vw, 40px); display: grid; justify-items: center; gap: 14px; }
+.hero-logo img{ height: clamp(84px, 13vw, 128px); width: auto; }
+/* Reserva tipográfica enquanto o arquivo oficial da logo não está em
+   assets/logo-elev.png. Não é o símbolo — é só o nome, em tipografia. */
+.hero-logo .fallback{
+  font-family: Archivo, sans-serif; font-weight: 800; font-stretch: 120%;
+  font-size: clamp(46px, 8vw, 74px); letter-spacing: .16em; line-height: 1;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero h1{
+  font-size: clamp(38px, 6.6vw, 74px);
+  font-weight: 800;
+  max-width: 15ch;
+}
+.hero h1 em{
+  font-style: normal;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero .sub{
+  color: var(--ink-2);
+  font-size: clamp(16.5px, 2vw, 19.5px);
+  max-width: 58ch;
+  margin-top: clamp(20px, 2.6vw, 28px);
+}
+.hero-cta{ display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: clamp(30px, 4vw, 42px); }
+.hero-tag{
+  margin-top: clamp(30px, 4vw, 46px);
+  font-family: "IBM Plex Mono", monospace; font-size: 12.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+@media (max-width: 560px){
+  .hero-cta{ flex-direction: column; align-items: stretch; width: 100%; }
+  .hero-cta .btn{ width: 100%; }
+}
+
+/* entrada do hero: puramente CSS, sem depender de JS */
+@media (prefers-reduced-motion: no-preference){
+  .hero-logo, .hero h1, .hero .sub, .hero-cta, .hero-tag{
+    animation: rise .8s var(--t) backwards;
+  }
+  .hero h1{ animation-delay: .08s; }
+  .hero .sub{ animation-delay: .16s; }
+  .hero-cta{ animation-delay: .24s; }
+  .hero-tag{ animation-delay: .32s; }
+}
+@keyframes rise{ from{ opacity: 0; transform: translateY(16px); } }
+
+/* faixa de serviços em resumo (ancora o hero na oferta real) ----- */
+.strip{
+  border-block: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(30,92,245,.05), transparent);
+}
+.strip ul{
+  list-style: none; margin: 0; padding: 22px 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 34px;
+  font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3);
+}
+.strip li{ display: flex; align-items: center; gap: 12px; }
+.strip li::before{
+  content: ""; width: 7px; height: 7px; flex: none;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: var(--cyan); opacity: .8;
+}
+
+/* cards de serviço --------------------------------------------- */
+.cards{
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 980px){ .cards{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px){ .cards{ grid-template-columns: 1fr; } }
+
+.card{
+  position: relative;
+  padding: 30px 28px 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.028), rgba(255,255,255,0)) ,
+    var(--surface);
+  overflow: hidden;
+  transition: border-color .35s var(--t), transform .35s var(--t), background-color .35s var(--t);
+}
+/* o vértice da logo aparece no hover, no canto superior do card */
+.card::before{
+  content: "";
+  position: absolute; top: -70px; left: 50%; translate: -50% 0;
+  width: 220px; height: 140px;
+  background: radial-gradient(closest-side, rgba(34,211,255,.28), transparent);
+  opacity: 0; transition: opacity .4s var(--t);
+}
+.card:hover{ transform: translateY(-4px); border-color: rgba(34,211,255,.34); }
+.card:hover::before{ opacity: 1; }
+.card:hover .card-icon{ border-color: rgba(34,211,255,.45); color: var(--cyan); }
+
+.card-icon{
+  position: relative;
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border: 1px solid var(--line-strong); border-radius: 13px;
+  color: #9FC6FF; margin-bottom: 22px;
+  transition: color .35s var(--t), border-color .35s var(--t);
+}
+.card-icon svg{ width: 22px; height: 22px; }
+.card h3{ position: relative; font-size: 20.5px; font-weight: 700; }
+.card p{ position: relative; color: var(--ink-2); font-size: 15.6px; margin-top: 11px; }
+
+@media (prefers-reduced-motion: reduce){ .card:hover{ transform: none; } }
+
+/* etapas ------------------------------------------------------- */
+.steps{ display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr); counter-reset: step; }
+@media (max-width: 980px){ .steps{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px){ .steps{ grid-template-columns: 1fr; } }
+
+.step{
+  position: relative; padding: 28px 24px 30px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--ground-2);
+  transition: border-color .35s var(--t);
+}
+.step:hover{ border-color: var(--line-strong); }
+.step .n{
+  font-family: "IBM Plex Mono", monospace; font-size: 12.5px; letter-spacing: .12em;
+  color: var(--cyan); display: flex; align-items: center; gap: 9px; margin-bottom: 16px;
+}
+.step .n::after{ content: ""; height: 1px; flex: 1; background: linear-gradient(90deg, rgba(34,211,255,.4), transparent); }
+.step h3{ font-size: 18.5px; }
+.step p{ color: var(--ink-2); font-size: 15.4px; margin-top: 10px; }
+
+/* projetos demonstrativos -------------------------------------- */
+.demo-aviso{
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 15px 19px; margin-bottom: 34px;
+  border: 1px dashed rgba(34,211,255,.34);
+  border-radius: var(--r-sm);
+  background: rgba(34,211,255,.045);
+  color: var(--ink-2); font-size: 14.6px; max-width: 78ch;
+}
+.demo-aviso svg{ width: 18px; height: 18px; color: var(--cyan); flex: none; margin-top: 2px; }
+
+.demos{ display: grid; gap: 20px; grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 780px){ .demos{ grid-template-columns: 1fr; } }
+
+.demo{
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--surface); overflow: hidden;
+  transition: border-color .35s var(--t), transform .35s var(--t);
+}
+.demo:hover{ transform: translateY(-4px); border-color: var(--line-strong); }
+@media (prefers-reduced-motion: reduce){ .demo:hover{ transform: none; } }
+
+.shot{
+  aspect-ratio: 16 / 10;
+  background: var(--sh-bg, #0B1120);
+  border-bottom: 1px solid var(--line);
+  padding: 0; overflow: hidden;
+  display: grid; grid-template-rows: auto 1fr;
+}
+.shot-bar{
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 13px;
+  background: rgba(255,255,255,.035);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.shot-bar i{ width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.16); }
+.shot-bar span{
+  margin-left: 8px; height: 15px; flex: 1; border-radius: 5px;
+  background: rgba(255,255,255,.06);
+}
+.shot-body{ padding: 16px 18px; display: grid; align-content: start; gap: 10px; overflow: hidden; }
+
+/* peças do wireframe */
+.bar{ height: 9px; border-radius: 4px; background: rgba(255,255,255,.13); }
+.bar.w70{ width: 70%; } .bar.w50{ width: 50%; } .bar.w40{ width: 40%; } .bar.w30{ width: 30%; }
+.bar.tall{ height: 15px; }
+.bar.accent{ background: var(--sh-accent, #22D3FF); opacity: .9; }
+.pill{
+  height: 22px; width: 92px; border-radius: 999px;
+  background: var(--sh-accent, #22D3FF); opacity: .92;
+}
+.pill.ghost{ background: transparent; border: 1px solid rgba(255,255,255,.18); }
+.row{ display: flex; gap: 8px; align-items: center; }
+.tiles{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 2px; }
+.tile{ height: 46px; border-radius: 8px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.06); }
+.tile.on{ background: var(--sh-accent, #22D3FF); opacity: .85; border-color: transparent; }
+.slots{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+.slot{ height: 26px; border-radius: 7px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.07); }
+.slot.on{ background: var(--sh-accent, #22D3FF); opacity: .9; border-color: transparent; }
+.slot.off{ opacity: .35; }
+.qr{
+  width: 54px; height: 54px; border-radius: 8px; flex: none;
+  background:
+    conic-gradient(from 0deg, rgba(255,255,255,.9) 25%, transparent 0 50%, rgba(255,255,255,.9) 0 75%, transparent 0);
+  background-size: 14px 14px;
+  border: 3px solid rgba(255,255,255,.9);
+}
+.list-item{ display: flex; align-items: center; gap: 10px; }
+.thumb{ width: 34px; height: 34px; border-radius: 7px; background: rgba(255,255,255,.09); flex: none; }
+.grow{ flex: 1; display: grid; gap: 6px; }
+
+.demo-meta{ padding: 22px 24px 26px; }
+.demo-meta .tipo{
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.demo-meta h3{ font-size: 19px; margin-top: 9px; }
+.demo-meta p{ color: var(--ink-2); font-size: 15.2px; margin-top: 9px; }
+.badge-demo{
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 16px; padding: 5px 12px;
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+}
+.badge-demo::before{ content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+
+/* por que a elev ----------------------------------------------- */
+.why{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line);
+      border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+@media (max-width: 900px){ .why{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px){ .why{ grid-template-columns: 1fr; } }
+.why-item{
+  background: var(--ground-2); padding: 30px 26px 34px;
+  transition: background-color .35s var(--t);
+}
+.why-item:hover{ background: var(--surface-2); }
+.why-item .k{
+  width: 34px; height: 34px; margin-bottom: 18px;
+  display: grid; place-items: center; color: var(--cyan);
+}
+.why-item .k svg{ width: 24px; height: 24px; }
+.why-item h3{ font-size: 18px; }
+.why-item p{ color: var(--ink-2); font-size: 15.2px; margin-top: 10px; }
+
+/* cta ----------------------------------------------------------- */
+.cta-box{
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(34,211,255,.22);
+  border-radius: 28px;
+  padding: clamp(44px, 6vw, 76px) var(--pad);
+  text-align: center;
+  background:
+    radial-gradient(120% 130% at 50% -20%, rgba(30,92,245,.34), transparent 62%),
+    var(--surface);
+}
+.cta-box h2{ font-size: clamp(30px, 4.6vw, 50px); max-width: 18ch; margin-inline: auto; }
+.cta-box p{ color: var(--ink-2); max-width: 54ch; margin: 20px auto 0; font-size: clamp(16px, 1.8vw, 18px); }
+.cta-box .btn{ margin-top: 32px; }
+
+/* contato ------------------------------------------------------- */
+.contato{ display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+@media (max-width: 860px){ .contato{ grid-template-columns: 1fr; } }
+
+.canais{ display: grid; gap: 12px; }
+.canal{
+  display: flex; align-items: center; gap: 16px;
+  padding: 19px 22px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--surface);
+  transition: border-color .3s var(--t), transform .3s var(--t), background-color .3s var(--t);
+}
+.canal:hover{ border-color: rgba(34,211,255,.4); transform: translateX(3px); background: var(--surface-2); }
+.canal .ic{ width: 42px; height: 42px; flex: none; display: grid; place-items: center;
+  border-radius: 12px; background: rgba(34,211,255,.09); color: var(--cyan); }
+.canal .ic svg{ width: 21px; height: 21px; }
+.canal .txt{ display: grid; gap: 3px; min-width: 0; }
+.canal .txt b{ font-weight: 600; font-size: 16px; }
+.canal .txt span{ color: var(--ink-3); font-size: 14px; word-break: break-word; }
+.canal .seta{ margin-left: auto; color: var(--ink-3); flex: none; }
+.canal[data-pendente="true"]{ border-style: dashed; cursor: default; }
+.canal[data-pendente="true"]:hover{ transform: none; border-color: var(--line-strong); }
+.canal[data-pendente="true"] .txt span{ color: #E0A83C; }
+
+@media (prefers-reduced-motion: reduce){ .canal:hover{ transform: none; } }
+
+/* rodapé -------------------------------------------------------- */
+.footer{ border-top: 1px solid var(--line); background: var(--ground-2); }
+.footer-in{
+  display: flex; flex-wrap: wrap; gap: 26px 40px;
+  align-items: center; justify-content: space-between;
+  padding-block: 40px;
+}
+.footer .slogan{ font-family: Archivo, sans-serif; font-weight: 600; font-stretch: 110%; font-size: 17px; }
+.footer .slogan span{ color: var(--ink-3); font-weight: 400; }
+.footer-links{ display: flex; flex-wrap: wrap; gap: 22px; font-size: 14.6px; color: var(--ink-3); }
+.footer-links a:hover{ color: var(--ink); }
+.footer .fine{ width: 100%; color: var(--ink-3); font-size: 13.4px; padding-bottom: 34px; }
+
+/* reveal: some só quando o JS assume o controle, e sempre volta ---- */
+.js .reveal{ opacity: 0; transform: translateY(18px); }
+.js .reveal.in{
+  opacity: 1; transform: none;
+  transition: opacity .7s var(--t), transform .7s var(--t);
+}
+@media (prefers-reduced-motion: reduce){
+  .js .reveal{ opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<a class="btn btn-ghost" href="#conteudo" style="position:absolute;left:-9999px;top:0" onfocus="this.style.left='12px';this.style.top='12px';this.style.zIndex='99'" onblur="this.style.left='-9999px'">Pular para o conteúdo</a>
+
+<!-- ============================ HEADER ============================ -->
+<header class="header" id="header">
+  <div class="wrap header-in">
+    <a class="brand" href="#topo" aria-label="ELEV — página inicial">
+      <img class="mark" src="assets/logo-elev.png" alt="" data-logo hidden>
+      <span class="word">ELEV</span>
+    </a>
+
+    <nav class="nav" aria-label="Navegação principal">
+      <a href="#servicos">Serviços</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#por-que">Por que a ELEV</a>
+    </nav>
+
+    <a class="btn btn-primary btn-desktop" href="#contato">Falar com a ELEV</a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" data-open="false">
+  <button class="drawer-close" id="drawerClose" aria-label="Fechar menu">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <nav aria-label="Navegação">
+    <a href="#servicos">Serviços</a>
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#por-que">Por que a ELEV</a>
+    <a href="#contato">Contato</a>
+    <a class="btn btn-primary" href="#contato">Falar com a ELEV</a>
+  </nav>
+</div>
+
+<main id="conteudo">
+
+<!-- ============================= HERO ============================= -->
+<section class="hero" id="topo">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="grid"></div>
+    <div class="glow a"></div>
+    <div class="glow b"></div>
+  </div>
+
+  <div class="wrap hero-in">
+    <div class="hero-logo">
+      <!-- Coloque o arquivo oficial em site/assets/logo-elev.png (ou .svg).
+           Enquanto ele não existir, fica só o nome em tipografia. -->
+      <img src="assets/logo-elev.png" alt="ELEV" data-logo hidden>
+      <span class="fallback" data-logo-fallback>ELEV</span>
+    </div>
+
+    <h1>Eleve seu negócio <em>ao digital.</em></h1>
+
+    <p class="sub">Criamos soluções digitais modernas para pequenos negócios atraírem mais clientes, organizarem seus serviços e crescerem.</p>
+
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#contato">
+        Quero elevar meu negócio
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#servicos">Ver soluções</a>
+    </div>
+
+    <p class="hero-tag">Eleve seu negócio</p>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <ul>
+      <li>Sites</li>
+      <li>Cardápios digitais</li>
+      <li>Agendamento online</li>
+      <li>WhatsApp</li>
+      <li>Inteligência artificial</li>
+    </ul>
+  </div>
+</div>
+
+<!-- =========================== SERVIÇOS =========================== -->
+<section class="sec" id="servicos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">O que a ELEV faz</p>
+      <h2>Soluções digitais sob medida para o seu negócio.</h2>
+      <p>Cada projeto começa entendendo como você trabalha hoje. Nada de pacote pronto que não serve para ninguém.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="15" rx="2.5"/><path d="M2.5 8.5h19M6 6.2h.01M8.6 6.2h.01"/></svg>
+        </div>
+        <h3>Criação de sites</h3>
+        <p>Site institucional ou página de vendas feito sob medida: rápido, adaptado ao celular e preparado para ser encontrado no Google.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><path d="M14 14h3v3h-3zM20.5 14v3M17.5 20.5h3.5M14 20.5h.01"/></svg>
+        </div>
+        <h3>Cardápios digitais</h3>
+        <p>Cardápio acessado por QR Code, com fotos, categorias e preços — e um painel onde você mesmo atualiza tudo, sem depender de ninguém.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9.5 15.5l1.8 1.8 3.4-3.6"/></svg>
+        </div>
+        <h3>Agendamento online</h3>
+        <p>Seu cliente escolhe serviço, profissional e horário sozinho. Confirmação e lembrete saem automáticos, e a agenda do dia fica organizada.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 1 1-4.3-7.4"/><path d="M3.5 20.5l1.4-4.1"/><path d="M15.5 6.5v4l2.8 1.6"/></svg>
+        </div>
+        <h3>Integração com WhatsApp</h3>
+        <p>Pedido, contato e confirmação chegando direto na conversa, organizados. Sem disparo em massa e sem lista comprada — a ELEV não faz spam.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.6M9.4 12.4v1.6M14.6 12.4v1.6M2.6 12.5v3M21.4 12.5v3"/><circle cx="12" cy="3" r="1.2"/></svg>
+        </div>
+        <h3>Soluções com inteligência artificial</h3>
+        <p>Atendimento que responde as dúvidas repetidas, faz a triagem dos contatos e chama uma pessoa da equipe quando o assunto exige.</p>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8 5v7l-8 5-8-5v-7z"/><path d="M12 12l8-3.5M12 12v8.5M12 12L4 8.5"/></svg>
+        </div>
+        <h3>Outras soluções personalizadas</h3>
+        <p>Se o que o seu negócio precisa não está nesta lista, conte para a gente. A ELEV desenha a solução a partir do seu processo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= COMO FUNCIONA ========================= -->
+<section class="sec" id="como-funciona" style="background:var(--ground-2);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Quatro etapas, do primeiro contato até o negócio no ar.</h2>
+    </div>
+
+    <div class="steps">
+      <article class="step reveal">
+        <div class="n">Etapa 01</div>
+        <h3>Você conta o que precisa</h3>
+        <p>Uma conversa para entender seu negócio, como ele funciona hoje e o que você quer resolver.</p>
+      </article>
+      <article class="step reveal">
+        <div class="n">Etapa 02</div>
+        <h3>A ELEV cria a solução</h3>
+        <p>Desenhamos e desenvolvemos a solução com escopo definido por escrito, acompanhando você no caminho.</p>
+      </article>
+      <article class="step reveal">
+        <div class="n">Etapa 03</div>
+        <h3>Você aprova</h3>
+        <p>Você vê funcionando antes de ir ao ar e pede os ajustes que fizerem sentido.</p>
+      </article>
+      <article class="step reveal">
+        <div class="n">Etapa 04</div>
+        <h3>Sua empresa entra no digital</h3>
+        <p>Publicamos, treinamos você para usar no dia a dia e combinamos o acompanhamento.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================== PROJETOS =========================== -->
+<section class="sec" id="projetos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Projetos demonstrativos</p>
+      <h2>Exemplos do tipo de solução que a ELEV constrói.</h2>
+    </div>
+
+    <div class="demo-aviso reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
+      <span>Estas são <strong>demonstrações criadas pela própria ELEV</strong> para mostrar formatos de solução. Não são clientes reais e não representam projetos entregues.</span>
+    </div>
+
+    <div class="demos">
+
+      <article class="demo reveal">
+        <div class="shot" style="--sh-bg:#100D14;--sh-accent:#C9A227">
+          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
+          <div class="shot-body">
+            <div class="bar tall w40"></div>
+            <div class="bar w70"></div>
+            <div class="row" style="margin-top:6px"><div class="pill"></div><div class="pill ghost"></div></div>
+            <div class="tiles" style="margin-top:8px"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+          </div>
+        </div>
+        <div class="demo-meta">
+          <div class="tipo">Site · Barbearia</div>
+          <h3>Página com serviços e botão de agendar</h3>
+          <p>Apresentação da barbearia, lista de serviços e um caminho direto para o cliente marcar horário.</p>
+          <span class="badge-demo">Demonstração</span>
+        </div>
+      </article>
+
+      <article class="demo reveal">
+        <div class="shot" style="--sh-bg:#140F0C;--sh-accent:#E2542C">
+          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
+          <div class="shot-body">
+            <div class="row"><div class="qr"></div><div class="grow"><div class="bar tall w70"></div><div class="bar w40"></div></div></div>
+            <div class="list-item" style="margin-top:6px"><div class="thumb"></div><div class="grow"><div class="bar w70"></div><div class="bar w30"></div></div></div>
+            <div class="list-item"><div class="thumb"></div><div class="grow"><div class="bar w50"></div><div class="bar w30"></div></div></div>
+            <div class="row"><div class="bar accent" style="height:20px;width:110px;border-radius:999px"></div></div>
+          </div>
+        </div>
+        <div class="demo-meta">
+          <div class="tipo">Site + cardápio digital · Restaurante</div>
+          <h3>Cardápio por QR Code com pedido no WhatsApp</h3>
+          <p>Cardápio com fotos e categorias acessado pelo celular, e o pedido caindo direto na conversa do restaurante.</p>
+          <span class="badge-demo">Demonstração</span>
+        </div>
+      </article>
+
+      <article class="demo reveal">
+        <div class="shot" style="--sh-bg:#0C1016;--sh-accent:#3EA8F5">
+          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
+          <div class="shot-body">
+            <div class="bar tall w50"></div>
+            <div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+            <div class="tiles"><div class="tile"></div><div class="tile on"></div><div class="tile"></div></div>
+            <div class="row" style="margin-top:2px"><div class="bar w30"></div><div class="pill" style="margin-left:auto;width:74px;height:18px"></div></div>
+          </div>
+        </div>
+        <div class="demo-meta">
+          <div class="tipo">Site · Loja</div>
+          <h3>Vitrine de produtos com contato direto</h3>
+          <p>Produtos organizados por categoria, com informação clara e um caminho curto até falar com a loja.</p>
+          <span class="badge-demo">Demonstração</span>
+        </div>
+      </article>
+
+      <article class="demo reveal">
+        <div class="shot" style="--sh-bg:#0A1014;--sh-accent:#22D3FF">
+          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
+          <div class="shot-body">
+            <div class="row"><div class="bar tall w40"></div><div class="bar w30" style="margin-left:auto"></div></div>
+            <div class="slots"><div class="slot"></div><div class="slot on"></div><div class="slot"></div><div class="slot off"></div></div>
+            <div class="slots"><div class="slot off"></div><div class="slot"></div><div class="slot"></div><div class="slot on"></div></div>
+            <div class="row" style="margin-top:4px"><div class="pill" style="width:104px"></div><div class="bar w30"></div></div>
+          </div>
+        </div>
+        <div class="demo-meta">
+          <div class="tipo">Sistema · Agendamento</div>
+          <h3>Escolha de horário com confirmação automática</h3>
+          <p>O cliente vê os horários livres, escolhe e recebe a confirmação. A agenda do dia fica organizada em um lugar só.</p>
+          <span class="badge-demo">Demonstração</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========================== POR QUE ELEV ========================== -->
+<section class="sec" id="por-que" style="background:var(--ground-2);border-block:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Por que a ELEV</p>
+      <h2>Tecnologia de empresa grande, atendimento de gente perto.</h2>
+    </div>
+
+    <div class="why reveal">
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 5.6 6.1.5-4.6 4 1.4 6-5.3-3.2L6.7 19l1.4-6-4.6-4 6.1-.5z"/></svg></div>
+        <h3>Design moderno</h3>
+        <p>Seu negócio com a aparência que ele merece: limpo, atual e funcionando bem no celular, que é onde seu cliente está.</p>
+      </div>
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.4"/><circle cx="8" cy="17" r="2.4"/></svg></div>
+        <h3>Soluções personalizadas</h3>
+        <p>Construímos a partir do seu processo, não de um modelo pronto. O que você não precisa, não entra.</p>
+      </div>
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.6M9.4 12.4v1.6M14.6 12.4v1.6"/><circle cx="12" cy="3" r="1.2"/></svg></div>
+        <h3>Tecnologia e inteligência artificial</h3>
+        <p>Usamos IA onde ela resolve de verdade: atendimento repetitivo, triagem e organização de informação.</p>
+      </div>
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 1 0-3.4 6.8L20.5 20l-1-3.2A8.4 8.4 0 0 0 20.5 12z"/><path d="M8.6 11.8h6.8M8.6 14.6h4.2"/></svg></div>
+        <h3>Atendimento próximo</h3>
+        <p>Você fala direto com quem constrói a solução. Sem fila, sem intermediário, sem chamado perdido.</p>
+      </div>
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V9.5M10 20V4M16 20v-7.5M22 20H2"/></svg></div>
+        <h3>Foco em pequenos negócios</h3>
+        <p>É para quem toca o próprio negócio: linguagem simples, escopo do tamanho certo e nada de complicação desnecessária.</p>
+      </div>
+      <div class="why-item">
+        <div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l7 3v5.3c0 4.2-2.9 7.6-7 9.3-4.1-1.7-7-5.1-7-9.3V6.2z"/><path d="M9.2 12.2l2 2 3.6-3.8"/></svg></div>
+        <h3>Escopo combinado por escrito</h3>
+        <p>Prazo, entregas e investimento definidos antes de começar. Você sabe o que vai receber.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== CTA ============================== -->
+<section class="sec">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <h2>Pronto para elevar seu negócio?</h2>
+      <p>Conte para a ELEV o que sua empresa precisa e vamos encontrar uma solução digital para você.</p>
+      <a class="btn btn-primary" href="#contato">
+        Falar com a ELEV
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTATO ============================ -->
+<section class="sec" id="contato" style="border-top:1px solid var(--line);background:var(--ground-2)">
+  <div class="wrap contato">
+    <div class="reveal">
+      <p class="eyebrow">Contato</p>
+      <h2 style="font-size:clamp(28px,4vw,42px)">Vamos conversar sobre o seu negócio.</h2>
+      <p style="color:var(--ink-2);margin-top:18px;max-width:46ch">Manda uma mensagem contando o que você faz e o que quer resolver. A gente responde e, se fizer sentido, monta uma proposta com escopo e prazo definidos.</p>
+    </div>
+
+    <div class="canais reveal">
+      <a class="canal" href="#" data-canal="whatsapp">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg></span>
+        <span class="txt"><b>WhatsApp</b><span data-valor>Número a configurar</span></span>
+        <span class="seta"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a class="canal" href="#" data-canal="instagram">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+        <span class="txt"><b>Instagram</b><span data-valor>Perfil a configurar</span></span>
+        <span class="seta"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <a class="canal" href="#" data-canal="email">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span>
+        <span class="txt"><b>E-mail</b><span data-valor>Endereço a configurar</span></span>
+        <span class="seta"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ RODAPÉ ============================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-in">
+      <div class="brand">
+        <img class="mark" src="assets/logo-elev.png" alt="" data-logo hidden>
+        <span class="slogan">ELEV <span>— Eleve seu negócio.</span></span>
+      </div>
+      <nav class="footer-links" aria-label="Rodapé">
+        <a href="#servicos">Serviços</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+    <p class="fine">ELEV · Agência de soluções digitais. <span data-rodape-pendente>Cidade, CNPJ e demais dados institucionais a preencher.</span></p>
+  </div>
+</footer>
+
+<script>
+/* ================================================================
+   ELEV — configuração de contato
+   Preencha os três campos abaixo e os botões passam a funcionar.
+   Enquanto estiverem vazios, eles aparecem marcados como pendentes
+   em vez de virar link morto.
+   ================================================================ */
+const CONTATO = {
+  whatsapp:  "",   // só números com DDI+DDD. Ex.: "5511999999999"
+  instagram: "",   // só o usuário, sem @. Ex.: "elev.digital"
+  email:     ""    // Ex.: "contato@elev.com.br"
+};
+
+const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre as solucoes digitais.";
+
+(function () {
+  "use strict";
+  const d = document;
+  d.documentElement.classList.add("js");
+
+  /* ---- logo oficial: aparece assim que o arquivo existir -------- */
+  d.querySelectorAll("[data-logo]").forEach(function (img) {
+    const teste = new Image();
+    teste.onload = function () {
+      img.hidden = false;
+      const fb = d.querySelector("[data-logo-fallback]");
+      if (fb) fb.remove();
+    };
+    teste.src = img.getAttribute("src");
+  });
+
+  /* ---- canais de contato --------------------------------------- */
+  const destinos = {
+    whatsapp: {
+      pronto: !!CONTATO.whatsapp,
+      href: "https://wa.me/" + CONTATO.whatsapp + "?text=" + encodeURIComponent(MENSAGEM_WHATSAPP),
+      rotulo: CONTATO.whatsapp
+        ? CONTATO.whatsapp.replace(/^(\d{2})(\d{2})(\d{4,5})(\d{4})$/, "+$1 ($2) $3-$4")
+        : "Número a configurar"
+    },
+    instagram: {
+      pronto: !!CONTATO.instagram,
+      href: "https://instagram.com/" + CONTATO.instagram,
+      rotulo: CONTATO.instagram ? "@" + CONTATO.instagram : "Perfil a configurar"
+    },
+    email: {
+      pronto: !!CONTATO.email,
+      href: "mailto:" + CONTATO.email,
+      rotulo: CONTATO.email || "Endereço a configurar"
+    }
+  };
+
+  d.querySelectorAll("[data-canal]").forEach(function (el) {
+    const dest = destinos[el.dataset.canal];
+    const valor = el.querySelector("[data-valor]");
+    if (valor) valor.textContent = dest.rotulo;
+
+    if (dest.pronto) {
+      el.href = dest.href;
+      if (el.dataset.canal !== "email") {
+        el.target = "_blank";
+        el.rel = "noopener";
+      }
+    } else {
+      el.removeAttribute("href");
+      el.dataset.pendente = "true";
+      el.setAttribute("aria-disabled", "true");
+    }
+  });
+
+  /* ---- header ao rolar ----------------------------------------- */
+  const header = d.getElementById("header");
+  const marcaScroll = function () {
+    header.classList.toggle("stuck", window.scrollY > 8);
+  };
+  marcaScroll();
+  window.addEventListener("scroll", marcaScroll, { passive: true });
+
+  /* ---- menu mobile --------------------------------------------- */
+  const drawer = d.getElementById("drawer");
+  const menuBtn = d.getElementById("menuBtn");
+  const abre = function (estado) {
+    drawer.dataset.open = String(estado);
+    menuBtn.setAttribute("aria-expanded", String(estado));
+    d.body.style.overflow = estado ? "hidden" : "";
+    if (estado) drawer.querySelector("a").focus();
+  };
+  menuBtn.addEventListener("click", function () { abre(drawer.dataset.open !== "true"); });
+  d.getElementById("drawerClose").addEventListener("click", function () { abre(false); menuBtn.focus(); });
+  drawer.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () { abre(false); });
+  });
+  d.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && drawer.dataset.open === "true") { abre(false); menuBtn.focus(); }
+  });
+
+  /* ---- entrada suave das seções --------------------------------
+     A classe .reveal só esconde quando o JS está no comando, e um
+     temporizador de segurança revela tudo caso o observer falhe.  */
+  const alvos = Array.prototype.slice.call(d.querySelectorAll(".reveal"));
+  const revelaTudo = function () {
+    alvos.forEach(function (el) { el.classList.add("in"); });
+  };
+
+  if ("IntersectionObserver" in window) {
+    const obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (entrada) {
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add("in");
+          obs.unobserve(entrada.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+    alvos.forEach(function (el, i) {
+      el.style.transitionDelay = Math.min(i % 6, 4) * 60 + "ms";
+      obs.observe(el);
+    });
+    setTimeout(revelaTudo, 1400);
+  } else {
+    revelaTudo();
+  }
+})();
+</script>
+
+</body>
+</html>
