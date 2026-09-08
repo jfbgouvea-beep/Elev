@@ -19,8 +19,8 @@ fundacao: null
 cidade: null
 regiao_atendimento: null          # ex.: "Todo o Brasil, atendimento remoto"
 site: null
-email_contato: null
-whatsapp_oficial: null
+email_contato: forchitojoao@gmail.com
+whatsapp_oficial: "+55 19 97139-8620"
 instagram: null
 horario_atendimento: null         # ex.: "Segunda a sexta, 9h as 18h"
 prazo_medio_resposta: null        # ex.: "ate 1 dia util"
