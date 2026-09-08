@@ -4,6 +4,14 @@ Página única, sem dependência de build: e um arquivo `index.html` com CSS e J
 dentro. Da para publicar em qualquer lugar (Vercel, Netlify, GitHub Pages,
 hospedagem comum) arrastando a pasta `site/`.
 
+## Onde o site esta publicado
+
+Netlify, conectado a este repositorio. Qualquer push que altere `site/` publica
+sozinho - nao existe passo manual de deploy.
+
+A configuracao esta em `netlify.toml`, na raiz: o Netlify serve a pasta `site/`
+direto, sem build.
+
 ## Ver localmente
 
 ```bash

@@ -1,0 +1,25 @@
+# Publicacao do site da ELEV no Netlify.
+# Site estatico: nao ha build, o Netlify so serve a pasta site/.
+
+[build]
+  publish = "site"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# A logo e as fontes podem ficar em cache longo; o HTML nao, para que uma
+# alteracao no site apareca na hora para quem ja visitou.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
