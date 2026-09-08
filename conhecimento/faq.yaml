@@ -6,10 +6,29 @@
 
 - pergunta: Quanto custa?
   resposta: >-
-    O investimento depende do tamanho e do escopo do projeto. A ELEV monta um
-    orcamento sob medida depois de entender o que voce precisa. Posso te fazer
-    algumas perguntas rapidas e a equipe te envia a proposta.
-  tags: [preco, valor, orcamento, custo, quanto]
+    Os valores iniciais sao estes: site basico a partir de R$ 150 (ate R$ 250);
+    site completo a partir de R$ 250 (ate R$ 400); cardapio digital a partir de
+    R$ 100 (ate R$ 180); agendamento online a partir de R$ 150 (ate R$ 250);
+    site + agendamento a partir de R$ 300 (ate R$ 500); site + cardapio a partir
+    de R$ 250 (ate R$ 400); pacote completo a partir de R$ 400 (ate R$ 600).
+    Onde o projeto cai dentro da faixa depende do escopo, e a equipe confirma o
+    valor por escrito antes de comecar.
+  tags: [preco, valor, orcamento, custo, quanto, tabela]
+
+- pergunta: Por que a ELEV e mais barata que outras agencias?
+  resposta: >-
+    A ELEV e uma equipe enxuta, sem a estrutura de uma agencia grande, e trabalha
+    com escopo do tamanho certo para pequenos negocios. Isso deixa o preco bem
+    mais acessivel que contratar um programador por conta ou fechar com uma marca
+    conhecida, entregando a mesma solucao.
+  tags: [barato, acessivel, caro, concorrente, comparacao, programador]
+
+- pergunta: Depois de pronto voces acompanham?
+  resposta: >-
+    Sim. A ELEV acompanha o site depois da entrega e faz a manutencao e os
+    ajustes necessarios para ele nao ficar parado no tempo. As condicoes desse
+    acompanhamento sao combinadas na proposta.
+  tags: [manutencao, acompanhamento, suporte, depois, ajuste]
 
 - pergunta: Em quanto tempo fica pronto?
   resposta: >-

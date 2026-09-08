@@ -32,12 +32,11 @@ No `index.html`, procure o bloco `const CONTATO` (perto do fim do arquivo):
 ```js
 const CONTATO = {
   whatsapp:  "",   // so numeros com DDI+DDD. Ex.: "5511999999999"
-  instagram: "",   // so o usuario, sem @. Ex.: "elev.digital"
   email:     ""    // Ex.: "contato@elev.com.br"
 };
 ```
 
-Enquanto estiverem vazios, os tres botoes aparecem marcados como "a configurar"
+Enquanto estiverem vazios, os dois botoes aparecem marcados como "a configurar"
 com borda tracejada - de proposito, para nao virar link morto. Preencheu, eles
 viram link de verdade na hora.
 
@@ -46,15 +45,25 @@ viram link de verdade na hora.
 Procure `data-rodape-pendente` no `index.html` e troque o texto por cidade,
 CNPJ e o que mais for oficial.
 
+## Precos
+
+A tabela da secao "Investimento" vem dos valores iniciais definidos pela ELEV.
+Todos aparecem como "a partir de" com a faixa ao lado, e a nota abaixo da tabela
+explica que o ponto exato depende do escopo e e confirmado por escrito.
+
+Os mesmos valores estao em `conhecimento/servicos.yaml` e `conhecimento/faq.yaml`,
+que alimentam o agente ELEV AI. **Mudou o preco: mude nos dois lugares**, senao o
+agente e o site passam a dizer coisas diferentes.
+
 ## O que NAO tem no site (de proposito)
 
-Nao ha cliente, depoimento, numero de resultado, preco nem prazo. Nada disso
-existe ainda de forma verificada, e inventar seria o pior erro possivel numa
-vitrine comercial. Os quatro projetos da secao "Projetos demonstrativos" estao
-marcados como demonstracao no proprio card e no aviso acima deles.
+Nao ha cliente, depoimento, numero de resultado nem prazo. Nada disso existe
+ainda de forma verificada, e inventar seria o pior erro possivel numa vitrine
+comercial.
 
-Quando houver cliente real com autorizacao, o lugar de entrar e a mesma secao -
-trocando o aviso e o selo "Demonstracao" pelo nome do cliente.
+A secao de projetos demonstrativos foi retirada por decisao do Bruno - as demos
+serao feitas depois. Quando existirem, entram entre "Investimento" e "Por que a
+ELEV".
 
 ## Identidade visual
 

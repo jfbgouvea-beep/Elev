@@ -1,5 +1,7 @@
 """Fluxo completo sem chamar a API: conversa, handoff e gravacao."""
 
+import re
+
 from elev.agente import AgenteElev
 from elev.armazenamento import listar_leads, registrar_lead, salvar_registro
 
@@ -17,11 +19,18 @@ def test_pedido_de_humano_dispara_handoff(config):
     assert agente.handoff is True
 
 
-def test_pergunta_de_preco_nao_inventa_valor(config):
+def test_pergunta_de_preco_usa_a_tabela_cadastrada(config):
+    """Preco agora existe na base: o agente pode citar, mas so o que esta cadastrado."""
     agente = AgenteElev.novo(config)
-    resposta = agente.responder("quanto custa um site?")
-    assert "R$" not in resposta.texto
-    assert "orcamento" in resposta.texto.lower() or "escopo" in resposta.texto.lower()
+    texto = agente.responder("quanto custa um site?").texto
+
+    assert "R$ 150" in texto, "deve citar o valor inicial cadastrado do site basico"
+    assert "escopo" in texto.lower(), "deve deixar claro que a faixa depende do escopo"
+
+    # todo valor citado precisa existir na tabela - nada de numero novo
+    cadastrados = {100, 150, 180, 250, 300, 400, 500, 600}
+    citados = {int(v) for v in re.findall(r"R\$\s*(\d+)", texto)}
+    assert citados <= cadastrados, f"valores fora da tabela: {citados - cadastrados}"
 
 
 def test_negociacao_dispara_handoff(config):

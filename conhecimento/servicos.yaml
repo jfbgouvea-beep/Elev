@@ -23,7 +23,11 @@
     - Producao de fotos e videos profissionais
     - Gestao de trafego pago
   prazo: null
-  preco: null
+  preco: >-
+    Site basico a partir de R$ 150 (faixa de R$ 150 a R$ 250).
+    Site completo a partir de R$ 250 (faixa de R$ 250 a R$ 400).
+    Valor inicial: o ponto exato dentro da faixa depende do escopo e e
+    confirmado por escrito pela equipe.
   perguntas_chave:
     - Voce ja tem site hoje ou seria o primeiro?
     - Ja tem dominio registrado (o endereco .com.br)?
@@ -45,7 +49,9 @@
     - Integracao com sistema de PDV ou impressora fiscal
     - Pagamento online dentro do cardapio
   prazo: null
-  preco: null
+  preco: >-
+    A partir de R$ 100 (faixa de R$ 100 a R$ 180). Valor inicial: o ponto exato
+    dentro da faixa depende do escopo e e confirmado por escrito pela equipe.
   perguntas_chave:
     - Quantos itens tem o cardapio hoje, mais ou menos?
     - Voce trabalha com delivery, salao ou os dois?
@@ -67,7 +73,9 @@
     - Emissao de nota fiscal
     - Controle financeiro e de estoque
   prazo: null
-  preco: null
+  preco: >-
+    A partir de R$ 150 (faixa de R$ 150 a R$ 250). Valor inicial: o ponto exato
+    dentro da faixa depende do escopo e e confirmado por escrito pela equipe.
   perguntas_chave:
     - Quantos profissionais atendem hoje?
     - Como os clientes marcam horario atualmente?
@@ -88,7 +96,9 @@
     - Disparo de mensagens em massa ou lista fria (a ELEV nao faz spam)
     - Compra de listas de contatos
   prazo: null
-  preco: null
+  preco: >-
+    Nao tem preco avulso cadastrado. Entra nas combinacoes: Pacote completo a
+    partir de R$ 400 (faixa de R$ 400 a R$ 600). Fora disso, verificar com a equipe.
   perguntas_chave:
     - Quantas mensagens voce recebe por dia, mais ou menos?
     - Quantas pessoas respondem o WhatsApp hoje?
@@ -115,3 +125,26 @@
     - Quais perguntas seus clientes mais repetem?
     - Voce ja usa alguma ferramenta de automacao?
     - Quantas pessoas trabalham nesse atendimento hoje?
+
+- id: combinacoes
+  nome: Combinacoes de servicos
+  resumo: >-
+    Servicos contratados juntos saem por um valor combinado, menor que a soma
+    das partes.
+  para_quem: Negocios que precisam de mais de uma solucao ao mesmo tempo.
+  inclui:
+    - Site + agendamento online
+    - Site + cardapio digital
+    - Pacote completo (site, cardapio ou agendamento e integracao com WhatsApp)
+  nao_inclui:
+    - Servicos que nao estao no catalogo da ELEV
+  prazo: null
+  preco: >-
+    Site + agendamento: a partir de R$ 300 (faixa de R$ 300 a R$ 500).
+    Site + cardapio: a partir de R$ 250 (faixa de R$ 250 a R$ 400).
+    Pacote completo: a partir de R$ 400 (faixa de R$ 400 a R$ 600).
+    Valores iniciais: o ponto exato dentro da faixa depende do escopo e e
+    confirmado por escrito pela equipe.
+  perguntas_chave:
+    - Quais dessas solucoes voce precisa agora?
+    - Tem alguma que e mais urgente que as outras?
