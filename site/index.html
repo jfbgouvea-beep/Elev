@@ -400,7 +400,7 @@ img, svg{ display: block; max-width: 100%; }
   display: grid; gap: 16px;
   grid-template-columns: repeat(4, 1fr);
 }
-@media (max-width: 1040px){ .planos{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 1220px){ .planos{ grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px){ .planos{ grid-template-columns: 1fr; } }
 
 .plano{
@@ -440,11 +440,34 @@ img, svg{ display: block; max-width: 100%; }
 .plano-valor span{ font-size: 13.6px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .plano p{ color: var(--ink-2); font-size: 14.8px; margin-top: auto; }
 
+/* o card inteiro leva para o WhatsApp; o texto abaixo e a parte visivel disso */
+.plano-cta{
+  display: inline-flex; align-items: center; gap: 9px;
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font: 600 14.2px/1 Manrope, sans-serif;
+  color: var(--cyan);
+  transition: color .3s var(--t), gap .3s var(--t);
+}
+.plano-cta svg{ width: 17px; height: 17px; flex: none; }
+.plano-cta .seta-cta{ width: 14px; height: 14px; margin-left: auto; transition: transform .3s var(--t); }
+.plano-cta::after{           /* estende o clique ao card inteiro */
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+}
+.plano:hover .plano-cta{ color: var(--ink); }
+.plano:hover .plano-cta .seta-cta{ transform: translateX(3px); }
+.plano:focus-within{ border-color: rgba(34,211,255,.5); }
+.plano-cta[data-pendente="true"]{ color: var(--ink-3); }
+
+@media (prefers-reduced-motion: reduce){
+  .plano-cta, .plano-cta .seta-cta{ transition: none; }
+}
+
 /* nome, valor e descricao alinhados entre cards, mesmo quando um nome
    ocupa duas linhas e o vizinho ocupa uma */
 @supports (grid-template-rows: subgrid){
   @media (min-width: 601px){
-    .plano{ display: grid; grid-template-rows: subgrid; grid-row: span 3; }
+    .plano{ display: grid; grid-template-rows: subgrid; grid-row: span 4; }
     .plano p{ margin-top: 0; }
   }
 }
@@ -459,7 +482,7 @@ img, svg{ display: block; max-width: 100%; }
 }
 .plano.destaque .plano-tipo{ color: var(--cyan); }
 
-@media (min-width: 1041px){
+@media (min-width: 1221px){
   /* a última linha tem 3 cards: o pacote completo ocupa o lugar de honra */
   .plano.destaque{ grid-column: span 2; }
 }
@@ -754,6 +777,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;150</b><span>até R$&nbsp;250</span></div>
         <p>Presença online essencial: apresentação do negócio, contato e botão de WhatsApp.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Site básico" data-plano-valor="150"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano">
@@ -763,6 +787,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;250</b><span>até R$&nbsp;400</span></div>
         <p>Mais páginas, mais conteúdo e estrutura preparada para ser encontrada no Google.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Site completo" data-plano-valor="250"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano">
@@ -772,6 +797,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;100</b><span>até R$&nbsp;180</span></div>
         <p>Cardápio por QR Code com fotos e preços, atualizado por você mesmo.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Cardápio digital" data-plano-valor="100"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano">
@@ -781,6 +807,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;150</b><span>até R$&nbsp;250</span></div>
         <p>Seu cliente marca horário sozinho, com confirmação e lembrete automáticos.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Agendamento online" data-plano-valor="150"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano combo">
@@ -790,6 +817,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;300</b><span>até R$&nbsp;500</span></div>
         <p>Para quem vende hora marcada: a vitrine e a agenda funcionando juntas.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Site + agendamento" data-plano-valor="300"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano combo">
@@ -799,6 +827,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;250</b><span>até R$&nbsp;400</span></div>
         <p>Para restaurantes e lanchonetes: o site e o cardápio digital no mesmo lugar.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Site + cardápio" data-plano-valor="250"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="plano destaque">
@@ -808,6 +837,7 @@ img, svg{ display: block; max-width: 100%; }
         </div>
         <div class="plano-valor"><small>a partir de</small><b>R$&nbsp;400</b><span>até R$&nbsp;600</span></div>
         <p>Site, cardápio ou agendamento e integração com WhatsApp — a operação inteira no digital.</p>
+        <a class="plano-cta" href="#contato" data-plano-cta data-plano-nome="Pacote completo" data-plano-valor="400"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2 22l5.36-1.4a9.8 9.8 0 0 0 4.68 1.19h.01c5.43 0 9.84-4.4 9.84-9.84 0-2.63-1.02-5.1-2.88-6.96A9.77 9.77 0 0 0 12.04 2zm0 17.96h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.1.81.83-3.02-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.5 3.68-8.17 8.2-8.17 2.19 0 4.24.85 5.79 2.4a8.12 8.12 0 0 1 2.4 5.78c0 4.51-3.68 8.18-8.2 8.18zm4.5-6.12c-.25-.13-1.46-.72-1.68-.8-.23-.08-.39-.13-.55.12-.17.25-.64.8-.78.97-.15.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22a7.4 7.4 0 0 1-1.37-1.7c-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.09-.16.04-.31-.02-.43-.06-.13-.55-1.34-.76-1.83-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.17 1.71 2.62 4.15 3.67.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.18.21-.57.21-1.07.15-1.17-.06-.11-.23-.17-.48-.29z"/></svg><span>Pedir pelo WhatsApp</span><svg class="seta-cta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </article>
     </div>
 
@@ -983,6 +1013,21 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
       el.dataset.pendente = "true";
       el.setAttribute("aria-disabled", "true");
     }
+  });
+
+  /* ---- cada plano leva ao WhatsApp com o servico ja escrito ----- */
+  d.querySelectorAll("[data-plano-cta]").forEach(function (el) {
+    const nome = el.dataset.planoNome;
+    const valor = el.dataset.planoValor;
+    if (!destinos.whatsapp.pronto) {
+      el.dataset.pendente = "true";   // sem numero, continua indo para o contato
+      return;
+    }
+    const texto = "Ola! Vim pelo site da ELEV e tenho interesse no " + nome +
+                  " (a partir de R$ " + valor + "). Pode me explicar como funciona?";
+    el.href = "https://wa.me/" + CONTATO.whatsapp + "?text=" + encodeURIComponent(texto);
+    el.target = "_blank";
+    el.rel = "noopener";
   });
 
   /* ---- header ao rolar ----------------------------------------- */
