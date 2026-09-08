@@ -1,0 +1,50 @@
+# Publica a pasta site/ no GitHub Pages.
+# Pre-requisito, feito uma vez no navegador:
+#   Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+name: Publicar site
+
+on:
+  push:
+    branches:
+      - main
+      - claude/elev-ai-agent-setup-7r4yzd
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Um deploy por vez; se chegar um novo push, o anterior em fila e descartado.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir que o site existe
+        run: test -f site/index.html
+
+      - uses: actions/configure-pages@v5
+        with:
+          # habilita o Pages no repositorio na primeira execucao
+          enablement: true
+
+      - name: Empacotar a pasta site/
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar
+        id: deploy
+        uses: actions/deploy-pages@v4
