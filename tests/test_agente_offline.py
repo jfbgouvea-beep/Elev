@@ -24,12 +24,12 @@ def test_pergunta_de_preco_usa_a_tabela_cadastrada(config):
     agente = AgenteElev.novo(config)
     texto = agente.responder("quanto custa um site?").texto
 
-    assert "R$ 150" in texto, "deve citar o valor inicial cadastrado do site basico"
-    assert "escopo" in texto.lower(), "deve deixar claro que a faixa depende do escopo"
+    assert "R$ 500" in texto, "deve citar o valor inicial do cardapio digital"
+    assert "complexidade" in texto.lower(), "deve dizer que o valor final depende da complexidade"
 
     # todo valor citado precisa existir na tabela - nada de numero novo
-    cadastrados = {100, 150, 180, 250, 300, 400, 500, 600}
-    citados = {int(v) for v in re.findall(r"R\$\s*(\d+)", texto)}
+    cadastrados = {500, 700, 800, 1000, 1200, 1700, 1800, 2000, 3000}
+    citados = {int(v.replace(".", "")) for v in re.findall(r"R\$\s*([\d.]+)", texto)}
     assert citados <= cadastrados, f"valores fora da tabela: {citados - cadastrados}"
 
 

@@ -6,15 +6,14 @@
 
 - pergunta: Quanto custa?
   resposta: >-
-    Os valores iniciais sao estes: site basico a partir de R$ 150 (ate R$ 250);
-    site completo a partir de R$ 250 (ate R$ 400); cardapio digital a partir de
-    R$ 100 (ate R$ 180); agendamento online a partir de R$ 150 (ate R$ 250);
-    site + agendamento a partir de R$ 300 (ate R$ 500); site + cardapio a partir
-    de R$ 250 (ate R$ 400); pacote completo a partir de R$ 400 (ate R$ 600).
-    Onde o projeto cai dentro da faixa depende do escopo, e a equipe confirma o
-    valor por escrito antes de comecar.
-  tags: [preco, valor, orcamento, custo, quanto, tabela]
-
+    Os valores iniciais por solucao sao: cardapio digital a partir de R$ 500
+    (Basico), R$ 800 (Profissional) e R$ 1.700 (Completo); agendamento a partir de
+    R$ 700, R$ 1.200 e R$ 1.800; site de vendas a partir de R$ 700, R$ 1.200 e
+    R$ 2.000; agente de IA a partir de R$ 1.000, R$ 2.000 e R$ 3.000. Site
+    institucional, automacao, Instagram, edicao de video e solucoes personalizadas
+    sao orcados sob medida. Todos sao valores iniciais: o preco final depende da
+    complexidade e e confirmado por escrito antes de comecar.
+  tags: [preco, valor, orcamento, custo, quanto, tabela, plano, nivel]
 - pergunta: Por que a ELEV e mais barata que outras agencias?
   resposta: >-
     A ELEV e uma equipe enxuta, sem a estrutura de uma agencia grande, e trabalha

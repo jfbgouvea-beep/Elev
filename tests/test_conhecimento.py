@@ -12,12 +12,14 @@ def test_base_real_carrega(base):
     assert set(base.ids_servicos) >= {"sites", "cardapio_digital", "agendamento", "whatsapp", "ia"}
 
 
-def test_precos_nao_estao_cadastrados(base):
-    """Enquanto a equipe nao definir, precos ficam null - o agente nao chuta."""
+def test_todo_servico_tem_politica_de_preco(base):
+    """Ou o servico tem tabela, ou diz explicitamente que e sob medida.
+    O que nao pode existir e servico sem nenhuma orientacao de preco."""
     for servico in base.servicos:
-        if servico["preco"] is None:
-            assert NAO_CADASTRADO in base.texto_servicos()
-            break
+        preco = (servico.get("preco") or "").lower()
+        assert preco, f"{servico['id']} sem campo preco"
+        assert "r$" in preco or "sob medida" in preco or "nao tem preco" in preco, \
+            f"{servico['id']} com preco que nao orienta o agente"
 
 
 def test_campo_vazio_vira_aviso_explicito(base):
@@ -26,8 +28,10 @@ def test_campo_vazio_vira_aviso_explicito(base):
 
 
 def test_lacunas_listam_o_que_falta(base):
+    """Prazo ainda nao foi definido pela ELEV: precisa aparecer como lacuna."""
     lacunas = base.lacunas()
-    assert any(l.startswith("servicos.") and l.endswith(".preco") for l in lacunas)
+    assert any(l.startswith("servicos.") and l.endswith(".prazo") for l in lacunas)
+    assert "empresa.cidade" in lacunas
 
 
 def test_base_sem_servicos_falha(tmp_path):

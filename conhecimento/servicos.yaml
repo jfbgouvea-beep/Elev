@@ -24,10 +24,8 @@
     - Gestao de trafego pago
   prazo: null
   preco: >-
-    Site basico a partir de R$ 150 (faixa de R$ 150 a R$ 250).
-    Site completo a partir de R$ 250 (faixa de R$ 250 a R$ 400).
-    Valor inicial: o ponto exato dentro da faixa depende do escopo e e
-    confirmado por escrito pela equipe.
+    Site institucional nao tem preco de tabela cadastrado - orcamento sob medida.
+    Para loja/site de vendas, ver o servico site_vendas.
   perguntas_chave:
     - Voce ja tem site hoje ou seria o primeiro?
     - Ja tem dominio registrado (o endereco .com.br)?
@@ -50,8 +48,11 @@
     - Pagamento online dentro do cardapio
   prazo: null
   preco: >-
-    A partir de R$ 100 (faixa de R$ 100 a R$ 180). Valor inicial: o ponto exato
-    dentro da faixa depende do escopo e e confirmado por escrito pela equipe.
+    Basico R$ 500 (produtos, categorias, imagens, precos, informacoes do negocio).
+    Profissional R$ 800 (tudo do basico + carrinho, pedido, quantidades, total).
+    Completo R$ 1.700 (tudo do profissional + painel de pedidos, organizacao para
+    cozinha, status, fila, recursos adicionais). Valores iniciais: o preco final
+    depende da complexidade e e confirmado por escrito.
   perguntas_chave:
     - Quantos itens tem o cardapio hoje, mais ou menos?
     - Voce trabalha com delivery, salao ou os dois?
@@ -74,8 +75,12 @@
     - Controle financeiro e de estoque
   prazo: null
   preco: >-
-    A partir de R$ 150 (faixa de R$ 150 a R$ 250). Valor inicial: o ponto exato
-    dentro da faixa depende do escopo e e confirmado por escrito pela equipe.
+    Basico R$ 700 (servicos, profissionais, datas, horarios, confirmacao).
+    Profissional R$ 1.200 (tudo do basico + painel, horarios bloqueados,
+    cancelamento, reagendamento, cadastro de profissionais).
+    Completo R$ 1.800 (tudo do profissional + historico, estatisticas, gestao de
+    servicos e precos, calendario avancado). Valores iniciais: o preco final
+    depende da complexidade e e confirmado por escrito.
   perguntas_chave:
     - Quantos profissionais atendem hoje?
     - Como os clientes marcam horario atualmente?
@@ -97,8 +102,8 @@
     - Compra de listas de contatos
   prazo: null
   preco: >-
-    Nao tem preco avulso cadastrado. Entra nas combinacoes: Pacote completo a
-    partir de R$ 400 (faixa de R$ 400 a R$ 600). Fora disso, verificar com a equipe.
+    Nao tem preco avulso cadastrado. Entra dentro das outras solucoes ou como
+    projeto sob medida - verificar com a equipe.
   perguntas_chave:
     - Quantas mensagens voce recebe por dia, mais ou menos?
     - Quantas pessoas respondem o WhatsApp hoje?
@@ -119,32 +124,66 @@
     - Envio automatico de mensagens nao solicitadas
     - Substituicao completa do atendimento humano
   prazo: null
-  preco: null
+  preco: >-
+    Basico R$ 1.000 (conversacao, respostas, conhecimento sobre produtos e servicos).
+    Profissional R$ 2.000 (tudo do basico + entendimento de intencao, perguntas de
+    qualificacao, captura de dados, qualificacao de leads, encaminhamento para humano).
+    Completo R$ 3.000, chamado de Agente comercial com IA (tudo do profissional +
+    follow-up, resumos de conversas, classificacao de prioridade, painel de leads,
+    automacoes, integracoes, n8n e API). Valores iniciais: o preco final depende da
+    complexidade e e confirmado por escrito. Nunca chamar de simples chatbot.
   perguntas_chave:
     - Qual processo hoje toma mais tempo da sua equipe?
     - Quais perguntas seus clientes mais repetem?
     - Voce ja usa alguma ferramenta de automacao?
     - Quantas pessoas trabalham nesse atendimento hoje?
 
-- id: combinacoes
-  nome: Combinacoes de servicos
+- id: site_vendas
+  nome: Site de vendas
   resumo: >-
-    Servicos contratados juntos saem por um valor combinado, menor que a soma
-    das partes.
-  para_quem: Negocios que precisam de mais de uma solucao ao mesmo tempo.
+    Loja online com catalogo, pagina de produto, carrinho e pedidos, podendo
+    chegar a painel proprio de gestao.
+  para_quem: Lojas que querem vender ou expor produtos online.
   inclui:
-    - Site + agendamento online
-    - Site + cardapio digital
-    - Pacote completo (site, cardapio ou agendamento e integracao com WhatsApp)
+    - Catalogo com categorias e produtos
+    - Pesquisa, filtros e pagina de produto (a partir do nivel Profissional)
+    - Carrinho e pedidos (a partir do nivel Profissional)
+    - Painel administrativo, estoque e cupons (nivel Completo)
   nao_inclui:
-    - Servicos que nao estao no catalogo da ELEV
+    - Integracao com meio de pagamento online (verificar com a equipe)
   prazo: null
   preco: >-
-    Site + agendamento: a partir de R$ 300 (faixa de R$ 300 a R$ 500).
-    Site + cardapio: a partir de R$ 250 (faixa de R$ 250 a R$ 400).
-    Pacote completo: a partir de R$ 400 (faixa de R$ 400 a R$ 600).
-    Valores iniciais: o ponto exato dentro da faixa depende do escopo e e
-    confirmado por escrito pela equipe.
+    Basico R$ 700 (catalogo, categorias, produtos).
+    Profissional R$ 1.200 (tudo do basico + pesquisa, filtros, pagina de produto,
+    carrinho, pedidos).
+    Completo R$ 2.000 (tudo do profissional + painel administrativo, gestao de
+    produtos, estoque, status de pedidos, historico, cupons e descontos).
+    Valores iniciais: o preco final depende da complexidade e e confirmado por escrito.
   perguntas_chave:
-    - Quais dessas solucoes voce precisa agora?
-    - Tem alguma que e mais urgente que as outras?
+    - Quantos produtos voce tem, mais ou menos?
+    - Voce ja vende online hoje ou seria o primeiro canal?
+    - Precisa controlar estoque?
+    - Quem vai cadastrar os produtos no dia a dia?
+
+- id: conteudo
+  nome: Conteudo e redes sociais
+  resumo: >-
+    Cuidado do Instagram do negocio: planejamento, organizacao do perfil,
+    edicao de videos e reels.
+  para_quem: Negocios que precisam aparecer bem antes de o cliente decidir comprar.
+  inclui:
+    - Gestao de Instagram
+    - Planejamento de conteudo
+    - Edicao de videos e reels
+    - Organizacao do perfil
+  nao_inclui:
+    - Compra de seguidores ou engajamento artificial
+    - Disparo em massa
+  prazo: null
+  preco: >-
+    Nao tem preco de tabela cadastrado - orcamento sob medida conforme a
+    quantidade e a frequencia. Verificar com a equipe.
+  perguntas_chave:
+    - Quantas publicacoes por semana voce imagina?
+    - Voce ja tem material (fotos e videos) ou precisa produzir?
+    - Quem cuida do Instagram hoje?

@@ -1,16 +1,7 @@
 # Site da ELEV
 
-Página única, sem dependência de build: e um arquivo `index.html` com CSS e JS
-dentro. Da para publicar em qualquer lugar (Vercel, Netlify, GitHub Pages,
-hospedagem comum) arrastando a pasta `site/`.
-
-## Onde o site esta publicado
-
-Netlify, conectado a este repositorio. Qualquer push que altere `site/` publica
-sozinho - nao existe passo manual de deploy.
-
-A configuracao esta em `netlify.toml`, na raiz: o Netlify serve a pasta `site/`
-direto, sem build.
+Pagina unica, sem build: e um `index.html` com CSS e JS dentro. Publica em
+qualquer lugar arrastando a pasta `site/`.
 
 ## Ver localmente
 
@@ -19,65 +10,73 @@ python3 -m http.server 8080 --directory site
 # abre http://localhost:8080
 ```
 
+## Onde esta publicado
+
+Netlify, conectado a este repositorio (`netlify.toml` na raiz serve a pasta
+`site/` direto). Todo push que altere `site/` republica sozinho.
+
 ## O que voce precisa preencher
 
-### 1. A logo oficial (importante)
-
-Salve o arquivo da logo em:
+### 1. A logo oficial
 
 ```
-site/assets/logo-elev.png      (ou .svg - se for svg, ajuste o src no index.html)
+site/assets/logo-elev.png      (ou .svg - ajuste o src no index.html)
 ```
 
-Enquanto o arquivo nao existir, o site mostra o nome ELEV em tipografia. Assim
-que o arquivo aparecer, a logo entra sozinha no topo, no menu e no rodape - nao
-precisa mexer em codigo. Fundo transparente funciona melhor no tema escuro.
+A logo aparece em quatro lugares: header, hero, faixa de diagnostico e rodape.
+Enquanto o arquivo nao existir, esses pontos mostram o nome ELEV em tipografia,
+e o JS troca sozinho assim que o arquivo aparecer. Fundo transparente funciona
+melhor no tema escuro.
 
-### 2. Contatos
+### 2. Dados institucionais do rodape
 
-No `index.html`, procure o bloco `const CONTATO` (perto do fim do arquivo):
+Procure `data-rodape-pendente` no `index.html` e troque por cidade e CNPJ.
 
-```js
-const CONTATO = {
-  whatsapp:  "",   // so numeros com DDI+DDD. Ex.: "5511999999999"
-  email:     ""    // Ex.: "contato@elev.com.br"
-};
-```
+### 3. Contatos (ja preenchidos)
 
-Enquanto estiverem vazios, os dois botoes aparecem marcados como "a configurar"
-com borda tracejada - de proposito, para nao virar link morto. Preencheu, eles
-viram link de verdade na hora.
+No bloco `const CONTATO`, perto do fim do `index.html`. Se algum ficar vazio, os
+botoes daquele canal aparecem marcados como pendentes em vez de virar link morto.
 
-### 3. Dados institucionais do rodape
+## Como o site esta organizado
 
-Procure `data-rodape-pendente` no `index.html` e troque o texto por cidade,
-CNPJ e o que mais for oficial.
+| Secao | id | O que faz |
+|---|---|---|
+| Hero | `inicio` | Proposta principal e os dois botoes de entrada |
+| ELEV Lab | `elev-lab` | Raio-X, Desafio e Forge - o coracao da proposta |
+| Solucoes | `solucoes` | Trilhas por tipo de negocio (exemplos, nao clientes) |
+| Servicos | `servicos` | Quatro frentes, cada uma expansivel |
+| Precos | `precos` | Quatro familias em abas, tres niveis cada |
+| Simulador | `simulador` | Monta a solucao e soma a estimativa inicial |
+| Como funciona | `processo` | Cinco etapas |
+| Por que a ELEV | `por-que` | Quatro diferenciais |
+| Demonstracoes | `demos` | Wireframes marcados como demonstracao |
+| Contato | `contato` | Formulario que monta a mensagem pronta |
+| FAQ | `faq` | Seis perguntas |
 
-## Precos
+## Precos: onde mexer
 
-A tabela da secao "Investimento" vem dos valores iniciais definidos pela ELEV.
-Todos aparecem como "a partir de" com a faixa ao lado, e a nota abaixo da tabela
-explica que o ponto exato depende do escopo e e confirmado por escrito.
+Os valores vivem em **um lugar so** dentro de cada card de preco
+(`data-preco` no `.plano`). O botao de WhatsApp de cada plano e o texto da
+mensagem sao montados a partir dai, entao nao existe risco de o card mostrar um
+valor e a mensagem enviar outro.
 
-Os mesmos valores estao em `conhecimento/servicos.yaml` e `conhecimento/faq.yaml`,
-que alimentam o agente ELEV AI. **Mudou o preco: mude nos dois lugares**, senao o
+O simulador tem a propria lista (`data-preco` em cada `.opcao`), porque inclui
+itens que nao estao na tabela. Item com `data-preco="0"` aparece como **a orcar**
+- e assim que o site evita inventar valor.
+
+Os mesmos precos estao em `conhecimento/servicos.yaml` e `conhecimento/faq.yaml`,
+que alimentam o agente ELEV AI. **Mudou preco: mude nos dois lugares**, senao o
 agente e o site passam a dizer coisas diferentes.
 
 ## O que NAO tem no site (de proposito)
 
-Nao ha cliente, depoimento, numero de resultado nem prazo. Nada disso existe
-ainda de forma verificada, e inventar seria o pior erro possivel numa vitrine
-comercial.
+Nenhum cliente, depoimento, numero de resultado, estatistica ou case. Nada disso
+existe de forma verificada. As quatro pecas da secao de demonstracoes estao
+marcadas como demonstracao no card e no aviso acima delas.
 
-A secao de projetos demonstrativos foi retirada por decisao do Bruno - as demos
-serao feitas depois. Quando existirem, entram entre "Investimento" e "Por que a
-ELEV".
+## Formulario
 
-## Identidade visual
-
-Extraida da logo: ciano `#22D3FF` no vertice, azul eletrico `#1E5CF5` na base,
-fundo azul-preto `#070A12`. O gradiente da logo aparece nos botoes, no destaque
-do titulo e nos detalhes. O triangulo ascendente vira o marcador da lista de
-servicos e o brilho no topo dos cards.
-
-Tipografia: Archivo (titulos), Manrope (texto), IBM Plex Mono (etiquetas).
+Nao ha backend. Ao enviar, o site valida os dois campos essenciais, monta a
+mensagem com tudo que foi escrito e oferece dois caminhos: abrir o WhatsApp da
+ELEV com a mensagem pronta, ou abrir o e-mail. Nenhum dado sai do navegador do
+visitante sem ele mandar.
