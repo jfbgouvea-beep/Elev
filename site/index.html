@@ -40,8 +40,19 @@
   --zap:  #25D366;
 
   --r-sm: 10px;
-  --r:    16px;
-  --r-lg: 22px;
+  --r:    14px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --r-xl: 30px;
+
+  /* sombras em camadas: profundidade sem borrao cinza */
+  --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.24);
+  --sh-2: 0 2px 6px rgba(0,0,0,.42), 0 12px 32px -10px rgba(0,0,0,.6);
+  --sh-azul: 0 10px 30px -12px rgba(37,99,235,.75);
+  --sh-azul-forte: 0 18px 46px -14px rgba(37,99,235,.85);
+
+  /* fio de luz no topo dos cards - o detalhe que tira o ar de template */
+  --fio: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
 
   --wrap: 1180px;
   --pad: clamp(20px, 5vw, 40px);
@@ -64,15 +75,17 @@ body{
   overflow-x: hidden;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4{
   font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
   font-stretch: 110%;
-  letter-spacing: -.022em;
+  letter-spacing: -.024em;
   text-wrap: balance;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1.12;
 }
+h1{ letter-spacing: -.034em; line-height: 1.04; }
+h2{ letter-spacing: -.028em; }
 p{ margin: 0; }
 a{ color: inherit; text-decoration: none; }
 img, svg{ display: block; max-width: 100%; }
@@ -84,7 +97,17 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 
 .wrap{ width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
 .sec{ padding-block: var(--sec); position: relative; }
-.sec-alt{ background: var(--ground-2); border-block: 1px solid var(--line); }
+.sec-alt{
+  background:
+    radial-gradient(90% 60% at 50% 0%, rgba(37,99,235,.055), transparent 70%),
+    var(--ground-2);
+  border-block: 1px solid var(--line);
+}
+/* fio de luz que separa as seções sem parecer uma régua */
+.sec-alt::before{
+  content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
+  background: var(--fio); opacity: .7;
+}
 
 .eyebrow{
   font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -97,9 +120,9 @@ button, input, select, textarea{ font: inherit; color: inherit; }
   background: linear-gradient(90deg, transparent, var(--blue-soft));
 }
 
-.sec-head{ max-width: 64ch; margin-bottom: clamp(38px, 5vw, 62px); }
+.sec-head{ max-width: 64ch; margin-bottom: clamp(40px, 5.2vw, 66px); }
 .sec-head h2{ font-size: clamp(29px, 4.2vw, 45px); }
-.sec-head p{ color: var(--ink-2); margin-top: 16px; font-size: clamp(16px, 1.6vw, 18px); }
+.sec-head p{ color: var(--ink-2); margin-top: 17px; font-size: clamp(16px, 1.6vw, 18px); line-height: 1.62; }
 
 /* botões --------------------------------------------------------- */
 .btn{
@@ -112,12 +135,25 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 }
 .btn svg{ width: 17px; height: 17px; flex: none; }
 .btn-primary{
+  position: relative; overflow: hidden;
   background: var(--grad); color: #050914; font-weight: 700;
-  box-shadow: 0 10px 32px -14px rgba(37,99,235,.95);
+  box-shadow: var(--sh-azul);
 }
-.btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 18px 42px -14px rgba(96,165,250,.7); }
-.btn-ghost{ background: rgba(255,255,255,.03); border-color: var(--line-strong); color: var(--ink); }
-.btn-ghost:hover{ transform: translateY(-2px); border-color: rgba(96,165,250,.55); background: rgba(96,165,250,.07); }
+/* brilho que atravessa o botao no hover */
+.btn-primary::after{
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,.42) 48%, transparent 64%);
+  transform: translateX(-120%); transition: transform .7s var(--t);
+}
+.btn-primary:hover{ transform: translateY(-2px); box-shadow: var(--sh-azul-forte); }
+.btn-primary:hover::after{ transform: translateX(120%); }
+.btn-primary > *{ position: relative; z-index: 1; }
+.btn-ghost{
+  background: rgba(255,255,255,.035); border-color: var(--line-strong); color: var(--ink);
+  box-shadow: var(--sh-1);
+}
+.btn-ghost:hover{ transform: translateY(-2px); border-color: rgba(96,165,250,.6); background: rgba(96,165,250,.08); }
+@media (prefers-reduced-motion: reduce){ .btn-primary::after{ display: none; } }
 .btn:disabled{ opacity: .5; cursor: not-allowed; transform: none; }
 @media (prefers-reduced-motion: reduce){ .btn:hover{ transform: none; } }
 
@@ -293,23 +329,34 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 @media (max-width: 560px){ .grade-4{ grid-template-columns: 1fr; } }
 
 .card{
-  position: relative; padding: 28px 26px 30px;
+  position: relative; padding: 28px 26px 30px; overflow: hidden;
   border: 1px solid var(--line); border-radius: var(--r-lg);
-  background: linear-gradient(180deg, rgba(255,255,255,.022), transparent), var(--surface);
-  transition: border-color .35s var(--t), transform .35s var(--t);
+  background: linear-gradient(180deg, rgba(255,255,255,.028), transparent 46%), var(--surface);
+  box-shadow: var(--sh-1);
+  transition: border-color .4s var(--t), transform .4s var(--t), box-shadow .4s var(--t);
 }
-.card:hover{ transform: translateY(-3px); border-color: var(--line-strong); }
+.card::before{
+  content: ""; position: absolute; top: 0; left: 14%; right: 14%; height: 1px;
+  background: var(--fio); opacity: 0; transition: opacity .4s var(--t);
+}
+.card:hover{ transform: translateY(-4px); border-color: rgba(96,165,250,.3); box-shadow: var(--sh-2); }
+.card:hover::before{ opacity: 1; }
 @media (prefers-reduced-motion: reduce){ .card:hover{ transform: none; } }
 .card-ico{
-  width: 44px; height: 44px; display: grid; place-items: center;
-  border: 1px solid var(--line-strong); border-radius: 13px;
+  position: relative; width: 46px; height: 46px; display: grid; place-items: center;
+  border: 1px solid var(--line-strong); border-radius: 14px;
   color: var(--blue-soft); margin-bottom: 20px;
-  transition: border-color .35s var(--t), background-color .35s var(--t);
+  background: linear-gradient(160deg, rgba(96,165,250,.12), rgba(37,99,235,.03));
+  transition: border-color .4s var(--t), background-color .4s var(--t),
+              transform .4s var(--t), box-shadow .4s var(--t);
 }
 .card-ico svg{ width: 21px; height: 21px; }
-.card:hover .card-ico{ border-color: rgba(96,165,250,.5); background: rgba(96,165,250,.08); }
+.card:hover .card-ico{
+  border-color: rgba(96,165,250,.6); transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 20px -10px rgba(37,99,235,.9);
+}
 .card h3{ font-size: 19.5px; }
-.card p{ color: var(--ink-2); font-size: 15.4px; margin-top: 10px; }
+.card p{ color: var(--ink-2); font-size: 15.4px; margin-top: 11px; line-height: 1.6; }
 
 /* ELEV Lab --------------------------------------------------------- */
 .lab-card .etapa{
@@ -407,16 +454,24 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 @media (max-width: 940px){ .planos{ grid-template-columns: 1fr; } }
 
 .plano{
-  position: relative; display: flex; flex-direction: column;
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
   padding: 28px 26px 30px; border: 1px solid var(--line); border-radius: var(--r-lg);
-  background: var(--surface);
-  transition: border-color .35s var(--t), transform .35s var(--t);
+  background: linear-gradient(180deg, rgba(255,255,255,.025), transparent 40%), var(--surface);
+  box-shadow: var(--sh-1);
+  transition: border-color .4s var(--t), transform .4s var(--t), box-shadow .4s var(--t);
 }
-.plano:hover{ transform: translateY(-3px); border-color: var(--line-strong); }
+.plano::before{
+  content: ""; position: absolute; top: 0; left: 12%; right: 12%; height: 1px;
+  background: var(--fio); opacity: 0; transition: opacity .4s var(--t);
+}
+.plano:hover{ transform: translateY(-4px); border-color: rgba(96,165,250,.32); box-shadow: var(--sh-2); }
+.plano:hover::before{ opacity: 1; }
 .plano.destaque{
-  border-color: rgba(96,165,250,.4);
-  background: radial-gradient(130% 100% at 50% 0%, rgba(37,99,235,.15), transparent 62%), var(--surface-2);
+  border-color: rgba(96,165,250,.42);
+  background: radial-gradient(130% 100% at 50% 0%, rgba(37,99,235,.17), transparent 62%), var(--surface-2);
+  box-shadow: var(--sh-2), 0 0 0 1px rgba(96,165,250,.08);
 }
+.plano.destaque::before{ opacity: .9; }
 .plano:focus-within{ border-color: rgba(96,165,250,.6); }
 @media (prefers-reduced-motion: reduce){ .plano:hover{ transform: none; } }
 
@@ -615,14 +670,17 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 .campo label{ font-size: 14.2px; font-weight: 600; color: var(--ink); }
 .campo label .op{ color: var(--ink-3); font-weight: 400; }
 .campo input, .campo textarea, .campo select{
-  width: 100%; padding: 13px 15px; border-radius: 12px;
+  width: 100%; padding: 14px 16px; border-radius: 13px;
   border: 1px solid var(--line-strong); background: var(--ground-2); color: var(--ink);
-  font-size: 15.2px; transition: border-color .25s var(--t), background-color .25s var(--t);
+  font-size: 15.2px; box-shadow: inset 0 1px 2px rgba(0,0,0,.3);
+  transition: border-color .25s var(--t), background-color .25s var(--t), box-shadow .25s var(--t);
 }
+.campo input:hover, .campo textarea:hover{ border-color: #454550; }
 .campo textarea{ min-height: 92px; resize: vertical; }
 .campo input::placeholder, .campo textarea::placeholder{ color: var(--ink-3); }
 .campo input:focus, .campo textarea:focus, .campo select:focus{
   outline: none; border-color: var(--blue-soft); background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.22);
 }
 .campo input[aria-invalid="true"], .campo textarea[aria-invalid="true"]{ border-color: #F87171; }
 .erro{ color: #FCA5A5; font-size: 13.2px; display: none; }
@@ -723,6 +781,245 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 }
 .pix svg{ width: 15px; height: 15px; color: var(--ink-3); }
 
+
+/* ============ SOCIAL MEDIA e DESIGN ============ */
+.mini-grade{ display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px){ .mini-grade{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px){ .mini-grade{ grid-template-columns: 1fr; } }
+
+.mini{
+  display: flex; align-items: center; gap: 13px;
+  padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--r-md);
+  background: var(--surface); box-shadow: var(--sh-1);
+  font-size: 15px; font-weight: 500;
+  transition: border-color .35s var(--t), transform .35s var(--t), background-color .35s var(--t);
+}
+.mini:hover{ transform: translateY(-3px); border-color: rgba(96,165,250,.34); background: var(--surface-2); }
+.mini .ic{
+  width: 34px; height: 34px; flex: none; display: grid; place-items: center; border-radius: 10px;
+  background: linear-gradient(160deg, rgba(96,165,250,.16), rgba(37,99,235,.05));
+  border: 1px solid var(--line-strong); color: var(--blue-soft);
+}
+.mini .ic svg{ width: 17px; height: 17px; }
+@media (prefers-reduced-motion: reduce){ .mini:hover{ transform: none; } }
+
+/* pacote de entrada */
+.pacote{
+  position: relative; overflow: hidden; margin-top: 28px;
+  display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px, 4vw, 48px); align-items: center;
+  padding: clamp(28px, 4vw, 44px); border-radius: var(--r-xl);
+  border: 1px solid rgba(96,165,250,.36);
+  background:
+    radial-gradient(120% 130% at 12% 0%, rgba(37,99,235,.26), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%), var(--surface-2);
+  box-shadow: var(--sh-2);
+}
+.pacote::before{
+  content: ""; position: absolute; top: 0; left: 8%; right: 8%; height: 1px; background: var(--fio);
+}
+@media (max-width: 860px){ .pacote{ grid-template-columns: 1fr; } }
+.pacote-tag{
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  padding: 6px 13px; border-radius: 999px;
+  border: 1px solid rgba(96,165,250,.45); background: rgba(37,99,235,.14);
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--blue-soft);
+}
+.pacote h3{ font-size: clamp(25px, 3.4vw, 34px); }
+.pacote > div > p{ color: var(--ink-2); margin-top: 14px; font-size: 15.6px; max-width: 46ch; }
+.pacote-itens{ display: grid; gap: 8px; margin: 22px 0 0; padding: 0; }
+.pacote-itens li{ list-style: none; display: flex; align-items: flex-start; gap: 10px; font-size: 14.8px; color: var(--ink-2); }
+.pacote-itens svg{ width: 15px; height: 15px; margin-top: 4px; flex: none; color: var(--blue-soft); }
+
+.pacote-preco{
+  text-align: center; padding: 28px 24px; border-radius: var(--r-lg);
+  border: 1px solid var(--line-strong); background: rgba(11,11,11,.55);
+  backdrop-filter: blur(6px);
+}
+.pacote-preco .linha1{ font-family: Archivo, sans-serif; font-weight: 800; font-stretch: 112%; font-size: 30px; line-height: 1.1; }
+.pacote-preco .mais{ color: var(--blue-soft); font-size: 20px; font-weight: 700; margin: 6px 0; }
+.pacote-preco .linha2{ color: var(--ink-2); font-size: 15.4px; }
+.pacote-preco .valor{
+  font-family: Archivo, sans-serif; font-weight: 800; font-stretch: 112%;
+  font-size: 54px; line-height: 1; margin: 18px 0 4px; font-variant-numeric: tabular-nums;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.pacote-preco .obs{ color: var(--ink-3); font-size: 12.8px; }
+.pacote-preco .btn{ width: 100%; margin-top: 20px; }
+
+/* mockups demonstrativos de design */
+.mockups{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 900px){ .mockups{ grid-template-columns: repeat(2, 1fr); } }
+.mock{
+  border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+  background: var(--surface); box-shadow: var(--sh-1);
+  transition: transform .35s var(--t), border-color .35s var(--t);
+}
+.mock:hover{ transform: translateY(-4px); border-color: rgba(96,165,250,.3); }
+@media (prefers-reduced-motion: reduce){ .mock:hover{ transform: none; } }
+.mock-arte{
+  aspect-ratio: var(--ar, 1); display: grid; place-items: center; padding: 18px;
+  background: var(--mk, linear-gradient(150deg, #1E3A8A, #0B0B0B));
+  position: relative; overflow: hidden;
+}
+.mock-arte::after{
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 5px 5px;
+}
+.mock-arte .bloco{ width: 100%; display: grid; gap: 7px; position: relative; z-index: 1; }
+.mock-arte .l{ height: 8px; border-radius: 4px; background: rgba(255,255,255,.55); }
+.mock-arte .l.g{ height: 14px; width: 78%; background: #fff; }
+.mock-arte .l.p{ width: 46%; background: rgba(255,255,255,.34); }
+.mock-arte .selo-cor{
+  width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,.9); margin-bottom: 4px;
+}
+.mock-pe{ padding: 13px 15px 15px; }
+.mock-pe b{ font-size: 14px; font-weight: 600; display: block; }
+.mock-pe span{ font-family: "IBM Plex Mono", monospace; font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+
+/* ============ ELEV ORÇAMENTO (conversa guiada) ============ */
+.orc{
+  max-width: 880px; margin-inline: auto; overflow: hidden;
+  border: 1px solid var(--line-strong); border-radius: var(--r-xl);
+  background: linear-gradient(180deg, rgba(37,99,235,.07), transparent 30%), var(--surface);
+  box-shadow: var(--sh-2);
+}
+.orc-topo{
+  display: flex; align-items: center; gap: 13px; padding: 18px 22px;
+  border-bottom: 1px solid var(--line); background: rgba(11,11,11,.5);
+}
+.orc-avatar{
+  width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 12px;
+  background: var(--grad); color: #050914; box-shadow: var(--sh-azul);
+}
+.orc-avatar svg{ width: 20px; height: 20px; }
+.orc-topo .nome{ font-family: Archivo, sans-serif; font-weight: 700; font-stretch: 108%; font-size: 15.5px; }
+.orc-topo .estado{ font-size: 12.6px; color: var(--ink-3); display: flex; align-items: center; gap: 7px; }
+.orc-topo .estado::before{
+  content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--zap);
+  box-shadow: 0 0 0 3px rgba(37,211,102,.16);
+}
+.orc-progresso{ margin-left: auto; width: 116px; }
+.orc-progresso .trilho{ height: 5px; border-radius: 999px; background: var(--line-strong); overflow: hidden; }
+.orc-progresso .barra{ height: 100%; width: 0; border-radius: 999px; background: var(--grad); transition: width .5s var(--t); }
+.orc-progresso .txt{ font-family: "IBM Plex Mono", monospace; font-size: 10px;
+  letter-spacing: .1em; color: var(--ink-3); margin-top: 6px; text-align: right; }
+@media (max-width: 560px){ .orc-progresso{ width: 78px; } }
+
+.orc-corpo{
+  padding: 22px; display: grid; gap: 14px; align-content: start;
+  min-height: 280px; max-height: 440px; overflow-y: auto; scroll-behavior: smooth;
+  scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+}
+.orc-corpo::-webkit-scrollbar{ width: 8px; }
+.orc-corpo::-webkit-scrollbar-thumb{ background: var(--line-strong); border-radius: 999px; }
+@media (max-width: 560px){ .orc-corpo{ max-height: 380px; padding: 18px; } }
+@media (prefers-reduced-motion: reduce){ .orc-corpo{ scroll-behavior: auto; } }
+.fala{ display: flex; gap: 11px; max-width: 86%; }
+.fala .bolha{
+  padding: 14px 17px; border-radius: 16px 16px 16px 5px;
+  border: 1px solid var(--line); background: var(--ground-2);
+  font-size: 15.2px; line-height: 1.55;
+}
+.fala .av{
+  width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 10px;
+  background: rgba(37,99,235,.16); border: 1px solid rgba(96,165,250,.3); color: var(--blue-soft);
+}
+.fala .av svg{ width: 15px; height: 15px; }
+.fala.eu{ margin-left: auto; flex-direction: row-reverse; }
+.fala.eu .bolha{
+  border-radius: 16px 16px 5px 16px; border-color: rgba(96,165,250,.4);
+  background: rgba(37,99,235,.16); font-weight: 500;
+}
+.fala.eu .av{ background: rgba(255,255,255,.06); border-color: var(--line-strong); color: var(--ink-2); }
+@media (prefers-reduced-motion: no-preference){
+  .fala{ animation: fala-entra .42s var(--t); }
+}
+@keyframes fala-entra{ from{ opacity: 0; transform: translateY(8px); } }
+
+.pensando .bolha{ display: flex; gap: 5px; align-items: center; padding: 16px 18px; }
+.pensando i{ width: 7px; height: 7px; border-radius: 50%; background: var(--blue-soft); opacity: .45; }
+@media (prefers-reduced-motion: no-preference){
+  .pensando i{ animation: pulsa 1.15s ease-in-out infinite; }
+  .pensando i:nth-child(2){ animation-delay: .17s; }
+  .pensando i:nth-child(3){ animation-delay: .34s; }
+}
+@keyframes pulsa{ 0%,100%{ opacity: .3; transform: translateY(0); } 50%{ opacity: 1; transform: translateY(-3px); } }
+
+.orc-acoes{
+  padding: 18px 22px 22px; border-top: 1px solid var(--line);
+  background: rgba(11,11,11,.4); display: grid; gap: 12px;
+}
+.orc-opcoes{ display: flex; flex-wrap: wrap; gap: 9px; }
+.orc-op{
+  padding: 11px 17px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line-strong); background: var(--ground-2); color: var(--ink-2);
+  font: 500 14.4px/1 Manrope, sans-serif;
+  transition: border-color .25s var(--t), color .25s var(--t), background-color .25s var(--t), transform .25s var(--t);
+}
+.orc-op:hover{ color: var(--ink); border-color: rgba(96,165,250,.55); transform: translateY(-2px); }
+.orc-op[aria-pressed="true"]{
+  border-color: rgba(96,165,250,.7); background: rgba(37,99,235,.2); color: #fff; font-weight: 600;
+}
+.orc-op[aria-pressed="true"]::before{ content: "✓ "; color: var(--blue-soft); }
+@media (prefers-reduced-motion: reduce){ .orc-op:hover{ transform: none; } }
+
+.orc-linha{ display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.orc-linha input[type="text"]{
+  flex: 1 1 200px; padding: 13px 16px; border-radius: 12px;
+  border: 1px solid var(--line-strong); background: var(--ground-2); color: var(--ink); font-size: 15px;
+}
+.orc-linha input:focus{ outline: none; border-color: var(--blue-soft); box-shadow: 0 0 0 3px rgba(37,99,235,.22); }
+.orc-dica{ font-size: 12.8px; color: var(--ink-3); }
+
+/* resultado da estimativa */
+.orc-resultado{
+  margin: 4px 0 0; padding: 26px 24px; border-radius: var(--r-lg);
+  border: 1px solid rgba(96,165,250,.4);
+  background: radial-gradient(120% 120% at 50% 0%, rgba(37,99,235,.2), transparent 60%), var(--surface-2);
+}
+.orc-resultado .cab{
+  font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--blue-soft); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.orc-resultado .cab::after{ content: ""; height: 1px; flex: 1; background: var(--fio); }
+.res-bloco + .res-bloco{ margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+.res-bloco .rot{
+  font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;
+}
+.res-bloco .val{ font-size: 15.6px; line-height: 1.55; }
+.res-bloco .val b{ font-weight: 600; }
+.res-preco{
+  font-family: Archivo, sans-serif; font-weight: 800; font-stretch: 112%;
+  font-size: clamp(34px, 5vw, 46px); line-height: 1.05; font-variant-numeric: tabular-nums;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.res-preco.texto{ font-size: clamp(22px, 3vw, 28px); }
+.res-obs{ color: var(--ink-3); font-size: 13.4px; margin-top: 8px; }
+.res-itens{ display: grid; gap: 7px; margin: 10px 0 0; padding: 0; }
+.res-itens li{
+  list-style: none; display: flex; justify-content: space-between; gap: 14px;
+  font-size: 14.6px; color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+.res-itens li b{ color: var(--ink); font-weight: 600; }
+.orc-fim{ display: flex; flex-wrap: wrap; gap: 11px; margin-top: 22px; }
+@media (max-width: 520px){ .orc-fim{ flex-direction: column; } .orc-fim .btn{ width: 100%; } }
+
+/* chamada curta entre seções */
+.chamada{
+  display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px;
+  padding: 22px 26px; border-radius: var(--r-lg);
+  border: 1px solid var(--line); background: var(--ground-2);
+}
+.chamada p{ font-size: 16.4px; font-weight: 500; }
+.chamada p span{ color: var(--ink-3); font-weight: 400; display: block; font-size: 14.4px; margin-top: 3px; }
+.chamada .btn{ margin-left: auto; }
+@media (max-width: 620px){ .chamada .btn{ margin-left: 0; width: 100%; } }
+
 /* entrada suave ----------------------------------------------------------- */
 .js .reveal{ opacity: 0; transform: translateY(16px); }
 .js .reveal.in{ opacity: 1; transform: none; transition: opacity .65s var(--t), transform .65s var(--t); }
@@ -748,6 +1045,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       <a href="#inicio">Início</a>
       <a href="#solucoes">Soluções</a>
       <a href="#servicos">Serviços</a>
+      <a href="#social">Social Media</a>
       <a href="#precos">Preços</a>
       <a href="#elev-lab">ELEV Lab</a>
       <a href="#contato">Contato</a>
@@ -767,6 +1065,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
     <a href="#inicio">Início</a>
     <a href="#solucoes">Soluções</a>
     <a href="#servicos">Serviços</a>
+    <a href="#social">Social Media</a>
     <a href="#precos">Preços</a>
     <a href="#elev-lab">ELEV Lab</a>
     <a href="#contato">Contato</a>
@@ -860,7 +1159,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
     </div>
 
     <div class="reveal" style="margin-top:32px">
-      <a class="btn btn-primary" href="#contato">
+      <a class="btn btn-primary" href="#orcamento">
         Quero descobrir uma solução
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
       </a>
@@ -959,26 +1258,143 @@ button, input, select, textarea{ font: inherit; color: inherit; }
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
         </summary>
         <ul class="servico-lista">
-          <li>Gestão de Instagram</li><li>Planejamento de conteúdo</li><li>Edição de vídeos</li>
-          <li>Reels</li><li>Organização de perfil</li>
+          <li>Social Media e gestão de Instagram</li><li>Reels e edição de vídeos</li>
+          <li>Criação de conteúdo e roteiros</li><li>Planejamento e calendário</li>
         </ul>
       </details>
 
       <details class="servico reveal">
         <summary>
           <div class="card-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a5.4 5.4 0 0 0-4.3 8.7c.7.9 1.1 2 1.1 3.1v.5h6.4v-.5c0-1.1.4-2.2 1.1-3.1A5.4 5.4 0 0 0 12 3.2z"/><path d="M9.6 18.4h4.8M10.4 21h3.2"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.2 0 2-.8 2-1.8 0-1.5-1.2-1.7-1.2-2.8 0-.9.8-1.6 1.8-1.6h1.6c2.6 0 4.6-2 4.6-4.6C20.8 6.2 16.9 3.2 12 3.2z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="10.4" cy="7.4" r="1.1" fill="currentColor"/><circle cx="15" cy="8" r="1.1" fill="currentColor"/></svg>
           </div>
-          <h3>Soluções personalizadas</h3>
-          <p class="resumo">Quando o que seu negócio precisa não cabe em nenhuma caixa pronta.</p>
+          <h3>Design</h3>
+          <p class="resumo">As peças visuais que fazem o negócio parecer profissional.</p>
           <span class="abrir"><span class="txt-abrir">Ver soluções</span><span class="txt-fechar">Fechar</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
         </summary>
         <ul class="servico-lista">
-          <li>Análise do problema</li><li>Ideação</li><li>Prototipação</li>
-          <li>Desenvolvimento</li><li>Automação</li><li>Soluções específicas para cada negócio</li>
+          <li>Posts para redes sociais e stories</li><li>Criativos para campanhas</li>
+          <li>Identidade visual</li><li>Banners e materiais promocionais</li>
         </ul>
       </details>
+    </div>
+
+    <div class="chamada reveal" style="margin-top:22px">
+      <p>E se o que você precisa não estiver em nenhuma dessas?<span>Análise do problema, ideação, prototipação e desenvolvimento sob medida — é o que a ELEV faz de melhor.</span></p>
+      <a class="btn btn-ghost" href="#orcamento">Converse com a ELEV</a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================== SOCIAL MEDIA =========================== -->
+<section class="sec" id="social">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Social Media</p>
+      <h2>Seu negócio também precisa aparecer.</h2>
+      <p>Criamos e organizamos conteúdos para ajudar sua empresa a manter uma presença digital profissional.</p>
+    </div>
+
+    <div class="mini-grade reveal">
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>Planejamento de conteúdo</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>Gestão de Instagram</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 15l4.2-4.2 4 4 3-3 5.8 5.8"/><circle cx="9" cy="8.4" r="1.4"/></svg></span>Criação de posts</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 20V5a1.5 1.5 0 0 1 1-1.5z"/><path d="M14.5 3.6V8H19M8.6 12.5h6.8M8.6 16h4.4"/></svg></span>Roteiros</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="17" rx="3.5"/><path d="M3.4 9h17.2M8.6 3.7L11.4 9M14.4 3.7L17.2 9"/><path d="M10.6 12.6l4.2 2.4-4.2 2.4z"/></svg></span>Reels</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5l6-3v9l-6-3z"/></svg></span>Edição de vídeos</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.8" width="16" height="18.4" rx="3"/><path d="M4 14.5l3.6-3.6 3.4 3.4 2.6-2.6L20 17.4"/></svg></span>Capas</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>Calendário de conteúdo</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.6" r="3.6"/><path d="M4.8 20c.7-3.4 3.6-5.6 7.2-5.6s6.5 2.2 7.2 5.6"/></svg></span>Organização do perfil</div>
+    </div>
+
+    <!-- pacote de entrada -->
+    <div class="pacote reveal" id="pacote">
+      <div>
+        <span class="pacote-tag">Pacote de conteúdo</span>
+        <h3>Duas semanas de conteúdo, do roteiro ao post no ar.</h3>
+        <p>Uma oferta inicial para quem quer começar a aparecer sem montar uma estrutura inteira de uma vez.</p>
+        <ul class="pacote-itens">
+          <li><svg class="ck"><use href="#ck"/></svg>10 Reels</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Edição dos vídeos</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Legendas e textos</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Capas</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Organização dos conteúdos</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Planejamento das 2 semanas</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Sugestões de conteúdo</li>
+          <li><svg class="ck"><use href="#ck"/></svg>Organização do Instagram durante o período</li>
+        </ul>
+      </div>
+      <div class="pacote-preco">
+        <div class="linha1">10 Reels</div>
+        <div class="mais">+</div>
+        <div class="linha2">Social Media por 2 semanas</div>
+        <div class="valor">R$&nbsp;300</div>
+        <div class="obs">Oferta inicial da ELEV. Pode ser ajustada conforme a necessidade do negócio.</div>
+        <button class="btn btn-primary" type="button" data-pacote="Pacote de Conteúdo — 10 Reels + Social Media por 2 semanas (R$ 300)">
+          Quero esse pacote
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== DESIGN ============================== -->
+<section class="sec sec-alt" id="design">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Design</p>
+      <h2>O que o seu cliente vê antes de decidir.</h2>
+      <p>Peças visuais para as redes, para campanhas e para a identidade do negócio.</p>
+    </div>
+
+    <div class="mini-grade reveal" style="margin-bottom:26px">
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M3.5 15l4.2-4.2 4 4 3-3 5.8 5.8"/><circle cx="9" cy="8.4" r="1.4"/></svg></span>Posts para redes sociais</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.8" width="16" height="18.4" rx="3"/><path d="M4 14.5l3.6-3.6 3.4 3.4 2.6-2.6L20 17.4"/></svg></span>Stories</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="18" height="17" rx="3.5"/><path d="M3.4 9h17.2M8.6 3.7L11.4 9M14.4 3.7L17.2 9"/><path d="M10.6 12.6l4.2 2.4-4.2 2.4z"/></svg></span>Capas para Reels</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.2 0 2-.8 2-1.8 0-1.5-1.2-1.7-1.2-2.8 0-.9.8-1.6 1.8-1.6h1.6c2.6 0 4.6-2 4.6-4.6C20.8 6.2 16.9 3.2 12 3.2z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="10.4" cy="7.4" r="1.1" fill="currentColor"/><circle cx="15" cy="8" r="1.1" fill="currentColor"/></svg></span>Identidade visual</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10.5h7M6.5 13.8h4"/></svg></span>Banners</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4a1.5 1.5 0 0 0 1.5 1.5H8l6 4V6l-6 4H5.5A1.5 1.5 0 0 0 4 11.5z"/><path d="M17.5 9.2a4 4 0 0 1 0 5.6"/></svg></span>Artes promocionais</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="12" height="15" rx="2"/><path d="M8 4.5V3M18 8.2v11.3a1.5 1.5 0 0 1-1.5 1.5H7"/></svg></span>Materiais digitais</div>
+        <div class="mini"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5l6-3v9l-6-3z"/></svg></span>Criativos para campanhas</div>
+    </div>
+
+    <div class="aviso-demo reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
+      <span>As peças abaixo são <strong>exemplos demonstrativos</strong> criados pela ELEV para mostrar formatos. Não são trabalhos de clientes.</span>
+    </div>
+
+    <div class="mockups reveal">
+      <figure class="mock" style="margin:0">
+        <div class="mock-arte" style="--ar:1;--mk:linear-gradient(150deg,#1D4ED8,#0B1220)">
+          <div class="bloco"><div class="l g"></div><div class="l"></div><div class="l p"></div></div>
+        </div>
+        <figcaption class="mock-pe"><b>Post de feed</b><span>Exemplo demonstrativo</span></figcaption>
+      </figure>
+      <figure class="mock" style="margin:0">
+        <div class="mock-arte" style="--ar:9/16;--mk:linear-gradient(160deg,#0B0B0B,#1E3A8A)">
+          <div class="bloco"><div class="l g"></div><div class="l p"></div></div>
+        </div>
+        <figcaption class="mock-pe"><b>Story / Reels</b><span>Exemplo demonstrativo</span></figcaption>
+      </figure>
+      <figure class="mock" style="margin:0">
+        <div class="mock-arte" style="--ar:1;--mk:linear-gradient(140deg,#111827,#2563EB)">
+          <div class="bloco"><div class="selo-cor"></div><div class="l g"></div><div class="l p"></div></div>
+        </div>
+        <figcaption class="mock-pe"><b>Identidade visual</b><span>Exemplo demonstrativo</span></figcaption>
+      </figure>
+      <figure class="mock" style="margin:0">
+        <div class="mock-arte" style="--ar:16/10;--mk:linear-gradient(120deg,#0B0B0B,#3B4C8A)">
+          <div class="bloco"><div class="l g"></div><div class="l"></div></div>
+        </div>
+        <figcaption class="mock-pe"><b>Banner de campanha</b><span>Exemplo demonstrativo</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="chamada reveal" style="margin-top:28px">
+      <p>Não sabe do que precisa?<span>Converse com a ELEV e receba uma estimativa inicial.</span></p>
+      <a class="btn btn-primary" href="#orcamento">Conte seu problema</a>
     </div>
   </div>
 </section>
@@ -1155,47 +1571,33 @@ button, input, select, textarea{ font: inherit; color: inherit; }
   </div>
 </section>
 
-<!-- ============================ SIMULADOR ============================ -->
-<section class="sec sec-alt" id="simulador">
+<!-- =========================== ELEV ORÇAMENTO =========================== -->
+<section class="sec sec-alt" id="orcamento">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Simulador</p>
-      <h2>Monte sua solução</h2>
-      <p>Escolha o que seu negócio precisa e veja uma estimativa inicial.</p>
+    <div class="sec-head reveal" style="margin-inline:auto;text-align:center">
+      <p class="eyebrow" style="justify-content:center">ELEV Orçamento</p>
+      <h2>Não sabe quanto sua solução pode custar?</h2>
+      <p style="margin-inline:auto">Converse com a ELEV e receba uma estimativa baseada no que seu negócio realmente precisa.</p>
     </div>
 
-    <div class="sim reveal">
-      <div>
-        <p style="font-weight:600;margin-bottom:14px">O que você precisa?</p>
-        <div class="sim-opcoes" id="simOpcoes">
-          <label class="opcao"><input type="checkbox" data-item="Site" data-preco="0"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Site</label>
-          <label class="opcao"><input type="checkbox" data-item="Cardápio digital" data-preco="500"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Cardápio</label>
-          <label class="opcao"><input type="checkbox" data-item="Agendamento online" data-preco="700"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Agendamento</label>
-          <label class="opcao"><input type="checkbox" data-item="Loja digital" data-preco="700"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Loja digital</label>
-          <label class="opcao"><input type="checkbox" data-item="Agente de IA" data-preco="1000"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Agente de IA</label>
-          <label class="opcao"><input type="checkbox" data-item="Automação" data-preco="0"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Automação</label>
-          <label class="opcao"><input type="checkbox" data-item="Instagram" data-preco="0"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Instagram</label>
-          <label class="opcao"><input type="checkbox" data-item="Edição de vídeos" data-preco="0"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Edição de vídeos</label>
-          <label class="opcao"><input type="checkbox" data-item="Solução personalizada" data-preco="0"><span class="marca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Solução personalizada</label>
+    <div class="orc reveal" id="orc">
+      <div class="orc-topo">
+        <div class="orc-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.8M9.6 12.4v1.4M14.4 12.4v1.4"/><circle cx="12" cy="3" r="1.1" fill="currentColor"/></svg>
         </div>
-        <p class="nota" style="margin-top:20px">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
-          <span>A estimativa soma os valores iniciais do nível básico de cada solução. Itens sem preço de tabela entram como <strong>a orçar</strong> — a ELEV não estima valor que ainda não existe.</span>
-        </p>
+        <div>
+          <div class="nome">ELEV Orçamento</div>
+          <div class="estado" id="orcEstado">pronta para conversar</div>
+        </div>
+        <div class="orc-progresso" aria-hidden="true">
+          <div class="trilho"><div class="barra" id="orcBarra"></div></div>
+          <div class="txt" id="orcPasso">1 / 5</div>
+        </div>
       </div>
 
-      <aside class="sim-resultado" aria-live="polite">
-        <h3>Sua solução</h3>
-        <ul class="sim-lista" id="simLista">
-          <li class="sim-vazio" id="simVazio">Nada selecionado ainda.</li>
-        </ul>
-        <div class="sim-total">
-          <div class="rot">Estimativa inicial</div>
-          <div class="valor" id="simValor">R$&nbsp;0</div>
-          <p class="obs" id="simObs">O valor final depende da complexidade do projeto.</p>
-        </div>
-        <a class="btn btn-primary" href="#contato" id="simCta">Quero conversar sobre isso</a>
-      </aside>
+      <div class="orc-corpo" id="orcCorpo" aria-live="polite"></div>
+
+      <div class="orc-acoes" id="orcAcoes"></div>
     </div>
   </div>
 </section>
@@ -1340,7 +1742,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       <img class="logo-faixa" src="assets/logo-elev.png" alt="ELEV" data-logo hidden>
       <h2>Não sabe do que seu negócio precisa?</h2>
       <p>Conte para a ELEV o que está acontecendo e nós ajudamos a identificar possíveis soluções digitais.</p>
-      <a class="btn btn-primary" href="#contato">
+      <a class="btn btn-primary" href="#orcamento">
         Quero descobrir uma solução
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
       </a>
@@ -1401,6 +1803,8 @@ button, input, select, textarea{ font: inherit; color: inherit; }
                 <label class="chip"><input type="checkbox" name="procura" value="IA"><span>IA</span></label>
                 <label class="chip"><input type="checkbox" name="procura" value="Automação"><span>Automação</span></label>
                 <label class="chip"><input type="checkbox" name="procura" value="Instagram"><span>Instagram</span></label>
+                <label class="chip"><input type="checkbox" name="procura" value="Social Media"><span>Social Media</span></label>
+                <label class="chip"><input type="checkbox" name="procura" value="Design"><span>Design</span></label>
                 <label class="chip"><input type="checkbox" name="procura" value="Vídeos"><span>Vídeos</span></label>
                 <label class="chip"><input type="checkbox" name="procura" value="Ainda não sei"><span>Ainda não sei</span></label>
               </div>
@@ -1520,8 +1924,9 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       </nav>
       <nav class="footer-links" aria-label="Rodapé — continuação">
         <b>&nbsp;</b>
+        <a href="#social">Social Media</a>
         <a href="#precos">Preços</a>
-        <a href="#elev-lab">ELEV Lab</a>
+        <a href="#orcamento">ELEV Orçamento</a>
         <a href="#contato">Contato</a>
       </nav>
     </div>
@@ -1645,60 +2050,397 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
     });
   });
 
-  /* ---- simulador -------------------------------------------------- */
-  const simLista = d.getElementById("simLista");
-  const simValor = d.getElementById("simValor");
-  const simObs = d.getElementById("simObs");
-  const simCta = d.getElementById("simCta");
-  const simEntradas = Array.prototype.slice.call(d.querySelectorAll("#simOpcoes input"));
+  /* ================================================================
+     ELEV ORÇAMENTO
+     Conversa guiada com logica propria: pergunta, interpreta, cruza
+     com a tabela de precos do site e estima. Nao ha IA externa aqui -
+     a arquitetura fica pronta para plugar uma (ver PRECOS e estimar),
+     mas o que roda e uma maquina de regras local e deterministica.
+     ================================================================ */
 
-  const atualizaSim = function () {
-    const marcados = simEntradas.filter(function (i) { return i.checked; });
-    const comPreco = marcados.filter(function (i) { return Number(i.dataset.preco) > 0; });
-    const semPreco = marcados.filter(function (i) { return Number(i.dataset.preco) === 0; });
-    const total = comPreco.reduce(function (s, i) { return s + Number(i.dataset.preco); }, 0);
+  /* Tabela de referencia. Os quatro primeiros sao lidos do proprio
+     HTML dos cards de preco, entao nunca divergem do que esta na tela. */
+  const PRECOS = { pacoteConteudo: { nome: "Pacote de Conteúdo", valor: 300 } };
+  d.querySelectorAll(".plano[data-familia]").forEach(function (card) {
+    const f = card.dataset.familia, n = card.dataset.nivel;
+    PRECOS[f] = PRECOS[f] || {};
+    PRECOS[f][n] = Number(card.dataset.preco);
+  });
 
-    simLista.innerHTML = "";
-    if (!marcados.length) {
-      simLista.innerHTML = '<li class="sim-vazio">Nada selecionado ainda.</li>';
-    } else {
-      marcados.forEach(function (i) {
-        const preco = Number(i.dataset.preco);
-        const li = d.createElement("li");
-        li.innerHTML = "<span>" + i.dataset.item + "</span><b>" +
-                       (preco > 0 ? dinheiro(preco) : "a orçar") + "</b>";
-        simLista.appendChild(li);
-      });
-    }
-
-    simValor.textContent = total > 0 ? "a partir de " + dinheiro(total) : dinheiro(0);
-    if (!marcados.length) {
-      simValor.textContent = dinheiro(0);
-      simObs.textContent = "O valor final depende da complexidade do projeto.";
-    } else if (semPreco.length) {
-      simObs.textContent = semPreco.length === 1
-        ? "Mais 1 item a orçar. O valor final depende da complexidade do projeto."
-        : "Mais " + semPreco.length + " itens a orçar. O valor final depende da complexidade do projeto.";
-    } else {
-      simObs.textContent = "O valor final depende da complexidade do projeto.";
-    }
-
-    if (destinos.whatsapp.pronto && marcados.length) {
-      const itens = marcados.map(function (i) { return i.dataset.item; }).join(", ");
-      const texto = "Ola! Montei uma solucao no site da ELEV: " + itens +
-                    (total > 0 ? ". Estimativa inicial de " + dinheiro(total) : "") +
-                    (semPreco.length ? " (com itens a orcar)" : "") + ". Podemos conversar?";
-      simCta.href = "https://wa.me/" + CONTATO.whatsapp + "?text=" + encodeURIComponent(texto);
-      simCta.target = "_blank";
-      simCta.rel = "noopener";
-    } else {
-      simCta.href = "#contato";
-      simCta.removeAttribute("target");
-      simCta.removeAttribute("rel");
-    }
+  const CATALOGO = {
+    site:          { nome: "Site institucional", tabela: null },
+    cardapio:      { nome: "Cardápio digital", tabela: "cardapio" },
+    agendamento:   { nome: "Agendamento online", tabela: "agendamento" },
+    vendas:        { nome: "Loja / site de vendas", tabela: "vendas" },
+    ia:            { nome: "Agente de IA", tabela: "ia" },
+    automacao:     { nome: "Automação", tabela: null },
+    social:        { nome: "Social Media", tabela: "social" },
+    design:        { nome: "Design", tabela: null },
+    personalizada: { nome: "Solução personalizada", tabela: null }
   };
-  simEntradas.forEach(function (i) { i.addEventListener("change", atualizaSim); });
-  atualizaSim();
+
+  const R = {};              // respostas
+  const orcCorpo = d.getElementById("orcCorpo");
+  const orcAcoes = d.getElementById("orcAcoes");
+  const orcBarra = d.getElementById("orcBarra");
+  const orcPasso = d.getElementById("orcPasso");
+  const orcEstado = d.getElementById("orcEstado");
+
+  const PERGUNTAS = [
+    { id: "segmento", texto: "Oi! Sou a ferramenta de orçamento da ELEV. Para começar: que tipo de negócio é o seu?",
+      tipo: "unica", livre: "Outro segmento — qual?",
+      opcoes: ["Restaurante ou lanchonete", "Barbearia ou salão", "Loja", "Prestador de serviço"] },
+
+    { id: "problema", texto: "Entendi. E o que mais está atrapalhando hoje?",
+      tipo: "unica", livre: "Outro problema — me conte",
+      opcoes: ["Não tenho presença digital", "Perco pedidos ou contatos", "Minha agenda é desorganizada",
+               "Quero vender online", "Respondo sempre as mesmas perguntas", "Não apareço nas redes sociais"] },
+
+    { id: "itens", texto: "O que você acha que precisa? Pode marcar mais de um — e se não souber, marque a última opção.",
+      tipo: "multipla",
+      opcoes: ["Site", "Cardápio", "Agendamento", "Loja digital", "Agente de IA",
+               "Automação", "Social Media", "Design", "Ainda não sei"] },
+
+    { id: "redes", texto: "Sobre as redes: o que você precisa?", tipo: "multipla",
+      quando: function () { return (R.itens || []).indexOf("Social Media") > -1; },
+      opcoes: ["Reels", "Posts", "Stories", "Gestão do Instagram", "Planejamento", "Tudo isso"] },
+
+    { id: "tempo", texto: "Por quanto tempo?", tipo: "unica",
+      quando: function () { return (R.itens || []).indexOf("Social Media") > -1; },
+      opcoes: ["1 semana", "2 semanas", "1 mês", "Ainda não sei"] },
+
+    { id: "videos", texto: "E quantos vídeos você gostaria de produzir nesse período?", tipo: "unica",
+      quando: function () {
+        return (R.itens || []).indexOf("Social Media") > -1 &&
+               ((R.redes || []).indexOf("Reels") > -1 || (R.redes || []).indexOf("Tudo isso") > -1);
+      },
+      opcoes: ["5", "10", "15 ou mais", "Ainda não sei"] },
+
+    { id: "complexidade", texto: "Última: você precisa de algo simples para começar ou de uma solução mais completa?",
+      tipo: "unica",
+      quando: function () {
+        return (R.itens || []).some(function (i) {
+          const c = porRotulo(i);
+          return c && c.tabela && c.tabela !== "social";
+        });
+      },
+      opcoes: ["Simples, para começar", "Intermediária", "Completa, com painel e gestão"] }
+  ];
+
+  function porRotulo(rotulo) {
+    const mapa = {
+      "Site": "site", "Cardápio": "cardapio", "Agendamento": "agendamento",
+      "Loja digital": "vendas", "Agente de IA": "ia", "Automação": "automacao",
+      "Social Media": "social", "Design": "design", "Ainda não sei": "personalizada"
+    };
+    return CATALOGO[mapa[rotulo]] || null;
+  }
+
+  function chaveNivel() {
+    if (R.complexidade === "Completa, com painel e gestão") return "completo";
+    if (R.complexidade === "Intermediária") return "profissional";
+    return "basico";
+  }
+
+  /* ---- o calculo: cruza as respostas com a tabela ------------------ */
+  function estimar() {
+    const itens = [];
+    let total = 0, aOrcar = 0;
+    const porques = [];
+    const nivel = chaveNivel();
+    const rotulos = (R.itens || []).filter(function (i) { return i !== "Ainda não sei"; });
+
+    /* Social Media: a combinacao exata do pacote e reconhecida */
+    const querSocial = rotulos.indexOf("Social Media") > -1;
+    const pacoteFecha = querSocial && R.tempo === "2 semanas" && R.videos === "10";
+
+    rotulos.forEach(function (rotulo) {
+      const cat = porRotulo(rotulo);
+      if (!cat) return;
+
+      if (cat.tabela === "social") {
+        if (pacoteFecha) {
+          itens.push({ nome: PRECOS.pacoteConteudo.nome, valor: PRECOS.pacoteConteudo.valor });
+          total += PRECOS.pacoteConteudo.valor;
+          porques.push("10 Reels, planejamento, capas e organização do Instagram por 2 semanas fecham exatamente o Pacote de Conteúdo");
+        } else {
+          itens.push({ nome: "Social Media", valor: null });
+          aOrcar++;
+          porques.push("o volume de conteúdo que você descreveu não é o do Pacote de Conteúdo, então entra como orçamento próprio");
+        }
+        return;
+      }
+
+      if (cat.tabela && PRECOS[cat.tabela]) {
+        const valor = PRECOS[cat.tabela][nivel];
+        itens.push({ nome: cat.nome + " · " + (nivel === "basico" ? "Básico" : nivel === "profissional" ? "Profissional" : "Completo"), valor: valor });
+        total += valor;
+      } else {
+        itens.push({ nome: cat.nome, valor: null });
+        aOrcar++;
+      }
+    });
+
+    if (!itens.length) {
+      itens.push({ nome: "Solução personalizada", valor: null });
+      aOrcar++;
+      porques.push("você ainda está descobrindo do que precisa, e é exatamente aí que a conversa com a ELEV ajuda mais");
+    }
+
+    if (total > 0 && itens.length > 1) {
+      porques.push("a estimativa soma o valor inicial de cada solução escolhida");
+    }
+    if (nivel !== "basico" && total > 0) {
+      porques.push("você pediu uma solução " + (nivel === "completo" ? "completa, com painel e gestão" : "intermediária") + ", que usa um nível acima do inicial");
+    }
+
+    return { itens: itens, total: total, aOrcar: aOrcar, personalizado: total === 0, porques: porques, nivel: nivel };
+  }
+
+  function frase(res) {
+    const nomes = res.itens.map(function (i) { return i.nome.split(" · ")[0]; });
+    const seg = R.segmento ? R.segmento.toLowerCase() : "seu negócio";
+    return "Você tem " + (R.segmento ? "um negócio de " + seg : "um negócio") +
+           " e procura " + listar(nomes) + ".";
+  }
+
+  function listar(a) {
+    if (a.length === 1) return a[0];
+    return a.slice(0, -1).join(", ") + " e " + a[a.length - 1];
+  }
+
+  /* ---- interface da conversa ---------------------------------------- */
+  const AV = '<span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.8"/></svg></span>';
+
+  function falaElev(texto) {
+    const el = d.createElement("div");
+    el.className = "fala";
+    el.innerHTML = AV + '<div class="bolha">' + texto + "</div>";
+    orcCorpo.appendChild(el);
+    orcCorpo.scrollTop = orcCorpo.scrollHeight;
+    return el;
+  }
+  function falaCliente(texto) {
+    const el = d.createElement("div");
+    el.className = "fala eu";
+    el.innerHTML = '<span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.4"/><path d="M5 19.5c.7-3 3.4-4.8 7-4.8s6.3 1.8 7 4.8"/></svg></span>' +
+                    '<div class="bolha">' + texto + "</div>";
+    orcCorpo.appendChild(el);
+    orcCorpo.scrollTop = orcCorpo.scrollHeight;
+  }
+  function pensando() {
+    const el = d.createElement("div");
+    el.className = "fala pensando";
+    el.innerHTML = AV + '<div class="bolha"><i></i><i></i><i></i></div>';
+    orcCorpo.appendChild(el);
+    orcCorpo.scrollTop = orcCorpo.scrollHeight;
+    orcEstado.textContent = "analisando...";
+    return el;
+  }
+
+  let passo = 0;
+  const visiveis = function () {
+    return PERGUNTAS.filter(function (q) { return !q.quando || q.quando(); });
+  };
+
+  function progresso() {
+    const lista = visiveis();
+    const i = Math.min(passo + 1, lista.length);
+    orcBarra.style.width = Math.round((passo / lista.length) * 100) + "%";
+    orcPasso.textContent = i + " / " + lista.length;
+  }
+
+  function proxima() {
+    const lista = visiveis();
+    if (passo >= lista.length) return mostrarResultado();
+    const q = lista[passo];
+    progresso();
+    orcEstado.textContent = "aguardando sua resposta";
+
+    const carregando = pensando();
+    setTimeout(function () {
+      carregando.remove();
+      falaElev(q.texto);
+      desenhaOpcoes(q);
+    }, 420);
+  }
+
+  function desenhaOpcoes(q) {
+    orcAcoes.innerHTML = "";
+    const caixa = d.createElement("div");
+    caixa.className = "orc-opcoes";
+
+    const marcados = [];
+    q.opcoes.forEach(function (op) {
+      const b = d.createElement("button");
+      b.type = "button";
+      b.className = "orc-op";
+      b.textContent = op;
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () {
+        if (q.tipo === "multipla") {
+          const i = marcados.indexOf(op);
+          if (i > -1) { marcados.splice(i, 1); b.setAttribute("aria-pressed", "false"); }
+          else { marcados.push(op); b.setAttribute("aria-pressed", "true"); }
+          confirmar.disabled = marcados.length === 0;
+        } else {
+          responder(q, op);
+        }
+      });
+      caixa.appendChild(b);
+    });
+    orcAcoes.appendChild(caixa);
+
+    const linha = d.createElement("div");
+    linha.className = "orc-linha";
+
+    let confirmar;
+    if (q.tipo === "multipla") {
+      confirmar = d.createElement("button");
+      confirmar.type = "button";
+      confirmar.className = "btn btn-primary";
+      confirmar.textContent = "Continuar";
+      confirmar.disabled = true;
+      confirmar.addEventListener("click", function () { responder(q, marcados.slice()); });
+      linha.appendChild(confirmar);
+      const dica = d.createElement("span");
+      dica.className = "orc-dica";
+      dica.textContent = "Pode marcar quantos quiser.";
+      linha.appendChild(dica);
+    } else if (q.livre) {
+      const campo = d.createElement("input");
+      campo.type = "text";
+      campo.placeholder = q.livre;
+      campo.setAttribute("aria-label", q.livre);
+      const env = d.createElement("button");
+      env.type = "button";
+      env.className = "btn btn-ghost";
+      env.textContent = "Responder";
+      const mandar = function () {
+        const v = campo.value.trim();
+        if (v) responder(q, v);
+      };
+      env.addEventListener("click", mandar);
+      campo.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); mandar(); } });
+      linha.appendChild(campo);
+      linha.appendChild(env);
+    }
+    if (linha.children.length) orcAcoes.appendChild(linha);
+  }
+
+  function responder(q, valor) {
+    R[q.id] = valor;
+    falaCliente(Array.isArray(valor) ? listar(valor) : valor);
+    orcAcoes.innerHTML = "";
+    passo++;
+    proxima();
+  }
+
+  function dinheiroBR(v) { return "R$ " + v.toLocaleString("pt-BR"); }
+
+  function mostrarResultado() {
+    progresso();
+    orcBarra.style.width = "100%";
+    const carregando = pensando();
+
+    setTimeout(function () {
+      carregando.remove();
+      orcEstado.textContent = "estimativa pronta";
+      const res = estimar();
+
+      const itensHtml = res.itens.map(function (i) {
+        return "<li><span>" + i.nome + "</span><b>" + (i.valor ? dinheiroBR(i.valor) : "a orçar") + "</b></li>";
+      }).join("");
+
+      const fatores = res.personalizado
+        ? '<p class="res-obs">O que define o valor: quantidade de funcionalidades, complexidade, integrações, tempo de desenvolvimento, quantidade de conteúdo e necessidade de acompanhamento.</p>'
+        : "";
+
+      const porque = res.porques.length
+        ? res.porques.join("; ") + "."
+        : "A estimativa usa o valor inicial de cada solução da tabela do site.";
+
+      const bloco = d.createElement("div");
+      bloco.className = "orc-resultado";
+      bloco.innerHTML =
+        '<div class="cab">ELEV — Estimativa</div>' +
+        '<div class="res-bloco"><div class="rot">Seu negócio</div><div class="val">' + (R.segmento || "Não informado") + "</div></div>" +
+        '<div class="res-bloco"><div class="rot">O que você precisa</div><div class="val">' + (R.problema || "Não informado") + "</div></div>" +
+        '<div class="res-bloco"><div class="rot">Solução sugerida</div><div class="val">' + frase(res) +
+          '<ul class="res-itens">' + itensHtml + "</ul></div></div>" +
+        '<div class="res-bloco"><div class="rot">Estimativa inicial</div>' +
+          (res.personalizado
+            ? '<div class="res-preco texto">Orçamento personalizado</div>'
+            : '<div class="res-preco">' + dinheiroBR(res.total) + "</div>" +
+              (res.aOrcar ? '<p class="res-obs">Mais ' + res.aOrcar + (res.aOrcar === 1 ? " item" : " itens") + " a orçar.</p>" : "")) +
+          '<p class="res-obs">Estimativa inicial. O valor final pode variar conforme a complexidade do projeto.</p>' +
+          fatores +
+        "</div>" +
+        '<div class="res-bloco"><div class="rot">Por que essa solução?</div><div class="val">' + porque + "</div></div>";
+
+      orcCorpo.appendChild(bloco);
+      orcCorpo.scrollTop = orcCorpo.scrollHeight;
+
+      /* acoes finais */
+      orcAcoes.innerHTML = "";
+      const fim = d.createElement("div");
+      fim.className = "orc-fim";
+
+      const falar = d.createElement("a");
+      falar.className = "btn btn-primary";
+      falar.id = "orcFalar";
+      falar.textContent = "Quero conversar com a ELEV";
+      const resumo = "Ola! Usei o ELEV Orcamento no site.\n\n" +
+        "Negocio: " + (R.segmento || "-") + "\n" +
+        "Problema: " + (R.problema || "-") + "\n" +
+        "Solucao sugerida: " + res.itens.map(function (i) { return i.nome; }).join(", ") + "\n" +
+        "Estimativa inicial: " + (res.personalizado ? "orcamento personalizado" : dinheiroBR(res.total)) +
+        (res.aOrcar ? " (mais " + res.aOrcar + " a orcar)" : "");
+      if (destinos.whatsapp.pronto) {
+        falar.href = "https://wa.me/" + CONTATO.whatsapp + "?text=" + encodeURIComponent(resumo);
+        falar.target = "_blank";
+        falar.rel = "noopener";
+      } else {
+        falar.href = "#contato";
+      }
+
+      const refazer = d.createElement("button");
+      refazer.type = "button";
+      refazer.className = "btn btn-ghost";
+      refazer.textContent = "Refazer estimativa";
+      refazer.addEventListener("click", reiniciar);
+
+      fim.appendChild(falar);
+      fim.appendChild(refazer);
+      orcAcoes.appendChild(fim);
+    }, 850);
+  }
+
+  function reiniciar() {
+    Object.keys(R).forEach(function (k) { delete R[k]; });
+    passo = 0;
+    orcCorpo.innerHTML = "";
+    orcAcoes.innerHTML = "";
+    proxima();
+  }
+
+  if (orcCorpo) proxima();
+
+  /* ---- botão do pacote leva ao formulário já preenchido ------------- */
+  d.querySelectorAll("[data-pacote]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      const chip = d.querySelector('#formChips input[value="Social Media"]');
+      if (chip) chip.checked = true;
+      const campo = d.getElementById("f-imagina");
+      if (campo && !campo.value.trim()) campo.value = b.dataset.pacote;
+      const destino = d.getElementById("contato");
+      if (destino) destino.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () {
+        const nome = d.getElementById("f-nome");
+        if (nome) nome.focus({ preventScroll: true });
+      }, 700);
+    });
+  });
 
   /* ---- formulário (sem backend: monta a mensagem pronta) ---------- */
   const form = d.getElementById("formElev");

@@ -46,7 +46,9 @@ botoes daquele canal aparecem marcados como pendentes em vez de virar link morto
 | Solucoes | `solucoes` | Trilhas por tipo de negocio (exemplos, nao clientes) |
 | Servicos | `servicos` | Quatro frentes, cada uma expansivel |
 | Precos | `precos` | Quatro familias em abas, tres niveis cada |
-| Simulador | `simulador` | Monta a solucao e soma a estimativa inicial |
+| Social Media | `social` | Nove servicos + o Pacote de Conteudo de R$ 300 |
+| Design | `design` | Oito servicos + mockups marcados como exemplo |
+| ELEV Orcamento | `orcamento` | Conversa guiada que estima a partir da tabela |
 | Como funciona | `processo` | Cinco etapas |
 | Por que a ELEV | `por-que` | Quatro diferenciais |
 | Demonstracoes | `demos` | Wireframes marcados como demonstracao |
@@ -60,9 +62,30 @@ Os valores vivem em **um lugar so** dentro de cada card de preco
 mensagem sao montados a partir dai, entao nao existe risco de o card mostrar um
 valor e a mensagem enviar outro.
 
-O simulador tem a propria lista (`data-preco` em cada `.opcao`), porque inclui
-itens que nao estao na tabela. Item com `data-preco="0"` aparece como **a orcar**
-- e assim que o site evita inventar valor.
+O ELEV Orcamento **le os precos do proprio HTML dos cards** ao carregar a pagina
+(`PRECOS` e montado a partir de `.plano[data-familia]`). Mudou o card, mudou a
+estimativa - nao existe segunda copia dos valores para desatualizar. A unica
+excecao e o Pacote de Conteudo (R$ 300), que fica em `PRECOS.pacoteConteudo`
+porque nao tem card de preco proprio.
+
+### Como o ELEV Orcamento decide
+
+Nao e IA externa: e uma maquina de regras local e deterministica, em
+`PERGUNTAS` + `estimar()`. O fluxo:
+
+1. Pergunta segmento, problema e o que a pessoa acha que precisa.
+2. Se marcou Social Media, abre as perguntas de redes, tempo e quantidade.
+3. Se marcou algo com niveis, pergunta a complexidade.
+4. `estimar()` cruza as escolhas com `PRECOS`: item com tabela soma o nivel
+   escolhido; item sem tabela entra como **a orcar**; nada reconhecido vira
+   **orcamento personalizado** com a lista de fatores que influenciam o valor.
+5. A combinacao exata de 10 Reels + 2 semanas e reconhecida como o Pacote de
+   Conteudo de R$ 300. Qualquer outro volume vira orcamento proprio, porque nao
+   existe tabela para ele.
+
+Tudo sai rotulado como **estimativa inicial**, com a ressalva de que o valor
+final depende da complexidade. Para plugar uma IA de verdade depois, o ponto de
+entrada e `estimar()`: mesma entrada, mesma saida.
 
 Os mesmos precos estao em `conhecimento/servicos.yaml` e `conhecimento/faq.yaml`,
 que alimentam o agente ELEV AI. **Mudou preco: mude nos dois lugares**, senao o
