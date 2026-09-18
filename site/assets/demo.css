@@ -1,0 +1,132 @@
+/* ==================================================================
+   Base compartilhada das demonstracoes da ELEV.
+   Cada demo define sua PROPRIA identidade sobrescrevendo os tokens
+   abaixo - aqui ficam so a barra ELEV e os utilitarios comuns.
+   ================================================================== */
+:root{
+  --d-bg:      #0B0B0B;
+  --d-surface: #141417;
+  --d-line:    #26262B;
+  --d-ink:     #FFFFFF;
+  --d-ink-2:   #A1A1AA;
+  --d-accent:  #2563EB;
+  --d-accent-2:#60A5FA;
+  --d-r: 14px;
+  --d-r-lg: 22px;
+  --d-fonte: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --d-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --d-t: cubic-bezier(.2,.7,.3,1);
+  --barra: 46px;
+}
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } *{ animation: none !important; } }
+body{
+  margin: 0; padding-top: var(--barra);
+  background: var(--d-bg); color: var(--d-ink);
+  font-family: var(--d-fonte); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+h1, h2, h3, h4{ font-family: var(--d-display); margin: 0; line-height: 1.15; text-wrap: balance; }
+p{ margin: 0; }
+a{ color: inherit; text-decoration: none; }
+img, svg{ display: block; max-width: 100%; }
+[hidden]{ display: none !important; }
+button, input, select, textarea{ font: inherit; color: inherit; }
+:focus-visible{ outline: 2px solid var(--d-accent-2); outline-offset: 3px; border-radius: 6px; }
+
+.d-wrap{ width: 100%; max-width: 1140px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 36px); }
+
+/* ---- barra de identificacao ELEV (obrigatoria em toda demo) ------- */
+.elev-barra{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999; height: var(--barra);
+  display: flex; align-items: center; gap: 14px;
+  padding-inline: clamp(14px, 4vw, 28px);
+  background: rgba(11,11,11,.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(96,165,250,.28);
+  font-family: "Manrope", system-ui, sans-serif; color: #fff;
+}
+.elev-barra .marca{
+  font-family: "Archivo", system-ui, sans-serif; font-weight: 800;
+  font-size: 15px; letter-spacing: .14em;
+  background: linear-gradient(135deg, #60A5FA, #2563EB);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.elev-barra .rotulo{
+  font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #A1A1AA;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.elev-barra .voltar{
+  margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.05);
+  white-space: nowrap; transition: background-color .25s var(--d-t), border-color .25s var(--d-t);
+}
+.elev-barra .voltar:hover{ background: rgba(96,165,250,.16); border-color: rgba(96,165,250,.5); }
+.elev-barra .voltar svg{ width: 14px; height: 14px; }
+@media (max-width: 620px){ .elev-barra .rotulo{ display: none; } }
+
+/* ---- utilitarios comuns ------------------------------------------- */
+.d-btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 13px 22px; border-radius: 999px; border: 1px solid transparent;
+  font-weight: 600; font-size: 15px; cursor: pointer;
+  transition: transform .25s var(--d-t), background-color .25s var(--d-t),
+              border-color .25s var(--d-t), color .25s var(--d-t), box-shadow .25s var(--d-t);
+}
+.d-btn:hover{ transform: translateY(-2px); }
+.d-btn:disabled{ opacity: .45; cursor: not-allowed; transform: none; }
+.d-btn-cheio{ background: var(--d-accent); color: #fff; }
+.d-btn-cheio:hover{ filter: brightness(1.1); }
+.d-btn-linha{ border-color: var(--d-line); background: transparent; color: var(--d-ink); }
+.d-btn-linha:hover{ border-color: var(--d-accent); color: var(--d-accent); }
+.d-btn svg{ width: 16px; height: 16px; flex: none; }
+
+.d-card{
+  border: 1px solid var(--d-line); border-radius: var(--d-r-lg);
+  background: var(--d-surface); overflow: hidden;
+  transition: transform .3s var(--d-t), border-color .3s var(--d-t), box-shadow .3s var(--d-t);
+}
+.d-campo{ display: grid; gap: 7px; }
+.d-campo label{ font-size: 13.6px; font-weight: 600; }
+.d-campo input, .d-campo select, .d-campo textarea{
+  width: 100%; padding: 12px 14px; border-radius: 11px;
+  border: 1px solid var(--d-line); background: rgba(0,0,0,.2); color: var(--d-ink); font-size: 15px;
+  transition: border-color .2s var(--d-t), box-shadow .2s var(--d-t);
+}
+.d-campo input:focus, .d-campo select:focus, .d-campo textarea:focus{
+  outline: none; border-color: var(--d-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--d-accent) 24%, transparent);
+}
+.d-selo{
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px; border-radius: 999px; border: 1px dashed currentColor;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .75;
+}
+
+/* modal usado por varias demos */
+.d-modal{
+  position: fixed; inset: 0; z-index: 900; display: grid; place-items: center;
+  padding: calc(var(--barra) + 16px) 16px 16px;
+  background: rgba(5,5,6,.82); backdrop-filter: blur(8px);
+  opacity: 0; visibility: hidden; transition: opacity .3s var(--d-t), visibility .3s var(--d-t);
+}
+.d-modal[data-aberto="true"]{ opacity: 1; visibility: visible; }
+.d-modal-caixa{
+  width: min(880px, 100%); max-height: 100%; overflow: auto;
+  border-radius: var(--d-r-lg); border: 1px solid var(--d-line); background: var(--d-surface);
+}
+.d-modal-fechar{
+  position: absolute; top: calc(var(--barra) + 10px); right: 14px;
+  width: 42px; height: 42px; display: grid; place-items: center; cursor: pointer;
+  border-radius: 12px; border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.5); color: #fff;
+}
+@media (prefers-reduced-motion: no-preference){
+  .d-modal[data-aberto="true"] .d-modal-caixa{ animation: d-sobe .3s var(--d-t); }
+}
+@keyframes d-sobe{ from{ opacity: 0; transform: translateY(14px) scale(.985); } }
+
+.d-rodape{
+  margin-top: 60px; padding: 26px 0 40px; border-top: 1px solid var(--d-line);
+  color: var(--d-ink-2); font-size: 13.4px; text-align: center;
+}
+.d-rodape a{ color: var(--d-accent-2); text-decoration: underline; text-underline-offset: 3px; }

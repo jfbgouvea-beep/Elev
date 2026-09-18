@@ -1020,6 +1020,53 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 .chamada .btn{ margin-left: auto; }
 @media (max-width: 620px){ .chamada .btn{ margin-left: 0; width: 100%; } }
 
+
+/* ============ SOLUÇÕES EM AÇÃO (vitrine das demos) ============ */
+.demos-grade{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 1080px){ .demos-grade{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px){ .demos-grade{ grid-template-columns: 1fr; } }
+
+.demo-card{
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  padding: 0; border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--surface); box-shadow: var(--sh-1);
+  transition: transform .4s var(--t), border-color .4s var(--t), box-shadow .4s var(--t);
+}
+.demo-card:hover{ transform: translateY(-5px); border-color: rgba(96,165,250,.36); box-shadow: var(--sh-2); }
+.demo-card:focus-within{ border-color: rgba(96,165,250,.6); }
+@media (prefers-reduced-motion: reduce){ .demo-card:hover{ transform: none; } }
+
+.demo-capa{
+  aspect-ratio: 16/9; display: grid; place-items: center; position: relative; overflow: hidden;
+  background: var(--capa, linear-gradient(150deg, #1D4ED8, #0B0B0B));
+  border-bottom: 1px solid var(--line);
+}
+.demo-capa::after{
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.demo-capa svg{ width: 34%; max-width: 62px; color: rgba(255,255,255,.92); position: relative; z-index: 1; }
+.demo-card:hover .demo-capa svg{ transform: scale(1.06); }
+.demo-capa svg{ transition: transform .4s var(--t); }
+
+.demo-corpo{ padding: 20px 20px 22px; display: flex; flex-direction: column; flex: 1; gap: 9px; }
+.demo-corpo h3{ font-size: 17.5px; }
+.demo-corpo p{ color: var(--ink-2); font-size: 14.4px; flex: 1; }
+.demo-selo{
+  font-family: "IBM Plex Mono", monospace; font-size: 9.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.demo-link{
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 4px;
+  font: 600 14.2px/1 Manrope, sans-serif; color: var(--blue-soft);
+  transition: gap .3s var(--t), color .3s var(--t);
+}
+.demo-link::after{ content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.demo-link svg{ width: 14px; height: 14px; transition: transform .3s var(--t); }
+.demo-card:hover .demo-link{ color: var(--ink); }
+.demo-card:hover .demo-link svg{ transform: translateX(3px); }
+
 /* entrada suave ----------------------------------------------------------- */
 .js .reveal{ opacity: 0; transform: translateY(16px); }
 .js .reveal.in{ opacity: 1; transform: none; transition: opacity .65s var(--t), transform .65s var(--t); }
@@ -1046,6 +1093,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       <a href="#solucoes">Soluções</a>
       <a href="#servicos">Serviços</a>
       <a href="#social">Social Media</a>
+      <a href="#demos">Demos</a>
       <a href="#precos">Preços</a>
       <a href="#elev-lab">ELEV Lab</a>
       <a href="#contato">Contato</a>
@@ -1066,6 +1114,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
     <a href="#solucoes">Soluções</a>
     <a href="#servicos">Serviços</a>
     <a href="#social">Social Media</a>
+    <a href="#demos">Demos</a>
     <a href="#precos">Preços</a>
     <a href="#elev-lab">ELEV Lab</a>
     <a href="#contato">Contato</a>
@@ -1651,86 +1700,112 @@ button, input, select, textarea{ font: inherit; color: inherit; }
   </div>
 </section>
 
-<!-- =========================== DEMONSTRAÇÕES =========================== -->
+<!-- ======================= SOLUÇÕES EM AÇÃO ======================= -->
 <section class="sec" id="demos">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">Projetos demonstrativos</p>
-      <h2>Exemplos do tipo de solução que a ELEV constrói.</h2>
-    </div>
-    <div class="aviso-demo reveal">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
-      <span>Peças criadas pela própria ELEV para mostrar formatos de solução. <strong>Não são clientes reais</strong> e não representam projetos entregues.</span>
+      <p class="eyebrow">Soluções em ação</p>
+      <h2>Veja o que a ELEV consegue criar.</h2>
+      <p>Explore algumas demonstrações das soluções que podemos desenvolver para diferentes necessidades. Todas usam empresas fictícias — não são clientes reais.</p>
     </div>
 
-    <div class="grade-2">
-      <article class="demo reveal">
-        <div class="shot" style="--sh-bg:#0E0B14;--sh-accent:#C9A227">
-          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
-          <div class="shot-body">
-            <div class="bar tall w40"></div><div class="bar w70"></div>
-            <div class="row" style="margin-top:6px"><div class="pill"></div><div class="pill ghost"></div></div>
-            <div class="tiles" style="margin-top:8px"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
-          </div>
+    <div class="demos-grade">
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(150deg,#C67B4A,#2A1810)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3.5h18v17H3z" opacity=".25"/><rect x="3" y="3.5" width="18" height="17" rx="4"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.2" cy="7.2" r="1.1" fill="currentColor"/></svg>
         </div>
-        <div class="demo-meta">
-          <div class="tipo">Site · Barbearia</div>
-          <h3>Página com serviços e botão de agendar</h3>
-          <p>Apresentação do negócio, lista de serviços e um caminho direto para o cliente marcar horário.</p>
-          <span class="selo">Demonstração</span>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Social Media</h3>
+          <p>Perfil completo de uma cafeteria fictícia, com feed, Reels, destaques e o pacote de conteúdo.</p>
+          <a class="demo-link" href="demos/social/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
       </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(140deg,#E2542C,#2A0F04)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.2 0 2-.8 2-1.8 0-1.5-1.2-1.7-1.2-2.8 0-.9.8-1.6 1.8-1.6h1.6c2.6 0 4.6-2 4.6-4.6C20.8 6.2 16.9 3.2 12 3.2z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="10.4" cy="7.4" r="1.1" fill="currentColor"/><circle cx="15" cy="8" r="1.1" fill="currentColor"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Design</h3>
+          <p>Marca fictícia do logo ao criativo de campanha, com galeria que abre cada peça.</p>
+          <a class="demo-link" href="demos/design/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(150deg,#2563EB,#060B18)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.8M9.4 12.4v1.6M14.6 12.4v1.6M2.6 12.5v3M21.4 12.5v3"/><circle cx="12" cy="3" r="1.1" fill="currentColor"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Inteligência Artificial</h3>
+          <p>Agente comercial que entende o que você escreve, qualifica e entrega o resumo do atendimento.</p>
+          <a class="demo-link" href="demos/ai/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(140deg,#7C5CFF,#120B24)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="12" cy="18" r="2.6"/><path d="M8.6 6h6.8M6.6 8.4l4 7.4M17.4 8.4l-4 7.4"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Automação</h3>
+          <p>O caminho do lead, do formulário até a notificação da equipe, executando passo a passo.</p>
+          <a class="demo-link" href="demos/automacao/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(150deg,#B76E79,#2A0F14)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9.5 15.5l1.8 1.8 3.4-3.6"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Agendamento</h3>
+          <p>Cliente escolhe serviço, profissional e horário — e o painel do salão mostra a agenda do dia.</p>
+          <a class="demo-link" href="demos/agendamento/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(140deg,#14A08A,#04120F)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="15" rx="2.5"/><path d="M2.5 8.5h19M6 6.2h.01M8.6 6.2h.01"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Sites</h3>
+          <p>Site institucional completo de uma construtora fictícia: hero, serviços, sobre e formulário.</p>
+          <a class="demo-link" href="demos/institucional/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+      <article class="demo-card reveal">
+        <div class="demo-capa" style="--capa:linear-gradient(150deg,#5A9E56,#0D160E)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2 11.2a1.8 1.8 0 0 0 1.8 1.5h8.2a1.8 1.8 0 0 0 1.8-1.4L20.5 8H6"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+        </div>
+        <div class="demo-corpo">
+          <span class="demo-selo">Projeto demonstrativo ELEV</span>
+          <h3>Catálogos</h3>
+          <p>Loja de plantas com busca, filtros, página de produto e carrinho que soma de verdade.</p>
+          <a class="demo-link" href="demos/catalogo/index.html">Ver demonstração
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
 
-      <article class="demo reveal">
-        <div class="shot" style="--sh-bg:#140F0C;--sh-accent:#E2542C">
-          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
-          <div class="shot-body">
-            <div class="row"><div class="qr"></div><div class="grow"><div class="bar tall w70"></div><div class="bar w40"></div></div></div>
-            <div class="list-item" style="margin-top:6px"><div class="thumb"></div><div class="grow"><div class="bar w70"></div><div class="bar w30"></div></div></div>
-            <div class="list-item"><div class="thumb"></div><div class="grow"><div class="bar w50"></div><div class="bar w30"></div></div></div>
-          </div>
-        </div>
-        <div class="demo-meta">
-          <div class="tipo">Cardápio digital · Restaurante</div>
-          <h3>Cardápio por QR Code com pedido no WhatsApp</h3>
-          <p>Cardápio com fotos e categorias no celular, e o pedido caindo direto na conversa do restaurante.</p>
-          <span class="selo">Demonstração</span>
-        </div>
-      </article>
-
-      <article class="demo reveal">
-        <div class="shot" style="--sh-bg:#0A0D14;--sh-accent:#60A5FA">
-          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
-          <div class="shot-body">
-            <div class="bar tall w50"></div>
-            <div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
-            <div class="tiles"><div class="tile"></div><div class="tile on"></div><div class="tile"></div></div>
-          </div>
-        </div>
-        <div class="demo-meta">
-          <div class="tipo">Site de vendas · Loja</div>
-          <h3>Vitrine de produtos com contato direto</h3>
-          <p>Produtos organizados por categoria e um caminho curto até falar com a loja.</p>
-          <span class="selo">Demonstração</span>
-        </div>
-      </article>
-
-      <article class="demo reveal">
-        <div class="shot" style="--sh-bg:#0A1014;--sh-accent:#2563EB">
-          <div class="shot-bar"><i></i><i></i><i></i><span></span></div>
-          <div class="shot-body">
-            <div class="row"><div class="bar tall w40"></div><div class="bar w30" style="margin-left:auto"></div></div>
-            <div class="slots"><div class="slot"></div><div class="slot on"></div><div class="slot"></div><div class="slot off"></div></div>
-            <div class="slots"><div class="slot off"></div><div class="slot"></div><div class="slot"></div><div class="slot on"></div></div>
-          </div>
-        </div>
-        <div class="demo-meta">
-          <div class="tipo">Sistema · Agendamento</div>
-          <h3>Escolha de horário com confirmação automática</h3>
-          <p>O cliente vê os horários livres, escolhe e recebe a confirmação. A agenda do dia em um lugar só.</p>
-          <span class="selo">Demonstração</span>
-        </div>
-      </article>
+    <div class="chamada reveal" style="margin-top:26px">
+      <p>Não sabe do que precisa?<span>Conte seu problema e receba uma estimativa inicial.</span></p>
+      <a class="btn btn-primary" href="#orcamento">Converse com a ELEV</a>
     </div>
   </div>
 </section>
@@ -1924,7 +1999,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       </nav>
       <nav class="footer-links" aria-label="Rodapé — continuação">
         <b>&nbsp;</b>
-        <a href="#social">Social Media</a>
+        <a href="#demos">Demos</a>
         <a href="#precos">Preços</a>
         <a href="#orcamento">ELEV Orçamento</a>
         <a href="#contato">Contato</a>
@@ -2068,15 +2143,45 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
   });
 
   const CATALOGO = {
-    site:          { nome: "Site institucional", tabela: null },
-    cardapio:      { nome: "Cardápio digital", tabela: "cardapio" },
-    agendamento:   { nome: "Agendamento online", tabela: "agendamento" },
-    vendas:        { nome: "Loja / site de vendas", tabela: "vendas" },
-    ia:            { nome: "Agente de IA", tabela: "ia" },
-    automacao:     { nome: "Automação", tabela: null },
-    social:        { nome: "Social Media", tabela: "social" },
-    design:        { nome: "Design", tabela: null },
-    personalizada: { nome: "Solução personalizada", tabela: null }
+    site:          { nome: "Site institucional", tabela: null, demo: "institucional",
+                     termos: ["site", "pagina", "página", "presenca", "presença", "internet", "google", "aparecer no google", "landing"] },
+    cardapio:      { nome: "Cardápio digital", tabela: "cardapio", demo: "social",
+                     termos: ["cardapio", "cardápio", "menu", "restaurante", "lanchonete", "delivery", "pedido de comida"] },
+    agendamento:   { nome: "Agendamento online", tabela: "agendamento", demo: "agendamento",
+                     termos: ["agenda", "agendar", "agendamento", "marcar horario", "marcar horário", "horario", "horário", "reserva", "barbearia", "salao", "salão"] },
+    vendas:        { nome: "Loja / site de vendas", tabela: "vendas", demo: "catalogo",
+                     termos: ["loja", "vender online", "catalogo", "catálogo", "produtos", "vitrine", "ecommerce", "e-commerce", "mostrar meus produtos"] },
+    ia:            { nome: "Agente de IA", tabela: "ia", demo: "ai",
+                     termos: ["ia", "inteligencia artificial", "inteligência artificial", "agente", "chatbot", "bot", "responder clientes", "responder automaticamente", "atendimento automatico", "atendimento automático"] },
+    automacao:     { nome: "Automação", tabela: null, demo: "automacao",
+                     termos: ["automatizar", "automacao", "automação", "integrar", "integracao", "integração", "processo", "planilha", "n8n", "fluxo"] },
+    social:        { nome: "Social Media", tabela: "social", demo: "social",
+                     termos: ["instagram", "insta", "redes", "rede social", "social media", "reels", "post", "conteudo", "conteúdo", "seguidores", "aparecer nas redes"] },
+    design:        { nome: "Design", tabela: null, demo: "design",
+                     termos: ["design", "arte", "artes", "logo", "identidade visual", "banner", "criativo", "divulgar", "divulgacao", "divulgação", "panfleto", "story"] },
+    personalizada: { nome: "Solução personalizada", tabela: null, demo: null, termos: [] }
+  };
+
+  /* Interpreta texto livre: "preciso melhorar meu instagram" -> Social Media.
+     Pontua por termo encontrado e devolve as categorias reconhecidas. */
+  function semAcento(s) { return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  function interpretar(texto) {
+    const t = semAcento(texto);
+    const achados = [];
+    Object.keys(CATALOGO).forEach(function (k) {
+      const cat = CATALOGO[k];
+      let pontos = 0;
+      (cat.termos || []).forEach(function (termo) {
+        if (t.indexOf(semAcento(termo)) > -1) pontos += semAcento(termo).split(" ").length;
+      });
+      if (pontos) achados.push({ chave: k, cat: cat, pontos: pontos });
+    });
+    achados.sort(function (a, b) { return b.pontos - a.pontos; });
+    return achados;
+  }
+  const ROTULO_POR_CHAVE = {
+    site: "Site", cardapio: "Cardápio", agendamento: "Agendamento", vendas: "Loja digital",
+    ia: "Agente de IA", automacao: "Automação", social: "Social Media", design: "Design"
   };
 
   const R = {};              // respostas
@@ -2096,8 +2201,8 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
       opcoes: ["Não tenho presença digital", "Perco pedidos ou contatos", "Minha agenda é desorganizada",
                "Quero vender online", "Respondo sempre as mesmas perguntas", "Não apareço nas redes sociais"] },
 
-    { id: "itens", texto: "O que você acha que precisa? Pode marcar mais de um — e se não souber, marque a última opção.",
-      tipo: "multipla",
+    { id: "itens", texto: "O que você acha que precisa? Marque abaixo — ou escreva com suas palavras, que eu identifico.",
+      tipo: "multipla", livre: "Ex.: preciso melhorar meu Instagram",
       opcoes: ["Site", "Cardápio", "Agendamento", "Loja digital", "Agente de IA",
                "Automação", "Social Media", "Design", "Ainda não sei"] },
 
@@ -2194,7 +2299,16 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
       porques.push("você pediu uma solução " + (nivel === "completo" ? "completa, com painel e gestão" : "intermediária") + ", que usa um nível acima do inicial");
     }
 
-    return { itens: itens, total: total, aOrcar: aOrcar, personalizado: total === 0, porques: porques, nivel: nivel };
+    /* demo correspondente ao primeiro item reconhecido, para o visitante ver funcionando */
+    let demo = null;
+    rotulos.some(function (rotulo) {
+      const cat = porRotulo(rotulo);
+      if (cat && cat.demo) { demo = cat.demo; return true; }
+      return false;
+    });
+
+    return { itens: itens, total: total, aOrcar: aOrcar, personalizado: total === 0,
+             porques: porques, nivel: nivel, demo: demo };
   }
 
   function frase(res) {
@@ -2296,6 +2410,49 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
 
     let confirmar;
     if (q.tipo === "multipla") {
+      if (q.livre) {
+        const campoLivre = d.createElement("input");
+        campoLivre.type = "text";
+        campoLivre.placeholder = q.livre;
+        campoLivre.setAttribute("aria-label", q.livre);
+        const interpretarTexto = function () {
+          const v = campoLivre.value.trim();
+          if (!v) return;
+          const achados = interpretar(v);
+          if (!achados.length) {
+            falaCliente(v);
+            responde("Não consegui identificar a partir dessa frase. Pode marcar uma das opções acima?");
+            campoLivre.value = "";
+            return;
+          }
+          achados.slice(0, 3).forEach(function (a) {
+            const rot = ROTULO_POR_CHAVE[a.chave];
+            if (rot && marcados.indexOf(rot) === -1) {
+              marcados.push(rot);
+              const botao = [].slice.call(caixa.querySelectorAll(".orc-op")).filter(function (b) {
+                return b.textContent === rot;
+              })[0];
+              if (botao) botao.setAttribute("aria-pressed", "true");
+            }
+          });
+          campoLivre.value = "";
+          confirmar.disabled = marcados.length === 0;
+          falaCliente(v);
+          responde("Pelo que você escreveu, isso parece <b>" +
+                   listar(achados.slice(0, 3).map(function (a) { return a.cat.nome; })) +
+                   "</b>. Já marquei aqui — pode ajustar e continuar.");
+        };
+        campoLivre.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") { e.preventDefault(); interpretarTexto(); }
+        });
+        const bLivre = d.createElement("button");
+        bLivre.type = "button";
+        bLivre.className = "btn btn-ghost";
+        bLivre.textContent = "Interpretar";
+        bLivre.addEventListener("click", interpretarTexto);
+        linha.appendChild(campoLivre);
+        linha.appendChild(bLivre);
+      }
       confirmar = d.createElement("button");
       confirmar.type = "button";
       confirmar.className = "btn btn-primary";
@@ -2303,10 +2460,6 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
       confirmar.disabled = true;
       confirmar.addEventListener("click", function () { responder(q, marcados.slice()); });
       linha.appendChild(confirmar);
-      const dica = d.createElement("span");
-      dica.className = "orc-dica";
-      dica.textContent = "Pode marcar quantos quiser.";
-      linha.appendChild(dica);
     } else if (q.livre) {
       const campo = d.createElement("input");
       campo.type = "text";
@@ -2376,7 +2529,12 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
           '<p class="res-obs">Estimativa inicial. O valor final pode variar conforme a complexidade do projeto.</p>' +
           fatores +
         "</div>" +
-        '<div class="res-bloco"><div class="rot">Por que essa solução?</div><div class="val">' + porque + "</div></div>";
+        '<div class="res-bloco"><div class="rot">Por que essa solução?</div><div class="val">' + porque + "</div></div>" +
+        (res.demo
+          ? '<div class="res-bloco"><div class="rot">Veja funcionando</div><div class="val">' +
+            'Temos uma demonstração desse tipo de solução: <a href="demos/' + res.demo +
+            '/index.html" style="color:var(--blue-soft);text-decoration:underline">abrir demonstração</a>.</div></div>'
+          : "");
 
       orcCorpo.appendChild(bloco);
       orcCorpo.scrollTop = orcCorpo.scrollHeight;

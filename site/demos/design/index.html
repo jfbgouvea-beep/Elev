@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nômade — demonstração de Design | ELEV</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0E0E0F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../assets/demo.css">
+<style>
+:root{
+  --d-bg:#0E0E0F; --d-surface:#171719; --d-line:#26262A;
+  --d-ink:#F5F5F4; --d-ink-2:#A3A3A0;
+  --d-accent:#E2542C; --d-accent-2:#F7A072;
+  --d-display:"Bricolage Grotesque", system-ui, sans-serif;
+  --areia:#E8DFD2;
+}
+.cabecalho{ padding: 46px 0 34px; }
+.cabecalho .marca-fict{
+  display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px;
+}
+.logo-fict{
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--d-accent); font-family: var(--d-display); font-weight: 800; font-size: 26px; color: #150A05;
+}
+.logo-fict-nome{ font-family: var(--d-display); font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+.logo-fict-nome span{ display: block; font-family: "Manrope"; font-weight: 500; font-size: 12px;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--d-ink-2); }
+.cabecalho h1{ font-size: clamp(30px, 5vw, 48px); font-weight: 800; max-width: 18ch; }
+.cabecalho p{ color: var(--d-ink-2); margin-top: 14px; max-width: 52ch; }
+
+.bloco{ margin-top: 54px; }
+.bloco h2{ font-size: clamp(20px, 3vw, 26px); font-weight: 600; }
+.bloco .sub{ color: var(--d-ink-2); font-size: 14.6px; margin-top: 6px; }
+
+.identidade{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+@media (max-width: 860px){ .identidade{ grid-template-columns: 1fr; } }
+.id-card{ padding: 22px; }
+.paleta{ display: flex; gap: 8px; margin-top: 14px; }
+.paleta i{ flex: 1; height: 54px; border-radius: 9px; display: block; }
+.tipo-amostra{ margin-top: 12px; }
+.tipo-amostra .g{ font-family: var(--d-display); font-weight: 800; font-size: 34px; line-height: 1.05; }
+.tipo-amostra .p{ font-size: 14px; color: var(--d-ink-2); margin-top: 6px; }
+.aplicacoes{ display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.aplic{ width: 62px; height: 62px; border-radius: 12px; display: grid; place-items: center;
+  border: 1px solid var(--d-line); font-family: var(--d-display); font-weight: 800; font-size: 22px; }
+
+.galeria{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+@media (max-width: 900px){ .galeria{ grid-template-columns: repeat(2, 1fr); } }
+.arte{
+  position: relative; border: 0; padding: 0; cursor: pointer; overflow: hidden;
+  border-radius: var(--d-r); aspect-ratio: var(--ar, 1);
+  background: var(--bg); display: grid; place-items: center;
+  transition: transform .3s var(--d-t), box-shadow .3s var(--d-t);
+}
+.arte:hover{ transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 34px -18px rgba(0,0,0,.9); }
+.arte .conteudo{ padding: 18px; text-align: center; position: relative; z-index: 1; }
+.arte .t{ font-family: var(--d-display); font-weight: 800; font-size: clamp(15px, 2.6vw, 21px); line-height: 1.15; }
+.arte .s{ font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; margin-top: 8px; }
+.arte .lupa{
+  position: absolute; inset: 0; z-index: 2; display: grid; place-items: center;
+  background: rgba(0,0,0,.42); opacity: 0; transition: opacity .25s var(--d-t); color: #fff;
+}
+.arte:hover .lupa, .arte:focus-visible .lupa{ opacity: 1; }
+.arte .lupa svg{ width: 26px; height: 26px; }
+.legenda-gal{ font-size: 12px; color: var(--d-ink-2); margin-top: 9px; display: block; text-align: center; }
+.modal-arte{ padding: 26px; }
+.modal-arte .peca{ border-radius: var(--d-r); aspect-ratio: var(--ar,1); display: grid; place-items: center; }
+.modal-arte .info{ margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.modal-arte .info b{ font-family: var(--d-display); font-size: 19px; }
+</style>
+</head>
+<body>
+
+<main class="d-wrap">
+  <header class="cabecalho">
+    <div class="marca-fict">
+      <span class="logo-fict">N</span>
+      <span class="logo-fict-nome">Nômade<span>Studio de viagem</span></span>
+    </div>
+    <h1>Uma marca inteira, do logo ao criativo de campanha.</h1>
+    <p>Demonstração de design criada pela ELEV para uma marca fictícia. Mostra o tipo de material que entregamos: identidade, peças de rede social e criativos de divulgação.</p>
+    <span class="d-selo" style="color:var(--d-accent-2);margin-top:18px">Exemplo demonstrativo — não é trabalho de cliente real</span>
+  </header>
+
+  <section class="bloco">
+    <h2>Identidade visual</h2>
+    <p class="sub">A base que mantém tudo com a mesma cara.</p>
+    <div class="identidade">
+      <div class="d-card id-card">
+        <b>Paleta</b>
+        <div class="paleta">
+          <i style="background:#E2542C"></i><i style="background:#F7A072"></i>
+          <i style="background:#E8DFD2"></i><i style="background:#2E4A3F"></i><i style="background:#0E0E0F"></i>
+        </div>
+        <p class="sub" style="margin-top:12px">Laranja de terra, areia e verde de mata.</p>
+      </div>
+      <div class="d-card id-card">
+        <b>Tipografia</b>
+        <div class="tipo-amostra">
+          <div class="g">Aa Bb Cc</div>
+          <div class="p">Display para títulos · Sans para texto corrido</div>
+        </div>
+      </div>
+      <div class="d-card id-card">
+        <b>Aplicações</b>
+        <div class="aplicacoes">
+          <span class="aplic" style="background:#E2542C;color:#150A05">N</span>
+          <span class="aplic" style="background:#E8DFD2;color:#0E0E0F">N</span>
+          <span class="aplic" style="background:#2E4A3F;color:#E8DFD2">N</span>
+          <span class="aplic" style="border-color:#E2542C;color:#E2542C">N</span>
+        </div>
+        <p class="sub" style="margin-top:12px">O mesmo símbolo em fundo claro, escuro e monocromático.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2>Social</h2>
+    <p class="sub">Peças para o feed e para os stories. Clique para ver maior.</p>
+    <div class="galeria" id="galSocial"></div>
+  </section>
+
+  <section class="bloco">
+    <h2>Marketing</h2>
+    <p class="sub">Banners e criativos para divulgação.</p>
+    <div class="galeria" id="galMkt"></div>
+  </section>
+
+  <p class="d-rodape">Nômade Studio é uma marca fictícia. Todas as peças são <strong>exemplos demonstrativos</strong> criados pela <a href="../../index.html">ELEV</a>.</p>
+</main>
+
+<div class="d-modal" id="modal" role="dialog" aria-modal="true" aria-label="Arte ampliada">
+  <button class="d-modal-fechar" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="d-modal-caixa"></div>
+</div>
+
+<script src="../../assets/demo.js" data-demo="Design"></script>
+<script>
+(function () {
+  "use strict";
+  const SOCIAL = [
+    { t:"Rota do<br>Cerrado", s:"Post de feed", bg:"linear-gradient(145deg,#E2542C,#7A2411)", ar:"1", cor:"#FFF1E8",
+      nota:"Post de lançamento de roteiro. Título curto e uma única informação por peça." },
+    { t:"3 dias<br>no litoral", s:"Carrossel · capa", bg:"linear-gradient(160deg,#2E4A3F,#0E0E0F)", ar:"1", cor:"#E8DFD2",
+      nota:"Capa de carrossel: a promessa fica na capa, o detalhe vem nos slides." },
+    { t:"Bagagem<br>leve", s:"Story", bg:"linear-gradient(150deg,#E8DFD2,#C9B79E)", ar:"9/16", cor:"#1A1006",
+      nota:"Story vertical com espaço reservado para enquete no topo." },
+    { t:"Reel:<br>o caminho", s:"Capa de Reels", bg:"linear-gradient(140deg,#F7A072,#E2542C)", ar:"9/16", cor:"#2A0F04",
+      nota:"Capa pensada para ficar legível na grade do perfil." }
+  ];
+  const MKT = [
+    { t:"Temporada<br>aberta", s:"Banner web", bg:"linear-gradient(120deg,#0E0E0F,#2E4A3F)", ar:"16/9", cor:"#E8DFD2",
+      nota:"Banner de topo de site, com área livre à direita para o botão." },
+    { t:"-15% na<br>primeira viagem", s:"Criativo de campanha", bg:"linear-gradient(135deg,#E2542C,#F7A072)", ar:"4/5", cor:"#2A0F04",
+      nota:"Criativo de anúncio: oferta grande, condição pequena, marca no rodapé." },
+    { t:"Guia<br>gratuito", s:"Arte promocional", bg:"linear-gradient(150deg,#E8DFD2,#F7A072)", ar:"1", cor:"#2A0F04",
+      nota:"Peça de isca: material gratuito em troca do contato." },
+    { t:"Nômade<br>na estrada", s:"Capa de destaque", bg:"linear-gradient(160deg,#7A2411,#0E0E0F)", ar:"1", cor:"#F7A072",
+      nota:"Capa de destaque do perfil, no mesmo sistema visual das demais peças." }
+  ];
+
+  const LUPA = '<span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M8.5 11h5M11 8.5v5"/></svg></span>';
+
+  function desenha(alvo, lista, chave) {
+    document.getElementById(alvo).innerHTML = lista.map(function (a, i) {
+      return '<figure style="margin:0"><button class="arte" type="button" data-lista="' + chave + '" data-i="' + i +
+        '" style="--bg:' + a.bg + ';--ar:' + a.ar + ';color:' + a.cor + '">' +
+        '<span class="conteudo"><span class="t">' + a.t + '</span><span class="s">' + a.s + "</span></span>" + LUPA +
+        '</button><figcaption class="legenda-gal">Exemplo demonstrativo</figcaption></figure>';
+    }).join("");
+  }
+  desenha("galSocial", SOCIAL, "social");
+  desenha("galMkt", MKT, "mkt");
+
+  ElevModal.ligar("modal");
+  document.addEventListener("click", function (e) {
+    const b = e.target.closest(".arte");
+    if (!b) return;
+    const a = (b.dataset.lista === "social" ? SOCIAL : MKT)[Number(b.dataset.i)];
+    ElevModal.abrir("modal",
+      '<div class="modal-arte">' +
+        '<div class="peca" style="background:' + a.bg + ';--ar:' + a.ar + ';color:' + a.cor + '">' +
+          '<div style="text-align:center;padding:26px"><div class="t" style="font-family:var(--d-display);font-weight:800;font-size:clamp(24px,4vw,40px);line-height:1.1">' +
+          a.t + '</div><div class="s" style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:12px;opacity:.85">' + a.s + "</div></div>" +
+        "</div>" +
+        '<div class="info"><b>' + a.s + '</b><span class="d-selo" style="color:var(--d-accent-2)">Exemplo demonstrativo</span></div>' +
+        '<p style="color:var(--d-ink-2);margin-top:12px;font-size:15px">' + a.nota + "</p>" +
+        '<p style="color:var(--d-ink-2);margin-top:10px;font-size:12.6px">Marca fictícia criada pela ELEV. Não é trabalho de cliente real.</p>' +
+      "</div>");
+  });
+})();
+</script>
+</body>
+</html>

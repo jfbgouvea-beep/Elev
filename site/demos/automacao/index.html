@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automação de atendimento — demonstração | ELEV</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0A12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../assets/demo.css">
+<style>
+:root{
+  --d-bg:#0A0A12; --d-surface:#13131F; --d-line:#232338;
+  --d-ink:#EEF0FA; --d-ink-2:#9A9CB8;
+  --d-accent:#7C5CFF; --d-accent-2:#A78BFA;
+  --d-display:"Space Grotesk", system-ui, sans-serif;
+  --ok:#34D399;
+}
+.topo{ padding: 44px 0 26px; }
+.topo h1{ font-size: clamp(27px,4.4vw,40px); font-weight: 700; max-width: 20ch; }
+.topo p{ color: var(--d-ink-2); margin-top: 13px; max-width: 58ch; }
+.painel{ display: grid; grid-template-columns: 1.25fr .75fr; gap: 18px; margin-top: 30px; align-items: start; }
+@media (max-width: 900px){ .painel{ grid-template-columns: 1fr; } }
+
+.fluxo{ padding: 24px; }
+.etapa{
+  display: flex; gap: 14px; padding: 15px; border-radius: 13px;
+  border: 1px solid var(--d-line); background: rgba(0,0,0,.2);
+  opacity: .42; transition: opacity .4s var(--d-t), border-color .4s var(--d-t), background-color .4s var(--d-t), transform .4s var(--d-t);
+}
+.etapa + .etapa{ margin-top: 0; }
+.conector{ width: 2px; height: 20px; margin-left: 33px; background: var(--d-line); transition: background-color .4s var(--d-t); }
+.conector[data-on="true"]{ background: linear-gradient(180deg, var(--d-accent), var(--d-accent-2)); }
+.etapa[data-estado="ativa"]{ opacity: 1; border-color: var(--d-accent); background: rgba(124,92,255,.12); transform: translateX(3px); }
+.etapa[data-estado="feita"]{ opacity: 1; border-color: rgba(52,211,153,.4); }
+.etapa .num{
+  width: 38px; height: 38px; flex: none; border-radius: 11px; display: grid; place-items: center;
+  border: 1px solid var(--d-line); background: rgba(0,0,0,.34);
+  font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--d-ink-2);
+  transition: all .35s var(--d-t);
+}
+.etapa[data-estado="ativa"] .num{ background: var(--d-accent); color: #0C0718; border-color: transparent; }
+.etapa[data-estado="feita"] .num{ background: rgba(52,211,153,.18); color: var(--ok); border-color: rgba(52,211,153,.4); }
+.etapa b{ font-family: var(--d-display); font-size: 16px; display: block; }
+.etapa .desc{ color: var(--d-ink-2); font-size: 14px; margin-top: 3px; }
+.etapa .tag{
+  margin-top: 9px; display: inline-flex; align-items: center; gap: 6px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 999px;
+}
+.tag.auto{ background: rgba(124,92,255,.16); color: var(--d-accent-2); border: 1px solid rgba(124,92,255,.4); }
+.tag.humano{ background: rgba(255,255,255,.05); color: var(--d-ink-2); border: 1px solid var(--d-line); }
+.etapa .saida{
+  margin-top: 11px; padding: 11px 13px; border-radius: 10px; border: 1px dashed var(--d-line);
+  background: rgba(0,0,0,.32); font-family: "IBM Plex Mono", monospace; font-size: 12.4px;
+  color: var(--d-ink-2); white-space: pre-wrap; display: none;
+}
+.etapa[data-estado="feita"] .saida, .etapa[data-estado="ativa"] .saida{ display: block; }
+.etapa .saida b{ color: var(--ok); font-family: "IBM Plex Mono", monospace; font-size: 12.4px; display: inline; }
+
+.lado{ display: grid; gap: 14px; }
+.form-demo{ padding: 22px; display: grid; gap: 13px; }
+.form-demo h2{ font-family: var(--d-display); font-size: 17px; }
+.form-demo .obs{ font-size: 12.6px; color: var(--d-ink-2); }
+.resultado{ padding: 22px; display: none; }
+.resultado[data-visivel="true"]{ display: block; }
+.resultado h2{ font-family: var(--d-display); font-size: 17px; margin-bottom: 12px; }
+.linha-r{ display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--d-line); font-size: 14.2px; }
+.linha-r:last-child{ border-bottom: 0; }
+.linha-r span{ color: var(--d-ink-2); }
+.linha-r b{ text-align: right; }
+.classificacao{ padding: 4px 12px; border-radius: 999px; font-size: 12.6px; font-weight: 600; }
+.classificacao[data-n="quente"]{ background: rgba(226,84,44,.18); color: #F7A072; }
+.classificacao[data-n="morno"]{ background: rgba(234,179,8,.16); color: #FCD34D; }
+.classificacao[data-n="frio"]{ background: rgba(148,163,184,.14); color: #CBD5E1; }
+.notificacao{
+  position: fixed; right: 18px; bottom: 18px; z-index: 800; max-width: 330px;
+  padding: 15px 17px; border-radius: 14px; border: 1px solid rgba(52,211,153,.45);
+  background: #10231C; box-shadow: 0 18px 40px -20px rgba(0,0,0,.9);
+  transform: translateY(140%); transition: transform .45s var(--d-t);
+}
+.notificacao[data-on="true"]{ transform: translateY(0); }
+.notificacao b{ font-family: var(--d-display); font-size: 14.6px; display: flex; align-items: center; gap: 8px; }
+.notificacao b svg{ width: 16px; height: 16px; color: var(--ok); }
+.notificacao p{ color: var(--d-ink-2); font-size: 13.2px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<main class="d-wrap">
+  <header class="topo">
+    <span class="d-selo" style="color:var(--d-accent-2)">Fluxo demonstrativo</span>
+    <h1 style="margin-top:14px">O que acontece depois que o cliente aperta “enviar”.</h1>
+    <p>Preencha o formulário ao lado como um cliente faria e execute a demonstração. Cada etapa mostra o que é automático e o que continua sendo feito por uma pessoa.</p>
+  </header>
+
+  <div class="painel">
+    <section class="d-card fluxo" id="fluxo"></section>
+
+    <aside class="lado">
+      <form class="d-card form-demo" id="form">
+        <h2>Formulário do site</h2>
+        <div class="d-campo"><label for="n">Nome</label><input id="n" value="Ana Ribeiro"></div>
+        <div class="d-campo"><label for="t">Telefone</label><input id="t" value="19 99999-0000"></div>
+        <div class="d-campo"><label for="s">O que precisa</label>
+          <select id="s">
+            <option>Orçamento de site</option>
+            <option>Cardápio digital</option>
+            <option>Agendamento online</option>
+            <option>Dúvida geral</option>
+          </select>
+        </div>
+        <div class="d-campo"><label for="p">Prazo</label>
+          <select id="p"><option>Para ontem</option><option>Nas próximas semanas</option><option>Só pesquisando</option></select>
+        </div>
+        <button class="d-btn d-btn-cheio" type="submit" id="executar">Executar demonstração</button>
+        <p class="obs">Nada é enviado. Todo o processo roda no seu navegador.</p>
+      </form>
+
+      <div class="d-card resultado" id="resultado">
+        <h2>O que a equipe recebe</h2>
+        <div id="linhas"></div>
+      </div>
+    </aside>
+  </div>
+
+  <p class="d-rodape">Demonstração de automação criada pela <a href="../../index.html">ELEV</a>. Dados fictícios, processo local.</p>
+</main>
+
+<div class="notificacao" id="notificacao">
+  <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg> Novo lead na fila</b>
+  <p id="notiTexto"></p>
+</div>
+
+<script src="../../assets/demo.js" data-demo="Automação"></script>
+<script>
+(function () {
+  "use strict";
+  const ETAPAS = [
+    { t:"Cliente", d:"Preenche o formulário no site.", auto:false },
+    { t:"Formulário", d:"Os dados saem do navegador do cliente.", auto:true },
+    { t:"Sistema recebe os dados", d:"Chegada registrada com data e hora.", auto:true },
+    { t:"Informações são organizadas", d:"Campos separados e padronizados.", auto:true },
+    { t:"Lead é classificado", d:"Prioridade definida pelo que o cliente respondeu.", auto:true },
+    { t:"Equipe recebe notificação", d:"Alguém assume o atendimento.", auto:false }
+  ];
+
+  const fluxo = document.getElementById("fluxo");
+  fluxo.innerHTML = ETAPAS.map(function (e, i) {
+    return (i ? '<div class="conector" data-on="false"></div>' : "") +
+      '<div class="etapa" data-estado="espera" data-i="' + i + '">' +
+        '<span class="num">' + String(i + 1).padStart(2, "0") + "</span>" +
+        '<div><b>' + e.t + '</b><div class="desc">' + e.d + '</div>' +
+        '<span class="tag ' + (e.auto ? "auto" : "humano") + '">' + (e.auto ? "automático" : "pessoa") + "</span>" +
+        '<div class="saida"></div></div>' +
+      "</div>";
+  }).join("");
+
+  const etapas = [].slice.call(fluxo.querySelectorAll(".etapa"));
+  const conectores = [].slice.call(fluxo.querySelectorAll(".conector"));
+  const noti = document.getElementById("notificacao");
+
+  function classificar(servico, prazo) {
+    let p = 0;
+    if (prazo === "Para ontem") p += 2;
+    else if (prazo === "Nas próximas semanas") p += 1;
+    if (servico !== "Dúvida geral") p += 1;
+    return p >= 3 ? "quente" : p === 2 ? "morno" : "frio";
+  }
+
+  let rodando = false;
+  document.getElementById("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (rodando) return;
+    rodando = true;
+
+    const dados = {
+      nome: document.getElementById("n").value.trim() || "Sem nome",
+      tel: document.getElementById("t").value.trim() || "não informado",
+      servico: document.getElementById("s").value,
+      prazo: document.getElementById("p").value
+    };
+    const classe = classificar(dados.servico, dados.prazo);
+    const agora = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+    const saidas = [
+      "aguardando envio...",
+      "enviado: " + dados.nome + " · " + dados.servico,
+      "recebido às " + agora,
+      "nome: " + dados.nome + "\\ntelefone: " + dados.tel + "\\nserviço: " + dados.servico + "\\nprazo: " + dados.prazo,
+      "prioridade calculada: <b>" + classe.toUpperCase() + "</b>",
+      "notificação enviada para a equipe"
+    ];
+
+    etapas.forEach(function (el) { el.dataset.estado = "espera"; el.querySelector(".saida").innerHTML = ""; });
+    conectores.forEach(function (c) { c.dataset.on = "false"; });
+    document.getElementById("resultado").dataset.visivel = "false";
+    noti.dataset.on = "false";
+    document.getElementById("executar").disabled = true;
+
+    let i = 0;
+    (function passo() {
+      if (i > 0) { etapas[i - 1].dataset.estado = "feita"; conectores[i - 1].dataset.on = "true"; }
+      if (i >= etapas.length) {
+        document.getElementById("executar").disabled = false;
+        rodando = false;
+        return;
+      }
+      etapas[i].dataset.estado = "ativa";
+      etapas[i].querySelector(".saida").innerHTML = saidas[i];
+
+      if (i === etapas.length - 1) {
+        document.getElementById("linhas").innerHTML =
+          '<div class="linha-r"><span>Nome</span><b>' + dados.nome + "</b></div>" +
+          '<div class="linha-r"><span>Telefone</span><b>' + dados.tel + "</b></div>" +
+          '<div class="linha-r"><span>Precisa de</span><b>' + dados.servico + "</b></div>" +
+          '<div class="linha-r"><span>Prazo</span><b>' + dados.prazo + "</b></div>" +
+          '<div class="linha-r"><span>Recebido às</span><b>' + agora + "</b></div>" +
+          '<div class="linha-r"><span>Classificação</span><b><span class="classificacao" data-n="' + classe + '">' + classe + "</span></b></div>";
+        document.getElementById("resultado").dataset.visivel = "true";
+        document.getElementById("notiTexto").textContent = dados.nome + " — " + dados.servico + " (" + classe + ")";
+        noti.dataset.on = "true";
+        setTimeout(function () { noti.dataset.on = "false"; }, 5200);
+      }
+      i++;
+      setTimeout(passo, 760);
+    })();
+  });
+})();
+</script>
+</body>
+</html>

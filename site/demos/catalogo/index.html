@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verde Vivo — demonstração de catálogo | ELEV</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F1410">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/demo.css">
+<style>
+:root{
+  --d-bg:#0F1410; --d-surface:#18201A; --d-line:#27332A;
+  --d-ink:#F2F7F0; --d-ink-2:#A8B9A6;
+  --d-accent:#5A9E56; --d-accent-2:#8FCB8A;
+  --d-display:"DM Serif Display", Georgia, serif;
+}
+.loja-topo{ position: sticky; top: var(--barra); z-index: 500; background: rgba(15,20,16,.94);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--d-line); }
+.loja-in{ display: flex; align-items: center; gap: 14px; height: 64px; }
+.loja-nome{ font-family: var(--d-display); font-size: 24px; margin-right: auto; }
+.loja-nome span{ color: var(--d-accent-2); }
+.btn-carrinho{ position: relative; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--d-line); background: rgba(0,0,0,.24); color: var(--d-ink); font-weight: 600; font-size: 14px;
+  display: flex; align-items: center; gap: 8px; }
+.btn-carrinho:hover{ border-color: var(--d-accent); }
+.btn-carrinho svg{ width: 17px; height: 17px; }
+.bolinha{ min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--d-accent);
+  color: #06150A; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.busca-linha{ display: flex; gap: 10px; margin: 26px 0 16px; flex-wrap: wrap; }
+.busca{ flex: 1 1 260px; position: relative; }
+.busca input{ width: 100%; padding: 13px 16px 13px 42px; border-radius: 12px; border: 1px solid var(--d-line);
+  background: rgba(0,0,0,.24); color: var(--d-ink); font-size: 15px; }
+.busca input:focus{ outline: none; border-color: var(--d-accent); box-shadow: 0 0 0 3px rgba(90,158,86,.22); }
+.busca svg{ position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--d-ink-2); }
+.ordenar{ padding: 13px 14px; border-radius: 12px; border: 1px solid var(--d-line); background: rgba(0,0,0,.24); color: var(--d-ink); }
+.categorias{ display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.cat{ padding: 9px 17px; border-radius: 999px; border: 1px solid var(--d-line); background: transparent;
+  color: var(--d-ink-2); cursor: pointer; font-size: 14px; transition: all .22s var(--d-t); }
+.cat:hover{ color: var(--d-ink); border-color: var(--d-accent); }
+.cat[aria-pressed="true"]{ background: var(--d-accent); color: #06150A; border-color: transparent; font-weight: 600; }
+.grade-p{ display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+@media (max-width: 1000px){ .grade-p{ grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 720px){ .grade-p{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 440px){ .grade-p{ grid-template-columns: 1fr; } }
+.prod{ cursor: pointer; text-align: left; border: 1px solid var(--d-line); border-radius: var(--d-r-lg);
+  background: var(--d-surface); overflow: hidden; padding: 0; color: inherit; font: inherit;
+  transition: transform .3s var(--d-t), border-color .3s var(--d-t); }
+.prod:hover{ transform: translateY(-4px); border-color: var(--d-accent); }
+.prod-arte{ aspect-ratio: 1; display: grid; place-items: center; background: var(--bg); position: relative; }
+.prod-arte svg{ width: 44%; color: rgba(255,255,255,.82); }
+.prod-arte .tag{ position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 999px;
+  background: rgba(0,0,0,.45); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.prod-info{ padding: 15px 16px 17px; }
+.prod-info b{ display: block; font-size: 15.4px; font-weight: 600; }
+.prod-info .cat-n{ color: var(--d-ink-2); font-size: 12.6px; margin-top: 2px; }
+.prod-info .p{ font-family: var(--d-display); font-size: 21px; color: var(--d-accent-2); margin-top: 10px; }
+.vazio{ padding: 40px; text-align: center; color: var(--d-ink-2); grid-column: 1/-1; }
+.detalhe{ display: grid; grid-template-columns: 1fr 1fr; }
+@media (max-width: 700px){ .detalhe{ grid-template-columns: 1fr; } }
+.detalhe .arte{ aspect-ratio: 1; display: grid; place-items: center; }
+.detalhe .arte svg{ width: 42%; color: rgba(255,255,255,.85); }
+.detalhe .lado{ padding: 26px; display: grid; align-content: start; gap: 12px; }
+.detalhe h2{ font-family: var(--d-display); font-size: 27px; }
+.detalhe .preco{ font-family: var(--d-display); font-size: 31px; color: var(--d-accent-2); }
+.qtd{ display: flex; align-items: center; gap: 12px; }
+.qtd button{ width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--d-line);
+  background: rgba(0,0,0,.24); color: var(--d-ink); cursor: pointer; font-size: 18px; }
+.qtd button:hover{ border-color: var(--d-accent); }
+.qtd span{ min-width: 28px; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+.carrinho{ position: fixed; top: var(--barra); right: 0; bottom: 0; width: min(390px,100%); z-index: 700;
+  background: var(--d-surface); border-left: 1px solid var(--d-line); display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .35s var(--d-t); }
+.carrinho[data-aberto="true"]{ transform: translateX(0); }
+.carrinho-cab{ padding: 18px 20px; border-bottom: 1px solid var(--d-line); display: flex; align-items: center; gap: 12px; }
+.carrinho-cab b{ font-family: var(--d-display); font-size: 21px; margin-right: auto; }
+.carrinho-itens{ flex: 1; overflow-y: auto; padding: 16px 20px; display: grid; gap: 12px; align-content: start; }
+.item-c{ display: flex; gap: 12px; align-items: center; }
+.item-c .mini{ width: 48px; height: 48px; border-radius: 10px; flex: none; display: grid; place-items: center; }
+.item-c .mini svg{ width: 55%; color: rgba(255,255,255,.85); }
+.item-c .txt{ flex: 1; min-width: 0; }
+.item-c .txt b{ font-size: 14.4px; font-weight: 600; display: block; }
+.item-c .txt span{ color: var(--d-ink-2); font-size: 13px; }
+.item-c .remover{ background: none; border: 0; color: var(--d-ink-2); cursor: pointer; font-size: 18px; padding: 4px; }
+.item-c .remover:hover{ color: #F87171; }
+.carrinho-pe{ padding: 18px 20px 22px; border-top: 1px solid var(--d-line); display: grid; gap: 12px; }
+.total{ display: flex; justify-content: space-between; align-items: baseline; }
+.total b{ font-family: var(--d-display); font-size: 27px; color: var(--d-accent-2); }
+.fundo-c{ position: fixed; inset: 0; z-index: 690; background: rgba(0,0,0,.6);
+  opacity: 0; visibility: hidden; transition: opacity .3s var(--d-t), visibility .3s var(--d-t); }
+.fundo-c[data-aberto="true"]{ opacity: 1; visibility: visible; }
+</style>
+</head>
+<body>
+
+<header class="loja-topo">
+  <div class="d-wrap loja-in">
+    <span class="loja-nome">Verde<span>Vivo</span></span>
+    <button class="btn-carrinho" id="abrirCarrinho" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2 11.2a1.8 1.8 0 0 0 1.8 1.5h8.2a1.8 1.8 0 0 0 1.8-1.4L20.5 8H6"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+      Carrinho <span class="bolinha" id="contador">0</span>
+    </button>
+  </div>
+</header>
+
+<main class="d-wrap">
+  <div style="padding:30px 0 6px">
+    <span class="d-selo" style="color:var(--d-accent-2)">Catálogo demonstrativo</span>
+    <h1 style="font-family:var(--d-display);font-size:clamp(28px,4.6vw,40px);margin-top:14px">Plantas para quem tem pouco tempo e pouca luz.</h1>
+    <p style="color:var(--d-ink-2);margin-top:10px;max-width:56ch">Loja fictícia criada pela ELEV. Busque, filtre, abra um produto e monte o carrinho — sem pagamento, sem pedido real.</p>
+  </div>
+
+  <div class="busca-linha">
+    <div class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+      <input id="busca" type="search" placeholder="Buscar por nome ou característica..." aria-label="Buscar produtos">
+    </div>
+    <select class="ordenar" id="ordenar" aria-label="Ordenar">
+      <option value="rel">Ordenar: relevância</option>
+      <option value="menor">Menor preço</option>
+      <option value="maior">Maior preço</option>
+      <option value="az">Nome (A-Z)</option>
+    </select>
+  </div>
+
+  <div class="categorias" id="categorias"></div>
+  <div class="grade-p" id="grade"></div>
+
+  <p class="d-rodape">Verde Vivo é uma loja fictícia. Catálogo demonstrativo criado pela <a href="../../index.html">ELEV</a>. Nenhum pedido ou pagamento é processado.</p>
+</main>
+
+<div class="fundo-c" id="fundoC"></div>
+<aside class="carrinho" id="carrinho" data-aberto="false" aria-label="Carrinho">
+  <div class="carrinho-cab">
+    <b>Seu carrinho</b>
+    <button class="d-btn d-btn-linha" type="button" id="fecharCarrinho" style="padding:8px 14px;font-size:13px">Fechar</button>
+  </div>
+  <div class="carrinho-itens" id="itensCarrinho"></div>
+  <div class="carrinho-pe">
+    <div class="total"><span>Total</span><b id="total">R$ 0,00</b></div>
+    <button class="d-btn d-btn-cheio" type="button" id="finalizar">Finalizar pedido</button>
+    <p style="font-size:12.4px;color:var(--d-ink-2);text-align:center">Demonstração: o pedido não é enviado nem cobrado.</p>
+  </div>
+</aside>
+
+<div class="d-modal" id="modal" role="dialog" aria-modal="true" aria-label="Produto">
+  <button class="d-modal-fechar" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="d-modal-caixa"></div>
+</div>
+
+<script src="../../assets/demo.js" data-demo="Catálogo digital"></script>
+<script>
+(function () {
+  "use strict";
+  const FOLHA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 5.5-13 14-13 0 8.5-5 14-14 13z"/><path d="M5 19c3.5-3.5 6.5-6 11-8"/></svg>';
+  const VASO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9h12l-1.4 9.5a2 2 0 0 1-2 1.7H9.4a2 2 0 0 1-2-1.7z"/><path d="M12 9c0-3 1.6-5 4.4-5.4M12 9C12 6.4 10.6 4.6 8 4"/></svg>';
+  const CACTO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V6a2.4 2.4 0 0 1 4.8 0v4.4a2 2 0 0 1-2 2H12"/><path d="M12 13.5H9.4a2 2 0 0 1-2-2V9.4a2.4 2.4 0 0 1 4.6-.9"/><path d="M8.5 21h7"/></svg>';
+
+  const PRODUTOS = [
+    { n:"Zamioculca", c:"Fácil de cuidar", p:89.9, bg:"linear-gradient(150deg,#2F5E36,#14210F)", i:FOLHA, tag:"pouca luz", d:"Aguenta semanas sem água e vive bem em ambiente interno com pouca luz." },
+    { n:"Espada-de-são-jorge", c:"Fácil de cuidar", p:69.9, bg:"linear-gradient(140deg,#3A6B3E,#16200F)", i:FOLHA, tag:"pouca luz", d:"Purifica o ar e perdoa esquecimentos. Ideal para quarto e corredor." },
+    { n:"Jiboia", c:"Fácil de cuidar", p:54.9, bg:"linear-gradient(160deg,#4A7C48,#16200F)", i:FOLHA, tag:"pendente", d:"Cresce rápido e fica linda pendurada em prateleira alta." },
+    { n:"Costela-de-adão", c:"Grandes", p:149.9, bg:"linear-gradient(150deg,#2B5A38,#101A10)", i:FOLHA, tag:"destaque", d:"Folha grande e marcante. Pede um canto com luz indireta." },
+    { n:"Pau-d'água", c:"Grandes", p:189.9, bg:"linear-gradient(140deg,#35603C,#101A10)", i:FOLHA, d:"Chega a dois metros e organiza qualquer sala com um único vaso." },
+    { n:"Ficus lyrata", c:"Grandes", p:229.9, bg:"linear-gradient(160deg,#2F5E36,#0F1810)", i:FOLHA, tag:"destaque", d:"A queridinha das fotos. Precisa de luz boa e rega regular." },
+    { n:"Cacto mandacaru", c:"Suculentas", p:64.9, bg:"linear-gradient(150deg,#6B7A3A,#1A1E10)", i:CACTO, tag:"sol pleno", d:"Rega a cada quinze dias. Quanto mais sol, mais feliz." },
+    { n:"Echeveria", c:"Suculentas", p:34.9, bg:"linear-gradient(140deg,#7C8A55,#1A1E10)", i:CACTO, d:"Pequena, resistente e ótima para escrivaninha com janela por perto." },
+    { n:"Suculenta rosário", c:"Suculentas", p:44.9, bg:"linear-gradient(160deg,#6E8452,#151A0F)", i:CACTO, tag:"pendente", d:"Cai em fios verdes. Fica bem em prateleira ou vaso suspenso." },
+    { n:"Vaso cerâmica areia", c:"Vasos", p:79.9, bg:"linear-gradient(150deg,#A89376,#3A3226)", i:VASO, d:"Cerâmica esmaltada com prato incluso. Tamanho médio." },
+    { n:"Vaso terracota", c:"Vasos", p:49.9, bg:"linear-gradient(140deg,#B0724E,#3A2318)", i:VASO, tag:"clássico", d:"O vaso de sempre, que deixa a terra respirar." },
+    { n:"Cachepô fibra", c:"Vasos", p:119.9, bg:"linear-gradient(160deg,#8C7A5E,#2A2318)", i:VASO, d:"Fibra natural trançada à mão. Cabe vaso de até 30 cm." }
+  ];
+
+  const CATS = ["Todos"].concat(PRODUTOS.map(function (p) { return p.c; }).filter(function (v, i, a) { return a.indexOf(v) === i; }));
+  let catAtual = "Todos", termo = "", ordem = "rel";
+  const carrinho = [];
+
+  document.getElementById("categorias").innerHTML = CATS.map(function (c) {
+    return '<button class="cat" type="button" data-cat="' + c + '" aria-pressed="' + (c === catAtual) + '">' + c + "</button>";
+  }).join("");
+
+  function filtrados() {
+    const t = termo.trim().toLowerCase();
+    let lista = PRODUTOS.filter(function (p) {
+      const okCat = catAtual === "Todos" || p.c === catAtual;
+      const okTermo = !t || (p.n + " " + p.c + " " + (p.tag || "") + " " + p.d).toLowerCase().indexOf(t) > -1;
+      return okCat && okTermo;
+    });
+    if (ordem === "menor") lista = lista.slice().sort(function (a, b) { return a.p - b.p; });
+    if (ordem === "maior") lista = lista.slice().sort(function (a, b) { return b.p - a.p; });
+    if (ordem === "az") lista = lista.slice().sort(function (a, b) { return a.n.localeCompare(b.n, "pt-BR"); });
+    return lista;
+  }
+
+  function desenha() {
+    const lista = filtrados();
+    const grade = document.getElementById("grade");
+    if (!lista.length) {
+      grade.innerHTML = '<p class="vazio">Nada encontrado para essa busca. Tente outra palavra ou volte para “Todos”.</p>';
+      return;
+    }
+    grade.innerHTML = lista.map(function (p) {
+      return '<button class="prod" type="button" data-n="' + p.n + '">' +
+        '<span class="prod-arte" style="--bg:' + p.bg + '">' + (p.tag ? '<span class="tag">' + p.tag + "</span>" : "") + p.i + "</span>" +
+        '<span class="prod-info"><b>' + p.n + '</b><span class="cat-n">' + p.c + '</span><span class="p">' + elevMoeda(p.p) + "</span></span>" +
+        "</button>";
+    }).join("");
+  }
+
+  function acharProduto(n) { return PRODUTOS.filter(function (p) { return p.n === n; })[0]; }
+
+  function atualizaCarrinho() {
+    const cont = document.getElementById("contador");
+    const qtd = carrinho.reduce(function (s, i) { return s + i.q; }, 0);
+    cont.textContent = String(qtd);
+    const total = carrinho.reduce(function (s, i) { return s + i.q * i.p.p; }, 0);
+    document.getElementById("total").textContent = elevMoeda(total);
+    document.getElementById("finalizar").disabled = qtd === 0;
+    document.getElementById("itensCarrinho").innerHTML = carrinho.length
+      ? carrinho.map(function (i, idx) {
+          return '<div class="item-c"><span class="mini" style="background:' + i.p.bg + '">' + i.p.i + "</span>" +
+            '<span class="txt"><b>' + i.p.n + "</b><span>" + i.q + " × " + elevMoeda(i.p.p) + "</span></span>" +
+            '<button class="remover" type="button" data-remover="' + idx + '" aria-label="Remover">×</button></div>';
+        }).join("")
+      : '<p style="color:var(--d-ink-2);font-size:14px">Carrinho vazio. Escolha uma planta para começar.</p>';
+  }
+
+  function adicionar(p, q) {
+    const ja = carrinho.filter(function (i) { return i.p.n === p.n; })[0];
+    if (ja) ja.q += q; else carrinho.push({ p: p, q: q });
+    atualizaCarrinho();
+    abrirCarrinho(true);
+  }
+
+  function abrirCarrinho(estado) {
+    document.getElementById("carrinho").dataset.aberto = String(estado);
+    document.getElementById("fundoC").dataset.aberto = String(estado);
+  }
+
+  ElevModal.ligar("modal");
+  document.getElementById("grade").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-n]");
+    if (!b) return;
+    const p = acharProduto(b.dataset.n);
+    let q = 1;
+    ElevModal.abrir("modal",
+      '<div class="detalhe">' +
+        '<div class="arte" style="background:' + p.bg + '">' + p.i + "</div>" +
+        '<div class="lado">' +
+          '<span class="d-selo" style="color:var(--d-accent-2);align-self:start">' + p.c + "</span>" +
+          "<h2>" + p.n + "</h2>" +
+          '<p style="color:var(--d-ink-2);font-size:15px">' + p.d + "</p>" +
+          '<div class="preco">' + elevMoeda(p.p) + "</div>" +
+          '<div class="qtd"><button type="button" data-menos aria-label="Diminuir">−</button><span id="qv">1</span><button type="button" data-mais aria-label="Aumentar">+</button></div>' +
+          '<button class="d-btn d-btn-cheio" type="button" data-add>Adicionar ao carrinho</button>' +
+          '<p style="font-size:12.4px;color:var(--d-ink-2)">Produto fictício. Demonstração sem pagamento real.</p>' +
+        "</div>" +
+      "</div>");
+    const caixa = document.querySelector("#modal .d-modal-caixa");
+    caixa.addEventListener("click", function (ev) {
+      if (ev.target.closest("[data-mais]")) { q++; document.getElementById("qv").textContent = q; }
+      if (ev.target.closest("[data-menos]") && q > 1) { q--; document.getElementById("qv").textContent = q; }
+      if (ev.target.closest("[data-add]")) { adicionar(p, q); ElevModal.fechar("modal"); }
+    });
+  });
+
+  document.getElementById("categorias").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-cat]");
+    if (!b) return;
+    catAtual = b.dataset.cat;
+    document.querySelectorAll("[data-cat]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    desenha();
+  });
+  document.getElementById("busca").addEventListener("input", function (e) { termo = e.target.value; desenha(); });
+  document.getElementById("ordenar").addEventListener("change", function (e) { ordem = e.target.value; desenha(); });
+  document.getElementById("abrirCarrinho").addEventListener("click", function () { abrirCarrinho(true); });
+  document.getElementById("fecharCarrinho").addEventListener("click", function () { abrirCarrinho(false); });
+  document.getElementById("fundoC").addEventListener("click", function () { abrirCarrinho(false); });
+  document.getElementById("itensCarrinho").addEventListener("click", function (e) {
+    const r = e.target.closest("[data-remover]");
+    if (!r) return;
+    carrinho.splice(Number(r.dataset.remover), 1);
+    atualizaCarrinho();
+  });
+  document.getElementById("finalizar").addEventListener("click", function () {
+    const total = carrinho.reduce(function (s, i) { return s + i.q * i.p.p; }, 0);
+    const qtd = carrinho.reduce(function (s, i) { return s + i.q; }, 0);
+    document.getElementById("itensCarrinho").innerHTML =
+      '<div style="text-align:center;padding:26px 6px">' +
+        '<div style="width:60px;height:60px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:rgba(90,158,86,.18);color:var(--d-accent-2);border:1px solid var(--d-accent)">' +
+        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>' +
+        '<b style="font-family:var(--d-display);font-size:21px">Pedido montado!</b>' +
+        '<p style="color:var(--d-ink-2);font-size:14px;margin-top:8px">' + qtd + (qtd === 1 ? " item" : " itens") + " · " + elevMoeda(total) + "</p>" +
+        '<p style="color:var(--d-ink-2);font-size:13px;margin-top:12px">Numa loja real, este pedido seguiria para o WhatsApp da loja ou para o painel de pedidos. Aqui ele termina na tela.</p>' +
+      "</div>";
+    carrinho.length = 0;
+    document.getElementById("contador").textContent = "0";
+    document.getElementById("total").textContent = elevMoeda(0);
+    document.getElementById("finalizar").disabled = true;
+  });
+
+  desenha();
+  atualizaCarrinho();
+})();
+</script>
+</body>
+</html>

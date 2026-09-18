@@ -103,3 +103,30 @@ Nao ha backend. Ao enviar, o site valida os dois campos essenciais, monta a
 mensagem com tudo que foi escrito e oferece dois caminhos: abrir o WhatsApp da
 ELEV com a mensagem pronta, ou abrir o e-mail. Nenhum dado sai do navegador do
 visitante sem ele mandar.
+
+## Demonstrações
+
+Sete demos independentes em `site/demos/`, cada uma com identidade visual
+propria e empresa ficticia. Todas carregam `assets/demo.css` e `assets/demo.js`,
+que trazem a barra "Projeto demonstrativo ELEV", o modal e os utilitarios
+comuns - o que evita repetir codigo em sete arquivos.
+
+| Pasta | Empresa ficticia | O que demonstra |
+|---|---|---|
+| `social/` | Brisa Cafe | Perfil com feed, Reels, destaques, post ampliado e o pacote de R$ 300 |
+| `design/` | Nomade Studio | Identidade visual, galeria de pecas com visualizacao ampliada |
+| `ai/` | Mecanica Trilho | Agente que le texto livre, identifica intencao, qualifica e resume |
+| `automacao/` | — | Fluxo do lead executando passo a passo, com classificacao |
+| `agendamento/` | Studio Aurora | Fluxo do cliente em 5 passos + painel do salao |
+| `institucional/` | Vertice Engenharia | Site completo: hero, servicos, sobre, formulario, CTA |
+| `catalogo/` | Verde Vivo | 12 produtos, busca, filtros, pagina de produto e carrinho |
+
+Para criar uma demo nova: copie a pasta mais parecida, troque os tokens `--d-*`
+no `<style>` (e a fonte) e ajuste os dados no `<script>`. A barra ELEV entra
+sozinha pelo `data-demo` da tag de script.
+
+### Regra das demos
+
+Empresas, numeros, avaliacoes e conteudos sao **ficticios**. Cada demo diz isso
+no proprio corpo, alem da barra fixa no topo. Nenhuma pode ser apresentada como
+cliente real da ELEV.

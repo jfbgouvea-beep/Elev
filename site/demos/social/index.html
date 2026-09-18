@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brisa Café — demonstração de Social Media | ELEV</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#14110D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/demo.css">
+<style>
+/* identidade propria da empresa ficticia: Brisa Café */
+:root{
+  --d-bg: #14110D; --d-surface: #1C1813; --d-line: #2E2820;
+  --d-ink: #F6F1E8; --d-ink-2: #B3A896;
+  --d-accent: #C67B4A; --d-accent-2: #E3A277;
+  --d-display: "Fraunces", Georgia, serif;
+  --verde: #4E6B4A;
+}
+.perfil{ padding-top: 34px; }
+.perfil-topo{ display: flex; gap: clamp(18px, 4vw, 40px); align-items: center; }
+.avatar{
+  width: clamp(84px, 16vw, 128px); aspect-ratio: 1; border-radius: 50%; flex: none;
+  background: radial-gradient(circle at 32% 28%, #E3A277, #8A4F2B 62%, #3A2116);
+  display: grid; place-items: center; border: 3px solid var(--d-line);
+  font-family: var(--d-display); font-weight: 700; font-size: clamp(30px, 6vw, 46px); color: #FFF3E6;
+}
+.perfil-info h1{ font-size: clamp(24px, 4vw, 32px); font-weight: 700; }
+.perfil-info .arroba{ color: var(--d-ink-2); font-size: 15px; margin-top: 3px; }
+.numeros{ display: flex; gap: clamp(16px, 4vw, 34px); margin: 18px 0; flex-wrap: wrap; }
+.numeros div{ font-size: 14px; color: var(--d-ink-2); }
+.numeros b{ display: block; font-family: var(--d-display); font-size: 20px; color: var(--d-ink); font-variant-numeric: tabular-nums; }
+.bio{ color: var(--d-ink-2); font-size: 15px; max-width: 46ch; }
+.bio b{ color: var(--d-ink); font-weight: 600; }
+.perfil-acoes{ display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+@media (max-width: 640px){
+  .perfil-topo{ flex-direction: column; align-items: flex-start; }
+  .perfil-acoes .d-btn{ flex: 1; }
+}
+.aviso-num{
+  margin-top: 16px; font-size: 12.4px; color: var(--d-ink-2);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 999px; border: 1px dashed var(--d-line);
+}
+.destaques{ display: flex; gap: 16px; margin: 34px 0 8px; overflow-x: auto; padding-bottom: 8px; }
+.destaque{ text-align: center; flex: none; cursor: pointer; background: none; border: 0; padding: 0; }
+.destaque .anel{
+  width: 68px; height: 68px; border-radius: 50%; display: grid; place-items: center;
+  border: 2px solid var(--d-accent); background: var(--d-surface); color: var(--d-accent-2);
+  transition: transform .25s var(--d-t);
+}
+.destaque:hover .anel{ transform: scale(1.06); }
+.destaque .anel svg{ width: 24px; height: 24px; }
+.destaque span{ display: block; font-size: 12px; color: var(--d-ink-2); margin-top: 7px; }
+.abas-perfil{ display: flex; gap: 6px; border-top: 1px solid var(--d-line); margin-top: 26px; padding-top: 10px; }
+.aba-p{
+  flex: 1; padding: 13px; background: none; border: 0; cursor: pointer; color: var(--d-ink-2);
+  font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+  border-bottom: 2px solid transparent; transition: color .25s var(--d-t), border-color .25s var(--d-t);
+}
+.aba-p[aria-selected="true"]{ color: var(--d-ink); border-bottom-color: var(--d-accent); }
+.feed{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 18px; }
+@media (max-width: 560px){ .feed{ gap: 4px; } }
+.item{
+  position: relative; aspect-ratio: var(--ar, 1); border: 0; padding: 0; cursor: pointer;
+  background: var(--bg, linear-gradient(140deg, #3A2116, #C67B4A)); overflow: hidden;
+  display: grid; place-items: center; color: #FFF3E6;
+}
+.item::after{
+  content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); opacity: 0;
+  transition: opacity .25s var(--d-t);
+}
+.item:hover::after{ opacity: 1; }
+.item .rot{
+  position: relative; z-index: 1; font-family: var(--d-display); font-weight: 700;
+  font-size: clamp(13px, 2.4vw, 18px); text-align: center; padding: 10px; line-height: 1.25;
+}
+.item .tipo{
+  position: absolute; top: 8px; right: 8px; z-index: 2; width: 22px; height: 22px;
+  display: grid; place-items: center; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,.6));
+}
+.item .tipo svg{ width: 16px; height: 16px; }
+.post-detalhe{ display: grid; grid-template-columns: 1.1fr .9fr; }
+@media (max-width: 760px){ .post-detalhe{ grid-template-columns: 1fr; } }
+.post-arte{ aspect-ratio: var(--ar,1); display: grid; place-items: center; padding: 24px; }
+.post-arte .rot{ font-family: var(--d-display); font-weight: 700; font-size: clamp(20px,3.4vw,30px); text-align: center; color: #FFF3E6; }
+.post-lado{ padding: 24px; display: grid; align-content: start; gap: 14px; }
+.post-lado .cab{ display: flex; align-items: center; gap: 11px; }
+.post-lado .mini-av{ width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(140deg,#E3A277,#8A4F2B); display: grid; place-items: center; font-family: var(--d-display); font-weight: 700; font-size: 15px; }
+.post-lado .legenda{ font-size: 15px; color: var(--d-ink-2); line-height: 1.65; }
+.post-lado .legenda b{ color: var(--d-ink); }
+.post-lado .meta{ display: flex; gap: 18px; font-size: 13px; color: var(--d-ink-2); border-top: 1px solid var(--d-line); padding-top: 14px; }
+.faria{ margin-top: 60px; }
+.faria h2{ font-size: clamp(22px, 3.4vw, 30px); }
+.faria-grade{ display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 22px; }
+@media (max-width: 860px){ .faria-grade{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 520px){ .faria-grade{ grid-template-columns: 1fr; } }
+.faria-card{ padding: 20px; display: flex; gap: 13px; align-items: flex-start; }
+.faria-card:hover{ transform: translateY(-3px); border-color: var(--d-accent); }
+.faria-card .ic{ width: 34px; height: 34px; flex: none; border-radius: 10px; display: grid; place-items: center;
+  background: rgba(198,123,74,.16); color: var(--d-accent-2); }
+.faria-card .ic svg{ width: 17px; height: 17px; }
+.faria-card b{ display: block; font-size: 15.4px; }
+.faria-card span{ color: var(--d-ink-2); font-size: 13.8px; }
+.pacote{
+  margin-top: 46px; padding: clamp(26px, 4vw, 42px); border-radius: var(--d-r-lg);
+  border: 1px solid var(--d-accent); display: grid; grid-template-columns: 1.1fr .9fr;
+  gap: clamp(22px, 4vw, 44px); align-items: center;
+  background: radial-gradient(120% 130% at 10% 0%, rgba(198,123,74,.24), transparent 60%), var(--d-surface);
+}
+@media (max-width: 800px){ .pacote{ grid-template-columns: 1fr; } }
+.pacote h2{ font-size: clamp(23px, 3.6vw, 32px); }
+.pacote ul{ display: grid; gap: 7px; margin: 18px 0 0; padding: 0; }
+.pacote li{ list-style: none; display: flex; gap: 9px; font-size: 14.6px; color: var(--d-ink-2); }
+.pacote li::before{ content: "✓"; color: var(--d-accent-2); font-weight: 700; }
+.pacote-box{ text-align: center; padding: 26px 22px; border-radius: var(--d-r); border: 1px solid var(--d-line); background: rgba(0,0,0,.28); }
+.pacote-box .l1{ font-family: var(--d-display); font-weight: 700; font-size: 26px; }
+.pacote-box .mais{ color: var(--d-accent-2); font-size: 18px; margin: 4px 0; }
+.pacote-box .l2{ color: var(--d-ink-2); font-size: 14.6px; }
+.pacote-box .v{ font-family: var(--d-display); font-weight: 700; font-size: 46px; margin: 14px 0 4px; color: var(--d-accent-2); }
+.pacote-box .obs{ font-size: 12.4px; color: var(--d-ink-2); }
+.pacote-box .d-btn{ width: 100%; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<main class="d-wrap perfil">
+  <section class="perfil-topo">
+    <div class="avatar">b</div>
+    <div class="perfil-info">
+      <h1>Brisa Café</h1>
+      <div class="arroba">@brisacafe.demo</div>
+      <div class="numeros">
+        <div><b>128</b>publicações</div>
+        <div><b>2.480</b>seguidores</div>
+        <div><b>310</b>seguindo</div>
+      </div>
+      <p class="bio"><b>Café de origem, pão na pedra e um cantinho tranquilo.</b><br>Torramos toda semana · Segunda a sábado, 7h às 19h<br>Rua das Acácias, 128</p>
+      <div class="perfil-acoes">
+        <button class="d-btn d-btn-cheio" type="button">Seguir</button>
+        <button class="d-btn d-btn-linha" type="button">Mensagem</button>
+      </div>
+      <div class="aviso-num">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
+        Perfil, números e conteúdos são fictícios, criados para demonstração.
+      </div>
+    </div>
+  </section>
+
+  <div class="destaques" id="destaques"></div>
+
+  <div class="abas-perfil" role="tablist">
+    <button class="aba-p" role="tab" aria-selected="true" data-aba="tudo">Feed</button>
+    <button class="aba-p" role="tab" aria-selected="false" data-aba="reel">Reels</button>
+    <button class="aba-p" role="tab" aria-selected="false" data-aba="post">Posts</button>
+  </div>
+
+  <div class="feed" id="feed"></div>
+
+  <section class="faria">
+    <h2>O que a ELEV faria por esse perfil</h2>
+    <div class="faria-grade" id="faria"></div>
+  </section>
+
+  <section class="pacote" id="pacote">
+    <div>
+      <span class="d-selo" style="color:var(--d-accent-2)">Pacote de conteúdo</span>
+      <h2 style="margin-top:14px">10 Reels + Social Media por 2 semanas</h2>
+      <ul>
+        <li>10 Reels</li><li>Edição dos vídeos</li><li>Legendas e textos</li><li>Capas</li>
+        <li>Planejamento das 2 semanas</li><li>Organização dos conteúdos</li>
+        <li>Sugestões de conteúdo</li><li>Acompanhamento durante as 2 semanas</li>
+      </ul>
+    </div>
+    <div class="pacote-box">
+      <div class="l1">10 Reels</div>
+      <div class="mais">+</div>
+      <div class="l2">Social Media por 2 semanas</div>
+      <div class="v">R$ 300</div>
+      <div class="obs">Oferta inicial da ELEV. Pode ser ajustada conforme a necessidade do negócio. Não promete seguidores, alcance nem vendas.</div>
+      <a class="d-btn d-btn-cheio" href="../../index.html#contato">Quero esse pacote</a>
+    </div>
+  </section>
+
+  <p class="d-rodape">Brisa Café é uma empresa fictícia. Demonstração criada pela <a href="../../index.html">ELEV</a> para mostrar um formato de trabalho de Social Media.</p>
+</main>
+
+<div class="d-modal" id="modal" role="dialog" aria-modal="true" aria-label="Conteúdo ampliado">
+  <button class="d-modal-fechar" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="d-modal-caixa"></div>
+</div>
+
+<script src="../../assets/demo.js" data-demo="Social Media"></script>
+<script>
+(function () {
+  "use strict";
+  const CONTEUDOS = [
+    { tipo:"reel", rot:"Como nasce\nnosso café", bg:"linear-gradient(150deg,#3A2116,#C67B4A)", ar:"9/16",
+      legenda:"Da torra ao copo: mostramos o caminho do nosso grão em 30 segundos.", curtidas:412, coment:23 },
+    { tipo:"post", rot:"Pão na pedra\ntodo dia 7h", bg:"linear-gradient(140deg,#4E6B4A,#22301F)", ar:"1",
+      legenda:"Massa de fermentação natural, assada na pedra toda manhã. Chega cedo que sai quentinho.", curtidas:268, coment:14 },
+    { tipo:"reel", rot:"3 formas de\ncoar em casa", bg:"linear-gradient(160deg,#8A4F2B,#E3A277)", ar:"9/16",
+      legenda:"Coador de pano, prensa e V60: qual combina com o seu café da manhã?", curtidas:531, coment:37 },
+    { tipo:"post", rot:"Novo blend\nde inverno", bg:"linear-gradient(135deg,#2E2820,#C67B4A)", ar:"1",
+      legenda:"Notas de chocolate e castanha. Disponível no balcão e para levar em grãos.", curtidas:194, coment:9 },
+    { tipo:"post", rot:"Nosso canto\nfavorito", bg:"linear-gradient(150deg,#1C1813,#4E6B4A)", ar:"1",
+      legenda:"A mesa do fundo, perto da janela. Quem senta ali costuma ficar mais do que planejou.", curtidas:322, coment:18 },
+    { tipo:"reel", rot:"Bastidores\nda torra", bg:"linear-gradient(140deg,#C67B4A,#3A2116)", ar:"9/16",
+      legenda:"Terça é dia de torra. O cheiro toma conta da rua inteira.", curtidas:604, coment:41 },
+    { tipo:"post", rot:"Combo da\nmanhã", bg:"linear-gradient(160deg,#4E6B4A,#8A4F2B)", ar:"1",
+      legenda:"Café coado + pão na chapa. O começo de dia mais pedido da casa.", curtidas:238, coment:11 },
+    { tipo:"reel", rot:"Receita:\ncafé gelado", bg:"linear-gradient(150deg,#E3A277,#4E6B4A)", ar:"9/16",
+      legenda:"Três ingredientes e cinco minutos. Salva qualquer tarde de calor.", curtidas:487, coment:29 },
+    { tipo:"post", rot:"Quem faz\nacontecer", bg:"linear-gradient(140deg,#2E2820,#4E6B4A)", ar:"1",
+      legenda:"A equipe que abre a casa às 6h30 para você encontrar tudo pronto às 7h.", curtidas:355, coment:22 }
+  ];
+
+  const DESTAQUES = [
+    { n:"Cardápio", i:'<path d="M5 4h14v16H5z"/><path d="M8.5 9h7M8.5 13h5"/>' },
+    { n:"Bastidores", i:'<circle cx="12" cy="12" r="3.4"/><path d="M4 8.5h3l1.4-2.2h7.2L17 8.5h3v10H4z"/>' },
+    { n:"Grãos", i:'<path d="M12 4c3 2.4 4.4 5 4.4 8S15 18 12 20c-3-2-4.4-5-4.4-8S9 6.4 12 4z"/><path d="M12 4.6v15"/>' },
+    { n:"Espaço", i:'<path d="M4 20V9.5l8-5.5 8 5.5V20z"/><path d="M9.5 20v-6h5v6"/>' },
+    { n:"Receitas", i:'<path d="M7 3.5v17M12 3.5v17M17 3.5v17"/><path d="M4.5 8.5h15"/>' }
+  ];
+
+  const FARIA = [
+    { t:"Planejamento", d:"Calendário de 2 semanas com tema por dia.", i:'<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
+    { t:"Design", d:"Identidade aplicada em post, story e capa.", i:'<circle cx="12" cy="12" r="8.6"/><circle cx="8.6" cy="10.4" r="1.2" fill="currentColor"/><circle cx="14" cy="8.8" r="1.2" fill="currentColor"/>' },
+    { t:"Reels", d:"Roteiro, gravação orientada e edição.", i:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3.4 9.4h17.2"/><path d="M10.6 12.8l4.2 2.4-4.2 2.4z"/>' },
+    { t:"Legendas", d:"Texto que conversa, com chamada no fim.", i:'<path d="M20.5 12a8.5 8.5 0 1 0-3.4 6.8L20.5 20l-1-3.2A8.4 8.4 0 0 0 20.5 12z"/><path d="M8.6 11.8h6.8M8.6 14.6h4.2"/>' },
+    { t:"Organização do perfil", d:"Bio, destaques e ordem do feed.", i:'<circle cx="12" cy="8.6" r="3.6"/><path d="M4.8 20c.7-3.4 3.6-5.6 7.2-5.6s6.5 2.2 7.2 5.6"/>' },
+    { t:"Planejamento de conteúdo", d:"Pauta do mês a partir do que funciona.", i:'<path d="M4 19V9.5M10 19V5M16 19v-7.5M21.5 19h-19"/>' }
+  ];
+
+  const svg = function (inner, w) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w||1.7) +
+           '" stroke-linecap="round" stroke-linejoin="round">' + inner + "</svg>";
+  };
+
+  /* destaques */
+  document.getElementById("destaques").innerHTML = DESTAQUES.map(function (d) {
+    return '<button class="destaque" type="button" data-destaque="' + d.n + '"><span class="anel">' +
+           svg(d.i) + '</span><span>' + d.n + "</span></button>";
+  }).join("");
+
+  /* o que a ELEV faria */
+  document.getElementById("faria").innerHTML = FARIA.map(function (f) {
+    return '<div class="d-card faria-card"><span class="ic">' + svg(f.i) +
+           "</span><div><b>" + f.t + "</b><span>" + f.d + "</span></div></div>";
+  }).join("");
+
+  /* feed com filtro por aba */
+  const feed = document.getElementById("feed");
+  const iconeTipo = {
+    reel: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+    post: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>'
+  };
+  function desenhaFeed(filtro) {
+    feed.innerHTML = CONTEUDOS
+      .filter(function (c) { return filtro === "tudo" || c.tipo === filtro; })
+      .map(function (c) {
+        const i = CONTEUDOS.indexOf(c);
+        return '<button class="item" type="button" data-i="' + i + '" style="--bg:' + c.bg +
+               '"><span class="tipo">' + iconeTipo[c.tipo] + '</span><span class="rot">' +
+               c.rot.replace(/\n/g, "<br>") + "</span></button>";
+      }).join("");
+  }
+  desenhaFeed("tudo");
+
+  document.querySelectorAll(".aba-p").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".aba-p").forEach(function (o) { o.setAttribute("aria-selected", String(o === b)); });
+      desenhaFeed(b.dataset.aba);
+    });
+  });
+
+  /* abrir conteúdo ampliado */
+  ElevModal.ligar("modal");
+  feed.addEventListener("click", function (e) {
+    const b = e.target.closest("[data-i]");
+    if (!b) return;
+    const c = CONTEUDOS[Number(b.dataset.i)];
+    ElevModal.abrir("modal",
+      '<div class="post-detalhe">' +
+        '<div class="post-arte" style="background:' + c.bg + ';--ar:' + c.ar + '"><div class="rot">' +
+          c.rot.replace(/\n/g, "<br>") + "</div></div>" +
+        '<div class="post-lado">' +
+          '<div class="cab"><span class="mini-av">b</span><div><b>Brisa Café</b><div style="font-size:12.6px;color:var(--d-ink-2)">@brisacafe.demo</div></div></div>' +
+          '<p class="legenda"><b>Brisa Café</b> ' + c.legenda + "</p>" +
+          '<div class="meta"><span>' + c.curtidas + " curtidas</span><span>" + c.coment + " comentários</span><span>" +
+            (c.tipo === "reel" ? "Reel" : "Post") + "</span></div>" +
+          '<p style="font-size:12.6px;color:var(--d-ink-2)">Conteúdo e números fictícios, criados pela ELEV para demonstração.</p>' +
+        "</div>" +
+      "</div>");
+  });
+
+  document.getElementById("destaques").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-destaque]");
+    if (!b) return;
+    ElevModal.abrir("modal",
+      '<div style="padding:34px;text-align:center">' +
+        '<div style="font-family:var(--d-display);font-size:26px;margin-bottom:10px">Destaque: ' + b.dataset.destaque + "</div>" +
+        '<p style="color:var(--d-ink-2);max-width:46ch;margin-inline:auto">Nesta demonstração os destaques mostram como a ELEV organizaria os stories fixos do perfil por assunto, para quem chega encontrar o essencial sem rolar o feed.</p>' +
+      "</div>");
+  });
+})();
+</script>
+</body>
+</html>

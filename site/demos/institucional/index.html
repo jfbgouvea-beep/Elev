@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vértice Engenharia — demonstração de site | ELEV</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0C1418">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../../assets/demo.css">
+<style>
+:root{
+  --d-bg:#0C1418; --d-surface:#121E23; --d-line:#1E2F36;
+  --d-ink:#EDF4F6; --d-ink-2:#93A9B1;
+  --d-accent:#14A08A; --d-accent-2:#4ECDB0;
+  --d-display:"Barlow Condensed", system-ui, sans-serif;
+}
+.nav-demo{
+  position: sticky; top: var(--barra); z-index: 500; background: rgba(12,20,24,.9);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--d-line);
+}
+.nav-in{ display: flex; align-items: center; gap: 22px; height: 62px; }
+.logo-v{ display: flex; align-items: center; gap: 9px; margin-right: auto; }
+.logo-v .sim{ width: 30px; height: 30px; border-radius: 7px; background: var(--d-accent);
+  display: grid; place-items: center; color: #04120F; font-family: var(--d-display); font-weight: 700; font-size: 19px; }
+.logo-v b{ font-family: var(--d-display); font-size: 21px; letter-spacing: .06em; text-transform: uppercase; }
+.nav-in a{ font-size: 14.4px; color: var(--d-ink-2); transition: color .2s var(--d-t); }
+.nav-in a:hover{ color: var(--d-ink); }
+@media (max-width: 740px){ .nav-in .oculta{ display: none; } }
+.hero-v{ padding: clamp(50px,8vw,90px) 0; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+@media (max-width: 880px){ .hero-v{ grid-template-columns: 1fr; } }
+.hero-v h1{ font-family: var(--d-display); font-size: clamp(38px,7vw,68px); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .01em; line-height: .98; }
+.hero-v h1 em{ font-style: normal; color: var(--d-accent-2); }
+.hero-v p{ color: var(--d-ink-2); margin-top: 18px; max-width: 46ch; font-size: 17px; }
+.hero-acoes{ display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+.hero-arte{ aspect-ratio: 4/3.2; border-radius: 18px; border: 1px solid var(--d-line); overflow: hidden;
+  background: linear-gradient(160deg,#16333A,#0C1418); display: grid; place-items: center; position: relative; }
+.hero-arte .malha{ position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(78,205,176,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(78,205,176,.1) 1px, transparent 1px);
+  background-size: 34px 34px; }
+.hero-arte svg{ width: 44%; color: var(--d-accent-2); position: relative; }
+.faixa-n{ display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--d-line);
+  border-block: 1px solid var(--d-line); }
+@media (max-width: 640px){ .faixa-n{ grid-template-columns: 1fr; } }
+.faixa-n div{ background: var(--d-bg); padding: 22px; text-align: center; }
+.faixa-n b{ font-family: var(--d-display); font-size: 17px; display: block; text-transform: uppercase; letter-spacing: .06em; }
+.faixa-n span{ color: var(--d-ink-2); font-size: 13.6px; }
+.sec-v{ padding: clamp(46px,7vw,76px) 0; }
+.sec-v h2{ font-family: var(--d-display); font-size: clamp(27px,4.4vw,40px); text-transform: uppercase; letter-spacing: .02em; }
+.sec-v .lead{ color: var(--d-ink-2); margin-top: 12px; max-width: 58ch; }
+.servicos-v{ display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 28px; }
+@media (max-width: 860px){ .servicos-v{ grid-template-columns: 1fr; } }
+.serv-v{ padding: 24px; }
+.serv-v:hover{ transform: translateY(-3px); border-color: var(--d-accent); }
+.serv-v .ic{ width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; margin-bottom: 16px;
+  background: rgba(20,160,138,.14); color: var(--d-accent-2); }
+.serv-v .ic svg{ width: 21px; height: 21px; }
+.serv-v b{ font-family: var(--d-display); font-size: 20px; text-transform: uppercase; letter-spacing: .03em; }
+.serv-v p{ color: var(--d-ink-2); font-size: 14.6px; margin-top: 8px; }
+.sobre{ display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+@media (max-width: 860px){ .sobre{ grid-template-columns: 1fr; } }
+.dif{ display: grid; gap: 12px; margin-top: 20px; }
+.dif div{ display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: var(--d-ink-2); }
+.dif svg{ width: 18px; height: 18px; flex: none; margin-top: 3px; color: var(--d-accent-2); }
+.form-v{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 640px){ .form-v{ grid-template-columns: 1fr; } }
+.form-v .largo{ grid-column: 1/-1; }
+.ok-v{ display: none; padding: 20px; border-radius: 13px; border: 1px solid var(--d-accent);
+  background: rgba(20,160,138,.12); margin-top: 16px; }
+.ok-v[data-on="true"]{ display: block; }
+.cta-v{ text-align: center; padding: clamp(34px,5vw,56px); border-radius: 20px;
+  background: linear-gradient(140deg, rgba(20,160,138,.2), transparent 60%), var(--d-surface); border: 1px solid var(--d-line); }
+.cta-v h2{ font-family: var(--d-display); font-size: clamp(25px,4vw,38px); text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<nav class="nav-demo">
+  <div class="d-wrap nav-in">
+    <span class="logo-v"><span class="sim">V</span><b>Vértice</b></span>
+    <a href="#servicos-v" class="oculta">Serviços</a>
+    <a href="#sobre-v" class="oculta">Sobre</a>
+    <a href="#contato-v" class="oculta">Contato</a>
+    <a class="d-btn d-btn-cheio" href="#contato-v" style="padding:9px 18px;font-size:14px">Orçamento</a>
+  </div>
+</nav>
+
+<main>
+  <section class="d-wrap hero-v">
+    <div>
+      <span class="d-selo" style="color:var(--d-accent-2)">Demonstração ELEV</span>
+      <h1 style="margin-top:16px">Obra entregue<br><em>no prazo combinado.</em></h1>
+      <p>Projeto, execução e reforma para residências e comércios. Uma equipe só do primeiro desenho até a entrega das chaves.</p>
+      <div class="hero-acoes">
+        <a class="d-btn d-btn-cheio" href="#contato-v">Pedir orçamento</a>
+        <a class="d-btn d-btn-linha" href="#servicos-v">Ver serviços</a>
+      </div>
+    </div>
+    <div class="hero-arte">
+      <div class="malha"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 21h18M5 21V9.5L12 4l7 5.5V21"/><path d="M9.5 21v-6.5h5V21M9.5 11.5h5"/>
+      </svg>
+    </div>
+  </section>
+
+  <div class="faixa-n">
+    <div><b>Projeto e execução</b><span>do desenho à obra</span></div>
+    <div><b>Equipe própria</b><span>sem terceirizar a obra</span></div>
+    <div><b>Prazo por contrato</b><span>cronograma por escrito</span></div>
+  </div>
+
+  <section class="d-wrap sec-v" id="servicos-v">
+    <h2>O que fazemos</h2>
+    <p class="lead">Três frentes que cobrem do papel à entrega.</p>
+    <div class="servicos-v">
+      <div class="d-card serv-v">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></span>
+        <b>Projeto</b><p>Planta, memorial e compatibilização antes de qualquer tijolo sair do lugar.</p>
+      </div>
+      <div class="d-card serv-v">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6.5l3.5-3.5 3 3L17 9.5M3 21l6.5-6.5M9 12l3 3"/><path d="M12.5 8.5L15 11"/></svg></span>
+        <b>Execução</b><p>Obra acompanhada de perto, com cronograma e medição por etapa.</p>
+      </div>
+      <div class="d-card serv-v">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V11l6-5 6 5v10"/><path d="M10 21v-5h4v5"/></svg></span>
+        <b>Reforma</b><p>Adaptação de espaço que já existe, com o mínimo de interrupção possível.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="d-wrap sec-v sobre" id="sobre-v">
+    <div>
+      <h2>Sobre a Vértice</h2>
+      <p class="lead">Uma construtora fictícia criada para esta demonstração. O texto mostra como a ELEV organiza a página “sobre” de um negócio real: o que a empresa faz, como trabalha e por que confiar nela.</p>
+      <div class="dif">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cronograma e medição por escrito</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Equipe própria, sem repasse de obra</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Um responsável técnico do início ao fim</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Relatório de obra a cada quinzena</div>
+      </div>
+    </div>
+    <div class="hero-arte" style="aspect-ratio:4/3">
+      <div class="malha"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 20h18M7 20V8h5v12M12 20V4h5v16"/><path d="M9 11h1M9 14h1M14 8h1M14 12h1M14 16h1"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="d-wrap sec-v" id="contato-v">
+    <h2>Peça um orçamento</h2>
+    <p class="lead">Formulário demonstrativo: nada é enviado, a confirmação aparece na própria página.</p>
+    <form class="form-v" id="formV" style="margin-top:24px" novalidate>
+      <div class="d-campo"><label for="vn">Nome</label><input id="vn" required placeholder="Seu nome"></div>
+      <div class="d-campo"><label for="vt">Telefone</label><input id="vt" placeholder="(19) 99999-0000"></div>
+      <div class="d-campo largo"><label for="vm">Conte sobre a obra</label><textarea id="vm" rows="4" placeholder="Tipo de obra, tamanho, prazo desejado..."></textarea></div>
+      <div class="largo"><button class="d-btn d-btn-cheio" type="submit">Enviar pedido</button></div>
+    </form>
+    <div class="ok-v" id="okV">
+      <b>Pedido registrado nesta demonstração.</b>
+      <p style="color:var(--d-ink-2);margin-top:6px;font-size:14.4px">Num site real, essa mensagem chegaria no e-mail e no WhatsApp da construtora — e poderia disparar a automação que você viu na outra demonstração.</p>
+    </div>
+  </section>
+
+  <section class="d-wrap" style="padding-bottom:20px">
+    <div class="cta-v">
+      <h2>Vamos tirar seu projeto do papel?</h2>
+      <p style="color:var(--d-ink-2);margin-top:12px">Fale com a equipe e receba uma proposta com prazo e escopo definidos.</p>
+      <a class="d-btn d-btn-cheio" href="#contato-v" style="margin-top:20px">Falar com a Vértice</a>
+    </div>
+  </section>
+
+  <p class="d-wrap d-rodape">Vértice Engenharia é uma empresa fictícia. Site demonstrativo criado pela <a href="../../index.html">ELEV</a>.</p>
+</main>
+
+<script src="../../assets/demo.js" data-demo="Site institucional"></script>
+<script>
+document.getElementById("formV").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const n = document.getElementById("vn");
+  if (!n.value.trim()) { n.focus(); n.style.borderColor = "#F87171"; return; }
+  n.style.borderColor = "";
+  document.getElementById("okV").dataset.on = "true";
+  document.getElementById("okV").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+</body>
+</html>
