@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demonstrações da ELEV</title>
+<meta name="description" content="Sete demonstrações interativas das soluções que a ELEV desenvolve: social media, design, IA, automação, agendamento, sites e catálogos.">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --ground:#0B0B0B; --ground-2:#0F0F11; --surface:#131316; --surface-2:#18181B;
+  --line:#232327; --line-strong:#34343A;
+  --ink:#FFFFFF; --ink-2:#A1A1AA; --ink-3:#71717A;
+  --blue:#2563EB; --blue-soft:#60A5FA;
+  --grad: linear-gradient(135deg, var(--blue-soft), var(--blue) 70%);
+  --fio: linear-gradient(90deg, transparent, rgba(96,165,250,.45), transparent);
+  --sh-1: 0 1px 2px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.24);
+  --sh-2: 0 2px 6px rgba(0,0,0,.42), 0 12px 32px -10px rgba(0,0,0,.6);
+  --t: cubic-bezier(.2,.7,.3,1);
+  --pad: clamp(20px, 5vw, 40px);
+}
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+body{
+  margin: 0; background: var(--ground); color: var(--ink);
+  font: 400 17px/1.65 Manrope, ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+h1, h2, h3{ font-family: Archivo, system-ui, sans-serif; font-weight: 700; font-stretch: 110%;
+  letter-spacing: -.026em; line-height: 1.12; margin: 0; text-wrap: balance; }
+p{ margin: 0; }
+a{ color: inherit; text-decoration: none; }
+svg{ display: block; }
+:focus-visible{ outline: 2px solid var(--blue-soft); outline-offset: 3px; border-radius: 6px; }
+.wrap{ width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: var(--pad); }
+
+.topo{ position: sticky; top: 0; z-index: 50; background: rgba(11,11,11,.86); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line); }
+.topo-in{ display: flex; align-items: center; gap: 18px; height: 70px; }
+.marca{ font-family: Archivo, sans-serif; font-weight: 800; font-stretch: 118%; font-size: 21px;
+  letter-spacing: .14em; margin-right: auto;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.marca img{ height: 30px; width: auto; }
+.btn{ display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 12px 22px; border-radius: 999px; border: 1px solid transparent;
+  font: 600 14.6px/1 Manrope, sans-serif; cursor: pointer;
+  transition: transform .28s var(--t), background-color .28s var(--t), border-color .28s var(--t), box-shadow .28s var(--t); }
+.btn svg{ width: 15px; height: 15px; flex: none; }
+.btn-primary{ background: var(--grad); color: #050914; font-weight: 700; box-shadow: 0 10px 30px -14px rgba(37,99,235,.9); }
+.btn-primary:hover{ transform: translateY(-2px); }
+.btn-ghost{ background: rgba(255,255,255,.035); border-color: var(--line-strong); color: var(--ink); }
+.btn-ghost:hover{ transform: translateY(-2px); border-color: rgba(96,165,250,.6); background: rgba(96,165,250,.08); }
+@media (prefers-reduced-motion: reduce){ .btn:hover{ transform: none; } }
+@media (max-width: 600px){ .topo .btn span{ display: none; } .topo .btn{ padding: 12px 15px; } }
+
+.hero{ padding: clamp(46px,7vw,84px) 0 clamp(30px,4vw,44px); position: relative; overflow: hidden; }
+.hero::before{ content:""; position: absolute; width: min(60vw,620px); aspect-ratio:1; top:-40%; right:-10%;
+  background: radial-gradient(circle, rgba(37,99,235,.26), transparent 66%); filter: blur(90px); pointer-events:none; }
+.eyebrow{ font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--blue-soft); display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.eyebrow::before{ content:""; width: 22px; height: 1px; background: linear-gradient(90deg, transparent, var(--blue-soft)); }
+.hero h1{ font-size: clamp(34px, 5.6vw, 58px); font-weight: 800; max-width: 17ch; }
+.hero p{ color: var(--ink-2); font-size: clamp(16.5px,1.9vw,19px); margin-top: 18px; max-width: 58ch; }
+.aviso{ display: flex; align-items: flex-start; gap: 12px; margin-top: 26px; padding: 15px 19px;
+  border: 1px dashed rgba(96,165,250,.34); border-radius: 12px; background: rgba(37,99,235,.05);
+  color: var(--ink-2); font-size: 14.6px; max-width: 74ch; }
+.aviso svg{ width: 18px; height: 18px; color: var(--blue-soft); flex: none; margin-top: 2px; }
+
+.filtros{ display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 26px; }
+.filtro{ padding: 9px 17px; border-radius: 999px; border: 1px solid var(--line-strong);
+  background: transparent; color: var(--ink-2); cursor: pointer; font: 500 14px/1 Manrope, sans-serif;
+  transition: all .24s var(--t); }
+.filtro:hover{ color: var(--ink); border-color: rgba(96,165,250,.55); }
+.filtro[aria-pressed="true"]{ background: var(--grad); color: #050914; border-color: transparent; font-weight: 700; }
+
+.grade{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-bottom: clamp(50px,7vw,90px); }
+@media (max-width: 1000px){ .grade{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .grade{ grid-template-columns: 1fr; } }
+
+.demo{ position: relative; display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--sh-1);
+  transition: transform .4s var(--t), border-color .4s var(--t), box-shadow .4s var(--t); }
+.demo:hover{ transform: translateY(-5px); border-color: rgba(96,165,250,.36); box-shadow: var(--sh-2); }
+.demo:focus-within{ border-color: rgba(96,165,250,.6); }
+@media (prefers-reduced-motion: reduce){ .demo:hover{ transform: none; } }
+.capa{ aspect-ratio: 16/9; display: grid; place-items: center; position: relative; overflow: hidden;
+  background: var(--capa); border-bottom: 1px solid var(--line); }
+.capa::after{ content:""; position: absolute; inset:0;
+  background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px); background-size: 6px 6px; }
+.capa svg{ width: 32%; max-width: 64px; color: rgba(255,255,255,.94); position: relative; z-index:1;
+  transition: transform .4s var(--t); }
+.demo:hover .capa svg{ transform: scale(1.07); }
+.corpo{ padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; gap: 10px; }
+.selo{ font-family: "IBM Plex Mono", monospace; font-size: 9.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3); }
+.corpo h2{ font-size: 19px; }
+.empresa{ font-size: 13px; color: var(--blue-soft); }
+.corpo > p{ color: var(--ink-2); font-size: 14.6px; }
+.testar{ margin-top: 2px; padding-top: 14px; border-top: 1px solid var(--line); display: grid; gap: 7px; flex: 1; }
+.testar b{ font-family: "IBM Plex Mono", monospace; font-size: 9.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.testar li{ list-style: none; display: flex; gap: 9px; align-items: flex-start; color: var(--ink-2); font-size: 13.8px; }
+.testar li::before{ content:""; width: 5px; height: 5px; border-radius: 1px; margin-top: 7px; flex: none;
+  background: var(--blue-soft); opacity: .8; }
+.testar ul{ margin: 0; padding: 0; display: grid; gap: 6px; }
+.link{ display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
+  font: 600 14.2px/1 Manrope, sans-serif; color: var(--blue-soft); transition: color .3s var(--t); }
+.link::after{ content:""; position: absolute; inset: 0; border-radius: inherit; }
+.link svg{ width: 14px; height: 14px; transition: transform .3s var(--t); }
+.demo:hover .link{ color: var(--ink); }
+.demo:hover .link svg{ transform: translateX(3px); }
+
+.fim{ border-top: 1px solid var(--line); background: var(--ground-2); }
+.fim-in{ padding: clamp(40px,6vw,64px) 0; text-align: center; }
+.fim h2{ font-size: clamp(25px,3.6vw,36px); max-width: 20ch; margin-inline: auto; }
+.fim p{ color: var(--ink-2); margin: 14px auto 0; max-width: 52ch; }
+.fim .acoes{ display: flex; gap: 12px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+.rodape{ border-top: 1px solid var(--line); padding: 22px 0 34px; color: var(--ink-3); font-size: 13.4px;
+  display: flex; flex-wrap: wrap; gap: 10px 22px; justify-content: space-between; }
+.rodape a{ color: var(--ink-2); }
+.rodape a:hover{ color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="wrap topo-in">
+    <a class="marca" href="../index.html" aria-label="ELEV — início">
+      <img src="../assets/logo-elev.png" alt="ELEV" data-logo hidden>
+      <span data-logo-fallback>ELEV</span>
+    </a>
+    <a class="btn btn-ghost" href="../index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M11 6l-6 6 6 6"/></svg>
+      <span>Site da ELEV</span>
+    </a>
+    <a class="btn btn-primary" href="../index.html#contato">Falar com a ELEV</a>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <p class="eyebrow">Soluções em ação</p>
+    <h1>Veja o que a ELEV consegue criar.</h1>
+    <p>Sete demonstrações que funcionam de verdade — dá para conversar com o agente de IA, marcar um horário, montar um carrinho e executar uma automação. Escolha uma e teste.</p>
+    <div class="aviso">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8h.01"/></svg>
+      <span>Todas as empresas, números e conteúdos são <strong>fictícios</strong>, criados pela ELEV para demonstrar formatos de solução. Nenhuma representa cliente real, e nada aqui envia pedido, reserva ou cobrança.</span>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="filtros" id="filtros"></div>
+    <div class="grade" id="grade"></div>
+  </div>
+
+  <section class="fim">
+    <div class="wrap fim-in">
+      <h2>Alguma delas parece com o que seu negócio precisa?</h2>
+      <p>Conte o seu problema para a ELEV. A gente ajuda a descobrir qual solução faz sentido — e quanto custa.</p>
+      <div class="acoes">
+        <a class="btn btn-primary" href="../index.html#orcamento">
+          Receber uma estimativa
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="../index.html#contato">Falar com a ELEV</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap rodape">
+    <span>ELEV — Eleve seu negócio.</span>
+    <span><a href="../index.html">Voltar ao site</a> · <a href="../index.html#precos">Preços</a> · <a href="../index.html#contato">Contato</a></span>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  const d = document;
+
+  /* logo oficial entra sozinha quando o arquivo existir - mesmo mecanismo do site */
+  d.querySelectorAll("[data-logo]").forEach(function (img) {
+    const teste = new Image();
+    teste.onload = function () {
+      img.hidden = false;
+      const fb = img.parentElement.querySelector("[data-logo-fallback]");
+      if (fb) fb.remove();
+    };
+    teste.src = img.getAttribute("src");
+  });
+
+  const DEMOS = [
+    { id:"social", nome:"Social Media", empresa:"Brisa Café · cafeteria fictícia", tipo:"Conteúdo",
+      capa:"linear-gradient(150deg,#C67B4A,#2A1810)",
+      ico:'<rect x="3" y="3.5" width="18" height="17" rx="4"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.2" cy="7.2" r="1.1" fill="currentColor"/>',
+      desc:"Perfil completo de rede social com feed, Reels, destaques e o pacote de conteúdo.",
+      testar:["Filtrar o feed por Reels ou posts","Abrir um conteúdo e ver a legenda","Ver o pacote de R$ 300"] },
+    { id:"design", nome:"Design", empresa:"Nômade Studio · marca fictícia", tipo:"Conteúdo",
+      capa:"linear-gradient(140deg,#E2542C,#2A0F04)",
+      ico:'<path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.2 0 2-.8 2-1.8 0-1.5-1.2-1.7-1.2-2.8 0-.9.8-1.6 1.8-1.6h1.6c2.6 0 4.6-2 4.6-4.6C20.8 6.2 16.9 3.2 12 3.2z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="15" cy="8" r="1.1" fill="currentColor"/>',
+      desc:"Uma marca inteira: paleta, tipografia, aplicações e peças de social e campanha.",
+      testar:["Ver a identidade visual completa","Abrir cada arte em tamanho maior"] },
+    { id:"ai", nome:"Inteligência Artificial", empresa:"Mecânica Trilho · oficina fictícia", tipo:"Tecnologia",
+      capa:"linear-gradient(150deg,#2563EB,#060B18)",
+      ico:'<rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V3.8M9.4 12.4v1.6M14.6 12.4v1.6M2.6 12.5v3M21.4 12.5v3"/><circle cx="12" cy="3" r="1.1" fill="currentColor"/>',
+      desc:"Agente comercial que entende o que você escreve, qualifica o contato e entrega o resumo.",
+      testar:["Escrever com suas palavras, sem botão","Ver a prioridade calculada no fim"] },
+    { id:"automacao", nome:"Automação", empresa:"Fluxo de atendimento", tipo:"Tecnologia",
+      capa:"linear-gradient(140deg,#7C5CFF,#120B24)",
+      ico:'<circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="12" cy="18" r="2.6"/><path d="M8.6 6h6.8M6.6 8.4l4 7.4M17.4 8.4l-4 7.4"/>',
+      desc:"O caminho do lead, do formulário até a notificação da equipe, executando na sua frente.",
+      testar:["Preencher o formulário e executar","Ver o que é automático e o que é pessoa"] },
+    { id:"agendamento", nome:"Agendamento", empresa:"Studio Aurora · salão fictício", tipo:"Digital",
+      capa:"linear-gradient(150deg,#B76E79,#2A0F14)",
+      ico:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9.5 15.5l1.8 1.8 3.4-3.6"/>',
+      desc:"Do serviço escolhido até a confirmação — e o painel do salão recebendo o agendamento.",
+      testar:["Marcar um horário do início ao fim","Abrir o painel e ver seu agendamento lá"] },
+    { id:"institucional", nome:"Sites", empresa:"Vértice Engenharia · construtora fictícia", tipo:"Digital",
+      capa:"linear-gradient(140deg,#14A08A,#04120F)",
+      ico:'<rect x="2.5" y="4" width="19" height="15" rx="2.5"/><path d="M2.5 8.5h19M6 6.2h.01M8.6 6.2h.01"/>',
+      desc:"Site institucional completo: hero, serviços, sobre, diferenciais, formulário e CTA.",
+      testar:["Navegar pelas seções","Enviar o formulário de orçamento"] },
+    { id:"catalogo", nome:"Catálogos", empresa:"Verde Vivo · loja fictícia", tipo:"Digital",
+      capa:"linear-gradient(150deg,#5A9E56,#0D160E)",
+      ico:'<path d="M3 4h2.2l2 11.2a1.8 1.8 0 0 0 1.8 1.5h8.2a1.8 1.8 0 0 0 1.8-1.4L20.5 8H6"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/>',
+      desc:"Doze produtos com busca, filtros, página de produto e um carrinho que soma de verdade.",
+      testar:["Buscar e filtrar por categoria","Montar o carrinho e finalizar"] }
+  ];
+
+  const TIPOS = ["Todas"].concat(DEMOS.map(function (x) { return x.tipo; })
+    .filter(function (v, i, a) { return a.indexOf(v) === i; }));
+  let filtro = "Todas";
+
+  d.getElementById("filtros").innerHTML = TIPOS.map(function (t) {
+    return '<button class="filtro" type="button" data-t="' + t + '" aria-pressed="' + (t === filtro) + '">' + t + "</button>";
+  }).join("");
+
+  function desenha() {
+    d.getElementById("grade").innerHTML = DEMOS
+      .filter(function (x) { return filtro === "Todas" || x.tipo === filtro; })
+      .map(function (x) {
+        return '<article class="demo">' +
+          '<div class="capa" style="--capa:' + x.capa + '">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + x.ico + "</svg>" +
+          "</div>" +
+          '<div class="corpo">' +
+            '<span class="selo">Projeto demonstrativo ELEV</span>' +
+            "<h2>" + x.nome + "</h2>" +
+            '<span class="empresa">' + x.empresa + "</span>" +
+            "<p>" + x.desc + "</p>" +
+            '<div class="testar"><b>Dá para testar</b><ul>' +
+              x.testar.map(function (i) { return "<li>" + i + "</li>"; }).join("") +
+            "</ul></div>" +
+            '<a class="link" href="' + x.id + '/index.html">Abrir demonstração' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>' +
+            "</a>" +
+          "</div></article>";
+      }).join("");
+  }
+  desenha();
+
+  d.getElementById("filtros").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-t]");
+    if (!b) return;
+    filtro = b.dataset.t;
+    d.querySelectorAll("[data-t]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    desenha();
+  });
+})();
+</script>
+</body>
+</html>

@@ -106,6 +106,14 @@ visitante sem ele mandar.
 
 ## Demonstrações
 
+`site/demos/index.html` e a pagina que reune as sete: cabecalho proprio com a
+marca ELEV, filtro por tipo (Conteudo, Tecnologia, Digital) e um card por demo
+dizendo o que da para testar nela. E o destino do item "Demos" do menu.
+
+Dentro de cada demo, a barra do topo tem dois caminhos: **Todas as demos**
+(volta para essa pagina) e **Site da ELEV**. Em tela estreita o primeiro vira so
+o icone em vez de sumir - no celular e onde navegar entre elas importa mais.
+
 Sete demos independentes em `site/demos/`, cada uma com identidade visual
 propria e empresa ficticia. Todas carregam `assets/demo.css` e `assets/demo.js`,
 que trazem a barra "Projeto demonstrativo ELEV", o modal e os utilitarios

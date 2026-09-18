@@ -1093,7 +1093,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       <a href="#solucoes">Soluções</a>
       <a href="#servicos">Serviços</a>
       <a href="#social">Social Media</a>
-      <a href="#demos">Demos</a>
+      <a href="demos/index.html">Demos</a>
       <a href="#precos">Preços</a>
       <a href="#elev-lab">ELEV Lab</a>
       <a href="#contato">Contato</a>
@@ -1114,7 +1114,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
     <a href="#solucoes">Soluções</a>
     <a href="#servicos">Serviços</a>
     <a href="#social">Social Media</a>
-    <a href="#demos">Demos</a>
+    <a href="demos/index.html">Demos</a>
     <a href="#precos">Preços</a>
     <a href="#elev-lab">ELEV Lab</a>
     <a href="#contato">Contato</a>
@@ -1804,8 +1804,11 @@ button, input, select, textarea{ font: inherit; color: inherit; }
     </div>
 
     <div class="chamada reveal" style="margin-top:26px">
-      <p>Não sabe do que precisa?<span>Conte seu problema e receba uma estimativa inicial.</span></p>
-      <a class="btn btn-primary" href="#orcamento">Converse com a ELEV</a>
+      <p>Quer ver todas com calma?<span>A página de demonstrações reúne as sete, com o que dá para testar em cada uma.</span></p>
+      <a class="btn btn-primary" href="demos/index.html">
+        Abrir a página de demonstrações
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -1999,7 +2002,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
       </nav>
       <nav class="footer-links" aria-label="Rodapé — continuação">
         <b>&nbsp;</b>
-        <a href="#demos">Demos</a>
+        <a href="demos/index.html">Demos</a>
         <a href="#precos">Preços</a>
         <a href="#orcamento">ELEV Orçamento</a>
         <a href="#contato">Contato</a>
@@ -2678,7 +2681,11 @@ const MENSAGEM_WHATSAPP = "Ola! Vim pelo site da ELEV e quero saber mais sobre a
   });
 
   /* ---- seção ativa no menu ----------------------------------------- */
-  const links = Array.prototype.slice.call(d.querySelectorAll(".nav a"));
+  /* so os itens de ancora viram observadores: o menu tambem tem link de pagina
+     (demos/index.html), que nao e um seletor CSS valido */
+  const links = Array.prototype.slice.call(d.querySelectorAll(".nav a")).filter(function (a) {
+    return (a.getAttribute("href") || "").charAt(0) === "#";
+  });
   const secoes = links.map(function (a) { return d.querySelector(a.getAttribute("href")); }).filter(Boolean);
   if ("IntersectionObserver" in window && secoes.length) {
     const obsSec = new IntersectionObserver(function (entradas) {

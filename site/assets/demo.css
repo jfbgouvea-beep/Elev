@@ -56,6 +56,7 @@ button, input, select, textarea{ font: inherit; color: inherit; }
   font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: #A1A1AA;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.elev-barra .voltar + .voltar{ margin-left: 0; }
 .elev-barra .voltar{
   margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
   padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
@@ -65,6 +66,13 @@ button, input, select, textarea{ font: inherit; color: inherit; }
 .elev-barra .voltar:hover{ background: rgba(96,165,250,.16); border-color: rgba(96,165,250,.5); }
 .elev-barra .voltar svg{ width: 14px; height: 14px; }
 @media (max-width: 620px){ .elev-barra .rotulo{ display: none; } }
+/* em tela estreita o caminho para as demos vira so o icone, em vez de sumir:
+   no celular e justamente onde navegar entre elas importa mais */
+@media (max-width: 560px){
+  .elev-barra .voltar:not(:last-child) span{ display: none; }
+  .elev-barra .voltar:not(:last-child){ padding: 7px 10px; }
+}
+@media (max-width: 380px){ .elev-barra .voltar:last-child span{ display: none; } }
 
 /* ---- utilitarios comuns ------------------------------------------- */
 .d-btn{

@@ -14,9 +14,12 @@
     barra.innerHTML =
       '<span class="marca">ELEV</span>' +
       '<span class="rotulo">Projeto demonstrativo ELEV · ' + nome + "</span>" +
+      '<a class="voltar" href="../index.html">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>' +
+        "<span>Todas as demos</span></a>" +
       '<a class="voltar" href="../../index.html">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M11 6l-6 6 6 6"/></svg>' +
-        "Site da ELEV</a>";
+        "<span>Site da ELEV</span></a>";
     document.body.prepend(barra);
   });
 
