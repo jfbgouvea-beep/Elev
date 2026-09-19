@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="../../assets/demo.css">
+<script src="../../assets/arte.js"></script>
 <style>
 /* identidade propria da empresa ficticia: Brisa Café */
 :root{
@@ -44,7 +45,33 @@
   display: inline-flex; align-items: center; gap: 8px;
   padding: 6px 12px; border-radius: 999px; border: 1px dashed var(--d-line);
 }
-.destaques{ display: flex; gap: 16px; margin: 34px 0 8px; overflow-x: auto; padding-bottom: 8px; }
+.stories{ display: flex; gap: 14px; margin: 30px 0 4px; overflow-x: auto; padding-bottom: 6px; }
+.story{ flex: none; text-align: center; background: none; border: 0; padding: 0; cursor: pointer; }
+.story .anel-s{
+  width: 74px; height: 74px; border-radius: 50%; padding: 3px;
+  background: conic-gradient(from 210deg, var(--d-accent), #E8B07A, var(--verde), var(--d-accent));
+  transition: transform .25s var(--d-t);
+}
+.story[data-visto="true"] .anel-s{ background: var(--d-line); }
+.story:hover .anel-s{ transform: scale(1.06); }
+.story .miolo{ width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 2px solid var(--d-bg); }
+.story span{ display: block; font-size: 11.6px; color: var(--d-ink-2); margin-top: 7px; max-width: 74px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.visor{ position: relative; }
+.visor-barras{ display: flex; gap: 4px; padding: 14px 14px 0; }
+.visor-barras i{ flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.28); overflow: hidden; }
+.visor-barras i b{ display: block; height: 100%; width: 0; background: #fff; }
+.visor-barras i[data-on="true"] b{ width: 100%; transition: width 3.4s linear; }
+.visor-barras i[data-feito="true"] b{ width: 100%; }
+.visor-arte{ aspect-ratio: 9/16; max-height: 62vh; position: relative; }
+.visor-tit{ position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 22px; z-index: 2;
+  background: linear-gradient(transparent, rgba(0,0,0,.8)); }
+.visor-tit b{ font-family: var(--d-display); font-size: 21px; display: block; }
+.visor-tit span{ color: var(--d-ink-2); font-size: 13.6px; }
+.visor-nav{ position: absolute; inset: 0; display: flex; z-index: 3; }
+.visor-nav button{ flex: 1; background: none; border: 0; cursor: pointer; }
+
+.destaques{ display: flex; gap: 16px; margin: 22px 0 8px; overflow-x: auto; padding-bottom: 8px; }
 .destaque{ text-align: center; flex: none; cursor: pointer; background: none; border: 0; padding: 0; }
 .destaque .anel{
   width: 68px; height: 68px; border-radius: 50%; display: grid; place-items: center;
@@ -65,18 +92,21 @@
 @media (max-width: 560px){ .feed{ gap: 4px; } }
 .item{
   position: relative; aspect-ratio: var(--ar, 1); border: 0; padding: 0; cursor: pointer;
-  background: var(--bg, linear-gradient(140deg, #3A2116, #C67B4A)); overflow: hidden;
-  display: grid; place-items: center; color: #FFF3E6;
+  background: #1C1813; overflow: hidden; display: block; color: #FFF3E6;
+}
+.item .arte{ position: absolute; inset: 0; }
+.item .rot{
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  padding: 26px 10px 10px; text-align: center;
+  background: linear-gradient(transparent, rgba(0,0,0,.72));
 }
 .item::after{
   content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); opacity: 0;
   transition: opacity .25s var(--d-t);
 }
 .item:hover::after{ opacity: 1; }
-.item .rot{
-  position: relative; z-index: 1; font-family: var(--d-display); font-weight: 700;
-  font-size: clamp(13px, 2.4vw, 18px); text-align: center; padding: 10px; line-height: 1.25;
-}
+.item .rot span{ font-family: var(--d-display); font-weight: 700;
+  font-size: clamp(12px, 2.2vw, 16px); line-height: 1.2; display: block; }
 .item .tipo{
   position: absolute; top: 8px; right: 8px; z-index: 2; width: 22px; height: 22px;
   display: grid; place-items: center; color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,.6));
@@ -91,7 +121,19 @@
 .post-lado .mini-av{ width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(140deg,#E3A277,#8A4F2B); display: grid; place-items: center; font-family: var(--d-display); font-weight: 700; font-size: 15px; }
 .post-lado .legenda{ font-size: 15px; color: var(--d-ink-2); line-height: 1.65; }
 .post-lado .legenda b{ color: var(--d-ink); }
-.post-lado .meta{ display: flex; gap: 18px; font-size: 13px; color: var(--d-ink-2); border-top: 1px solid var(--d-line); padding-top: 14px; }
+.post-lado .meta{ display: flex; gap: 18px; font-size: 13px; color: var(--d-ink-2); border-top: 1px solid var(--d-line); padding-top: 14px; align-items: center; }
+.curtir{ display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; cursor: pointer;
+  color: var(--d-ink-2); font-size: 13px; padding: 0; transition: color .2s var(--d-t); }
+.curtir svg{ width: 17px; height: 17px; transition: transform .25s var(--d-t); }
+.curtir:hover{ color: var(--d-ink); }
+.curtir[aria-pressed="true"]{ color: var(--d-accent-2); }
+.curtir[aria-pressed="true"] svg{ fill: currentColor; transform: scale(1.14); }
+.comentarios{ display: grid; gap: 10px; border-top: 1px solid var(--d-line); padding-top: 14px; }
+.coment{ display: flex; gap: 9px; font-size: 13.8px; }
+.coment .av-c{ width: 26px; height: 26px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  background: var(--d-line); font-size: 11px; font-weight: 700; }
+.coment b{ font-weight: 600; }
+.coment p{ color: var(--d-ink-2); }
 .faria{ margin-top: 60px; }
 .faria h2{ font-size: clamp(22px, 3.4vw, 30px); }
 .faria-grade{ display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 22px; }
@@ -149,6 +191,7 @@
     </div>
   </section>
 
+  <div class="stories" id="stories"></div>
   <div class="destaques" id="destaques"></div>
 
   <div class="abas-perfil" role="tablist">
@@ -198,25 +241,44 @@
 <script>
 (function () {
   "use strict";
+  /* Cada conteudo aponta para uma ilustracao propria (ElevArte) e aceita
+     foto real depois em foto:"../../assets/fotos/xxx.jpg". */
   const CONTEUDOS = [
-    { tipo:"reel", rot:"Como nasce\nnosso café", bg:"linear-gradient(150deg,#3A2116,#C67B4A)", ar:"9/16",
-      legenda:"Da torra ao copo: mostramos o caminho do nosso grão em 30 segundos.", curtidas:412, coment:23 },
-    { tipo:"post", rot:"Pão na pedra\ntodo dia 7h", bg:"linear-gradient(140deg,#4E6B4A,#22301F)", ar:"1",
-      legenda:"Massa de fermentação natural, assada na pedra toda manhã. Chega cedo que sai quentinho.", curtidas:268, coment:14 },
-    { tipo:"reel", rot:"3 formas de\ncoar em casa", bg:"linear-gradient(160deg,#8A4F2B,#E3A277)", ar:"9/16",
-      legenda:"Coador de pano, prensa e V60: qual combina com o seu café da manhã?", curtidas:531, coment:37 },
-    { tipo:"post", rot:"Novo blend\nde inverno", bg:"linear-gradient(135deg,#2E2820,#C67B4A)", ar:"1",
-      legenda:"Notas de chocolate e castanha. Disponível no balcão e para levar em grãos.", curtidas:194, coment:9 },
-    { tipo:"post", rot:"Nosso canto\nfavorito", bg:"linear-gradient(150deg,#1C1813,#4E6B4A)", ar:"1",
-      legenda:"A mesa do fundo, perto da janela. Quem senta ali costuma ficar mais do que planejou.", curtidas:322, coment:18 },
-    { tipo:"reel", rot:"Bastidores\nda torra", bg:"linear-gradient(140deg,#C67B4A,#3A2116)", ar:"9/16",
-      legenda:"Terça é dia de torra. O cheiro toma conta da rua inteira.", curtidas:604, coment:41 },
-    { tipo:"post", rot:"Combo da\nmanhã", bg:"linear-gradient(160deg,#4E6B4A,#8A4F2B)", ar:"1",
-      legenda:"Café coado + pão na chapa. O começo de dia mais pedido da casa.", curtidas:238, coment:11 },
-    { tipo:"reel", rot:"Receita:\ncafé gelado", bg:"linear-gradient(150deg,#E3A277,#4E6B4A)", ar:"9/16",
-      legenda:"Três ingredientes e cinco minutos. Salva qualquer tarde de calor.", curtidas:487, coment:29 },
-    { tipo:"post", rot:"Quem faz\nacontecer", bg:"linear-gradient(140deg,#2E2820,#4E6B4A)", ar:"1",
-      legenda:"A equipe que abre a casa às 6h30 para você encontrar tudo pronto às 7h.", curtidas:355, coment:22 }
+    { tipo:"reel", rot:"Como nasce nosso café", arte:"graos", ar:"9/16",
+      legenda:"Da torra ao copo: mostramos o caminho do nosso grão em 30 segundos.", curtidas:412,
+      comentarios:[["Marina","Que vontade de tomar um agora"],["Téo","Vocês vendem o grão torrado?"]] },
+    { tipo:"post", rot:"Pão na pedra todo dia 7h", arte:"paoNaPedra", ar:"1",
+      legenda:"Massa de fermentação natural, assada na pedra toda manhã. Chega cedo que sai quentinho.", curtidas:268,
+      comentarios:[["Lu","O melhor da vizinhança"],["Caio","Tem opção sem glúten?"]] },
+    { tipo:"reel", rot:"3 formas de coar em casa", arte:"coador", ar:"9/16",
+      legenda:"Coador de pano, prensa e V60: qual combina com o seu café da manhã?", curtidas:531,
+      comentarios:[["Rafa","Salvando pra testar no domingo"]] },
+    { tipo:"post", rot:"Novo blend de inverno", arte:"cafe", ar:"1",
+      legenda:"Notas de chocolate e castanha. Disponível no balcão e para levar em grãos.", curtidas:194,
+      comentarios:[["Bia","Já quero um pacote"]] },
+    { tipo:"post", rot:"Nosso canto favorito", arte:"mesaCafe", ar:"1",
+      legenda:"A mesa do fundo, perto da janela. Quem senta ali costuma ficar mais do que planejou.", curtidas:322,
+      comentarios:[["Dani","Minha mesa oficial de trabalho"],["Pedro","Tem tomada perto?"]] },
+    { tipo:"reel", rot:"Bastidores da torra", arte:"graos", ar:"9/16",
+      legenda:"Terça é dia de torra. O cheiro toma conta da rua inteira.", curtidas:604,
+      comentarios:[["Sofia","Dá pra sentir o cheiro daqui"]] },
+    { tipo:"post", rot:"Combo da manhã", arte:"paoNaPedra", ar:"1",
+      legenda:"Café coado + pão na chapa. O começo de dia mais pedido da casa.", curtidas:238,
+      comentarios:[["Igor","Peço isso todo dia"]] },
+    { tipo:"reel", rot:"Receita: café gelado", arte:"coador", ar:"9/16",
+      legenda:"Três ingredientes e cinco minutos. Salva qualquer tarde de calor.", curtidas:487,
+      comentarios:[["Nina","Testei e aprovei"],["Hugo","Qual proporção de gelo?"]] },
+    { tipo:"post", rot:"Quem faz acontecer", arte:"equipe", ar:"1",
+      legenda:"A equipe que abre a casa às 6h30 para você encontrar tudo pronto às 7h.", curtidas:355,
+      comentarios:[["Clara","Time nota mil"]] }
+  ];
+
+  const STORIES = [
+    { n:"Hoje", arte:"cafe", tit:"Café do dia", sub:"Blend de inverno no coador" },
+    { n:"Torra", arte:"graos", tit:"Terça é dia de torra", sub:"Bastidores da casa" },
+    { n:"Padaria", arte:"paoNaPedra", tit:"Saiu do forno", sub:"Pão na pedra às 7h" },
+    { n:"Salão", arte:"mesaCafe", tit:"Mesa da janela", sub:"O canto mais disputado" },
+    { n:"Equipe", arte:"equipe", tit:"Quem abre a casa", sub:"6h30, todo dia" }
   ];
 
   const DESTAQUES = [
@@ -241,11 +303,55 @@
            '" stroke-linecap="round" stroke-linejoin="round">' + inner + "</svg>";
   };
 
+  /* stories */
+  const elStories = document.getElementById("stories");
+  elStories.innerHTML = STORIES.map(function (s, i) {
+    return '<button class="story" type="button" data-story="' + i + '" data-visto="false">' +
+      '<span class="anel-s"><span class="miolo slot-arte">' + ElevArte.desenhar(s.arte) + "</span></span>" +
+      "<span>" + s.n + "</span></button>";
+  }).join("");
+
+  let storyAtual = 0, storyTimer = null;
+  function abrirStory(i) {
+    storyAtual = i;
+    const s = STORIES[i];
+    document.querySelector('[data-story="' + i + '"]').dataset.visto = "true";
+    ElevModal.abrir("modal",
+      '<div class="visor">' +
+        '<div class="visor-barras">' + STORIES.map(function (_, k) {
+          return "<i data-on=\"" + (k === i) + "\" data-feito=\"" + (k < i) + "\"><b></b></i>";
+        }).join("") + "</div>" +
+        '<div class="visor-arte slot-arte">' + ElevArte.desenhar(s.arte) +
+          '<div class="visor-tit"><b>' + s.tit + "</b><span>" + s.sub + "</span></div>" +
+          '<div class="visor-nav"><button type="button" data-story-nav="-1" aria-label="Anterior"></button>' +
+          '<button type="button" data-story-nav="1" aria-label="Próximo"></button></div>' +
+        "</div>" +
+        '<p style="padding:14px 18px;font-size:12.6px;color:var(--d-ink-2);text-align:center">Story demonstrativo — conteúdo fictício criado pela ELEV.</p>' +
+      "</div>");
+    clearTimeout(storyTimer);
+    storyTimer = setTimeout(function () {
+      if (i + 1 < STORIES.length) abrirStory(i + 1); else ElevModal.fechar("modal");
+    }, 3600);
+  }
+  elStories.addEventListener("click", function (e) {
+    const b = e.target.closest("[data-story]");
+    if (b) abrirStory(Number(b.dataset.story));
+  });
+  document.addEventListener("click", function (e) {
+    const nav = e.target.closest("[data-story-nav]");
+    if (!nav) return;
+    const prox = storyAtual + Number(nav.dataset.storyNav);
+    if (prox < 0) return;
+    if (prox >= STORIES.length) { clearTimeout(storyTimer); ElevModal.fechar("modal"); return; }
+    abrirStory(prox);
+  });
+
   /* destaques */
   document.getElementById("destaques").innerHTML = DESTAQUES.map(function (d) {
     return '<button class="destaque" type="button" data-destaque="' + d.n + '"><span class="anel">' +
            svg(d.i) + '</span><span>' + d.n + "</span></button>";
   }).join("");
+  ElevArte.plugarFotos();
 
   /* o que a ELEV faria */
   document.getElementById("faria").innerHTML = FARIA.map(function (f) {
@@ -264,9 +370,10 @@
       .filter(function (c) { return filtro === "tudo" || c.tipo === filtro; })
       .map(function (c) {
         const i = CONTEUDOS.indexOf(c);
-        return '<button class="item" type="button" data-i="' + i + '" style="--bg:' + c.bg +
-               '"><span class="tipo">' + iconeTipo[c.tipo] + '</span><span class="rot">' +
-               c.rot.replace(/\n/g, "<br>") + "</span></button>";
+        return '<button class="item slot-arte" type="button" data-i="' + i + '" style="--ar:' + c.ar + '">' +
+               '<span class="arte">' + ElevArte.desenhar(c.arte) + "</span>" +
+               '<span class="tipo">' + iconeTipo[c.tipo] + "</span>" +
+               '<span class="rot"><span>' + c.rot + "</span></span></button>";
       }).join("");
   }
   desenhaFeed("tudo");
@@ -286,16 +393,33 @@
     const c = CONTEUDOS[Number(b.dataset.i)];
     ElevModal.abrir("modal",
       '<div class="post-detalhe">' +
-        '<div class="post-arte" style="background:' + c.bg + ';--ar:' + c.ar + '"><div class="rot">' +
-          c.rot.replace(/\n/g, "<br>") + "</div></div>" +
+        '<div class="post-arte slot-arte" style="--ar:' + c.ar + '">' + ElevArte.desenhar(c.arte) + "</div>" +
         '<div class="post-lado">' +
           '<div class="cab"><span class="mini-av">b</span><div><b>Brisa Café</b><div style="font-size:12.6px;color:var(--d-ink-2)">@brisacafe.demo</div></div></div>' +
           '<p class="legenda"><b>Brisa Café</b> ' + c.legenda + "</p>" +
-          '<div class="meta"><span>' + c.curtidas + " curtidas</span><span>" + c.coment + " comentários</span><span>" +
-            (c.tipo === "reel" ? "Reel" : "Post") + "</span></div>" +
-          '<p style="font-size:12.6px;color:var(--d-ink-2)">Conteúdo e números fictícios, criados pela ELEV para demonstração.</p>' +
+          '<div class="meta">' +
+            '<button class="curtir" type="button" aria-pressed="false" data-curtir data-base="' + c.curtidas + '">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 20.3l-1.3-1.2C6 14.9 3 12.2 3 8.9 3 6.2 5.1 4 7.8 4c1.6 0 3.1.7 4.2 1.9C13.1 4.7 14.6 4 16.2 4 18.9 4 21 6.2 21 8.9c0 3.3-3 6-7.7 10.2z"/></svg>' +
+              "<span>" + c.curtidas + " curtidas</span></button>" +
+            "<span>" + c.comentarios.length + (c.comentarios.length === 1 ? " comentário" : " comentários") + "</span>" +
+            "<span>" + (c.tipo === "reel" ? "Reel" : "Post") + "</span>" +
+          "</div>" +
+          '<div class="comentarios">' + c.comentarios.map(function (m) {
+            return '<div class="coment"><span class="av-c">' + m[0].charAt(0) +
+                   "</span><p><b>" + m[0] + "</b> " + m[1] + "</p></div>";
+          }).join("") + "</div>" +
+          '<p style="font-size:12.6px;color:var(--d-ink-2)">Conteúdo, comentários e números são fictícios, criados pela ELEV para demonstração.</p>' +
         "</div>" +
       "</div>");
+  });
+
+  document.addEventListener("click", function (e) {
+    const b = e.target.closest("[data-curtir]");
+    if (!b) return;
+    const base = Number(b.dataset.base);
+    const ativo = b.getAttribute("aria-pressed") === "true";
+    b.setAttribute("aria-pressed", String(!ativo));
+    b.querySelector("span").textContent = (ativo ? base : base + 1) + " curtidas";
   });
 
   document.getElementById("destaques").addEventListener("click", function (e) {

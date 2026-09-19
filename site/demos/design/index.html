@@ -48,18 +48,20 @@
 .aplic{ width: 62px; height: 62px; border-radius: 12px; display: grid; place-items: center;
   border: 1px solid var(--d-line); font-family: var(--d-display); font-weight: 800; font-size: 22px; }
 
-.galeria{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
-@media (max-width: 900px){ .galeria{ grid-template-columns: repeat(2, 1fr); } }
+.galeria{ columns: 3; column-gap: 13px; margin-top: 20px; }
+.galeria figure{ break-inside: avoid; margin: 0 0 12px; display: inline-block; width: 100%; }
+@media (max-width: 900px){ .galeria{ columns: 2; } }
+@media (max-width: 520px){ .galeria{ columns: 1; } }
 .arte{
-  position: relative; border: 0; padding: 0; cursor: pointer; overflow: hidden;
+  position: relative; border: 0; padding: 0; cursor: pointer; overflow: hidden; width: 100%;
   border-radius: var(--d-r); aspect-ratio: var(--ar, 1);
   background: var(--bg); display: grid; place-items: center;
   transition: transform .3s var(--d-t), box-shadow .3s var(--d-t);
 }
 .arte:hover{ transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 34px -18px rgba(0,0,0,.9); }
 .arte .conteudo{ padding: 18px; text-align: center; position: relative; z-index: 1; }
-.arte .t{ font-family: var(--d-display); font-weight: 800; font-size: clamp(15px, 2.6vw, 21px); line-height: 1.15; }
-.arte .s{ font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; margin-top: 8px; }
+.arte .t{ display: block; font-family: var(--d-display); font-weight: 800; font-size: clamp(15px, 2.6vw, 21px); line-height: 1.15; }
+.arte .s{ display: block; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; margin-top: 8px; }
 .arte .lupa{
   position: absolute; inset: 0; z-index: 2; display: grid; place-items: center;
   background: rgba(0,0,0,.42); opacity: 0; transition: opacity .25s var(--d-t); color: #fff;
@@ -67,6 +69,38 @@
 .arte:hover .lupa, .arte:focus-visible .lupa{ opacity: 1; }
 .arte .lupa svg{ width: 26px; height: 26px; }
 .legenda-gal{ font-size: 12px; color: var(--d-ink-2); margin-top: 9px; display: block; text-align: center; }
+
+/* a ilustracao fica atras do texto da peca, escurecida o bastante para o titulo
+   continuar legivel em qualquer arte */
+.arte .fundo-arte{ position: absolute; inset: 0; z-index: 0; }
+.arte .fundo-arte svg, .arte .fundo-arte img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.arte .veu{ position: absolute; inset: 0; z-index: 0; background: var(--veu); }
+.arte .t, .arte .s{ text-shadow: 0 2px 14px rgba(0,0,0,.55); }
+
+.filtros-d{ display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.fd{ padding: 8px 15px; border-radius: 999px; border: 1px solid var(--d-line); background: transparent;
+     color: var(--d-ink-2); font: inherit; font-size: 13.4px; cursor: pointer; transition: all .2s var(--d-t); }
+.fd:hover{ border-color: var(--d-accent); color: var(--d-ink); }
+.fd[aria-pressed="true"]{ background: var(--d-accent); color: #150A05; border-color: transparent; font-weight: 600; }
+
+.paleta i{ position: relative; }
+.paleta button{ all: unset; cursor: pointer; display: block; }
+.hex{ display: block; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.4px;
+      color: var(--d-ink-2); text-align: center; margin-top: 6px; letter-spacing: .04em; }
+.paleta button:hover .hex, .paleta button:focus-visible .hex{ color: var(--d-accent-2); }
+
+.modal-arte .peca{ position: relative; overflow: hidden; }
+.modal-arte .peca .fundo-arte{ position: absolute; inset: 0; }
+.modal-arte .peca .fundo-arte svg, .modal-arte .peca .fundo-arte img{ width: 100%; height: 100%; object-fit: cover; }
+.modal-arte .peca > div{ position: relative; z-index: 1; }
+.nav-peca{ display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+.nav-peca button{ padding: 9px 16px; border-radius: 999px; border: 1px solid var(--d-line); background: transparent;
+                  color: var(--d-ink); font: inherit; font-size: 13.4px; cursor: pointer; }
+.nav-peca button:hover:not(:disabled){ border-color: var(--d-accent); }
+.nav-peca button:disabled{ opacity: .35; cursor: not-allowed; }
+.ficha{ display: grid; gap: 7px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--d-line); }
+.ficha div{ display: flex; justify-content: space-between; gap: 14px; font-size: 13.6px; }
+.ficha span{ color: var(--d-ink-2); }
 .modal-arte{ padding: 26px; }
 .modal-arte .peca{ border-radius: var(--d-r); aspect-ratio: var(--ar,1); display: grid; place-items: center; }
 .modal-arte .info{ margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
@@ -92,11 +126,8 @@
     <div class="identidade">
       <div class="d-card id-card">
         <b>Paleta</b>
-        <div class="paleta">
-          <i style="background:#E2542C"></i><i style="background:#F7A072"></i>
-          <i style="background:#E8DFD2"></i><i style="background:#2E4A3F"></i><i style="background:#0E0E0F"></i>
-        </div>
-        <p class="sub" style="margin-top:12px">Laranja de terra, areia e verde de mata.</p>
+        <div class="paleta" id="paleta"></div>
+        <p class="sub" style="margin-top:12px">Laranja de terra, areia e verde de mata. Clique em uma cor para copiar o código.</p>
       </div>
       <div class="d-card id-card">
         <b>Tipografia</b>
@@ -121,6 +152,7 @@
   <section class="bloco">
     <h2>Social</h2>
     <p class="sub">Peças para o feed e para os stories. Clique para ver maior.</p>
+    <div class="filtros-d" id="filtrosSocial"></div>
     <div class="galeria" id="galSocial"></div>
   </section>
 
@@ -140,59 +172,152 @@
   <div class="d-modal-caixa"></div>
 </div>
 
+<script src="../../assets/arte.js"></script>
 <script src="../../assets/demo.js" data-demo="Design"></script>
 <script>
 (function () {
   "use strict";
+  /* Cada peca carrega a ilustracao que usa: a arte vem da biblioteca da ELEV,
+     nao de banco de imagem (direito autoral). Trocar por foto depois e so
+     apontar `foto` para o arquivo. */
   const SOCIAL = [
-    { t:"Rota do<br>Cerrado", s:"Post de feed", bg:"linear-gradient(145deg,#E2542C,#7A2411)", ar:"1", cor:"#FFF1E8",
+    { t:"Rota do<br>Cerrado", s:"Post de feed", tipo:"Feed", arte:"serra", cor:"#2E4A3F", ar:"1", ink:"#FFF1E8",
+      veu:"linear-gradient(160deg,rgba(226,84,44,.62),rgba(20,25,20,.72))",
       nota:"Post de lançamento de roteiro. Título curto e uma única informação por peça." },
-    { t:"3 dias<br>no litoral", s:"Carrossel · capa", bg:"linear-gradient(160deg,#2E4A3F,#0E0E0F)", ar:"1", cor:"#E8DFD2",
+    { t:"3 dias<br>no litoral", s:"Carrossel · capa", tipo:"Carrossel", arte:"estrada", cor:"#1F4A5A", ar:"1", ink:"#E8DFD2",
+      veu:"linear-gradient(170deg,rgba(14,14,15,.3),rgba(14,14,15,.82))",
       nota:"Capa de carrossel: a promessa fica na capa, o detalhe vem nos slides." },
-    { t:"Bagagem<br>leve", s:"Story", bg:"linear-gradient(150deg,#E8DFD2,#C9B79E)", ar:"9/16", cor:"#1A1006",
+    { t:"Bagagem<br>leve", s:"Story", tipo:"Story", arte:"mochila", cor:"#7A2411", ar:"9/16", ink:"#FFF1E8",
+      veu:"linear-gradient(180deg,rgba(14,14,15,.18),rgba(122,36,17,.78))",
       nota:"Story vertical com espaço reservado para enquete no topo." },
-    { t:"Reel:<br>o caminho", s:"Capa de Reels", bg:"linear-gradient(140deg,#F7A072,#E2542C)", ar:"9/16", cor:"#2A0F04",
-      nota:"Capa pensada para ficar legível na grade do perfil." }
+    { t:"Reel:<br>o caminho", s:"Capa de Reels", tipo:"Story", arte:"estrada", cor:"#E2542C", ar:"9/16", ink:"#FFF1E8",
+      veu:"linear-gradient(180deg,rgba(14,14,15,.22),rgba(58,18,6,.8))",
+      nota:"Capa pensada para ficar legível na grade do perfil." },
+    { t:"Bastidores<br>da estrada", s:"Carrossel · slide 2", tipo:"Carrossel", arte:"barraca", cor:"#1B2B33", ar:"1", ink:"#E8DFD2",
+      veu:"linear-gradient(150deg,rgba(46,74,63,.58),rgba(8,14,18,.8))",
+      nota:"Slide interno do carrossel: uma ideia por tela, sem texto corrido." },
+    { t:"Antes de<br>partir", s:"Post de dica", tipo:"Feed", arte:"mapa", cor:"#E8DFD2", ar:"1", ink:"#1A1006",
+      veu:"linear-gradient(135deg,rgba(243,236,224,.55),rgba(201,183,158,.72))",
+      nota:"Peça de conteúdo útil, feita para ser salva pelo seguidor." }
   ];
   const MKT = [
-    { t:"Temporada<br>aberta", s:"Banner web", bg:"linear-gradient(120deg,#0E0E0F,#2E4A3F)", ar:"16/9", cor:"#E8DFD2",
+    { t:"Temporada<br>aberta", s:"Banner web", tipo:"Banner", arte:"serra", cor:"#0E0E0F", ar:"16/9", ink:"#E8DFD2",
+      veu:"linear-gradient(100deg,rgba(14,14,15,.86),rgba(14,14,15,.12))",
       nota:"Banner de topo de site, com área livre à direita para o botão." },
-    { t:"-15% na<br>primeira viagem", s:"Criativo de campanha", bg:"linear-gradient(135deg,#E2542C,#F7A072)", ar:"4/5", cor:"#2A0F04",
+    { t:"-15% na<br>primeira viagem", s:"Criativo de campanha", tipo:"Anúncio", arte:"bussola", cor:"#E2542C", ar:"4/5", ink:"#FFF1E8",
+      veu:"linear-gradient(150deg,rgba(226,84,44,.72),rgba(58,18,6,.78))",
       nota:"Criativo de anúncio: oferta grande, condição pequena, marca no rodapé." },
-    { t:"Guia<br>gratuito", s:"Arte promocional", bg:"linear-gradient(150deg,#E8DFD2,#F7A072)", ar:"1", cor:"#2A0F04",
+    { t:"Guia<br>gratuito", s:"Arte promocional", tipo:"Anúncio", arte:"mapa", cor:"#E8DFD2", ar:"1", ink:"#2A0F04",
+      veu:"linear-gradient(150deg,rgba(247,160,114,.5),rgba(232,223,210,.62))",
       nota:"Peça de isca: material gratuito em troca do contato." },
-    { t:"Nômade<br>na estrada", s:"Capa de destaque", bg:"linear-gradient(160deg,#7A2411,#0E0E0F)", ar:"1", cor:"#F7A072",
+    { t:"Nômade<br>na estrada", s:"Capa de destaque", tipo:"Banner", arte:"barraca", cor:"#7A2411", ar:"1", ink:"#F7A072",
+      veu:"linear-gradient(160deg,rgba(122,36,17,.62),rgba(14,14,15,.82))",
       nota:"Capa de destaque do perfil, no mesmo sistema visual das demais peças." }
   ];
+  const TODAS = SOCIAL.concat(MKT);
 
+  /* ---------- paleta: clicar copia o codigo ---------- */
+  const CORES = [
+    { h:"#E2542C", n:"Laranja de terra" }, { h:"#F7A072", n:"Areia queimada" },
+    { h:"#E8DFD2", n:"Areia clara" }, { h:"#2E4A3F", n:"Verde de mata" },
+    { h:"#0E0E0F", n:"Preto fosco" }
+  ];
+  document.getElementById("paleta").innerHTML = CORES.map(function (c) {
+    return '<button type="button" data-hex="' + c.h + '" aria-label="Copiar ' + c.n + ' ' + c.h + '">' +
+           '<i style="background:' + c.h + '"></i><span class="hex">' + c.h + "</span></button>";
+  }).join("");
+  document.getElementById("paleta").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-hex]");
+    if (!b) return;
+    const span = b.querySelector(".hex"), hex = b.dataset.hex;
+    const feito = function () {
+      span.textContent = "copiado";
+      setTimeout(function () { span.textContent = hex; }, 1500);
+    };
+    /* clipboard pode estar bloqueado (http, permissao): cai no campo temporario */
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(hex).then(feito).catch(function () { manual(hex, feito); });
+    } else { manual(hex, feito); }
+  });
+  function manual(txt, feito) {
+    const c = document.createElement("textarea");
+    c.value = txt; c.setAttribute("readonly", ""); c.style.position = "fixed"; c.style.opacity = "0";
+    document.body.appendChild(c); c.select();
+    try { document.execCommand("copy"); feito(); } catch (err) { /* sem copia: segue sem quebrar */ }
+    document.body.removeChild(c);
+  }
+
+  /* ---------- galerias ---------- */
   const LUPA = '<span class="lupa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21M8.5 11h5M11 8.5v5"/></svg></span>';
 
-  function desenha(alvo, lista, chave) {
-    document.getElementById(alvo).innerHTML = lista.map(function (a, i) {
-      return '<figure style="margin:0"><button class="arte" type="button" data-lista="' + chave + '" data-i="' + i +
-        '" style="--bg:' + a.bg + ';--ar:' + a.ar + ';color:' + a.cor + '">' +
-        '<span class="conteudo"><span class="t">' + a.t + '</span><span class="s">' + a.s + "</span></span>" + LUPA +
-        '</button><figcaption class="legenda-gal">Exemplo demonstrativo</figcaption></figure>';
-    }).join("");
+  function cartao(a) {
+    const i = TODAS.indexOf(a);
+    return '<figure style="margin:0"><button class="arte" type="button" data-i="' + i +
+      '" style="--ar:' + a.ar + ';--veu:' + a.veu + ';color:' + a.ink + '">' +
+      '<span class="fundo-arte slot-arte"' + (a.foto ? ' data-foto="' + a.foto + '"' : "") + '>' +
+        ElevArte.desenhar(a.arte, a.cor) + "</span>" +
+      '<span class="veu"></span>' +
+      '<span class="conteudo"><span class="t">' + a.t + '</span><span class="s">' + a.s + "</span></span>" + LUPA +
+      '</button><figcaption class="legenda-gal">Exemplo demonstrativo</figcaption></figure>';
   }
-  desenha("galSocial", SOCIAL, "social");
-  desenha("galMkt", MKT, "mkt");
+  function desenha(alvo, lista) {
+    document.getElementById(alvo).innerHTML = lista.map(cartao).join("");
+    ElevArte.plugarFotos(document.getElementById(alvo));
+  }
+  desenha("galSocial", SOCIAL);
+  desenha("galMkt", MKT);
+
+  /* ---------- filtro por formato ---------- */
+  const TIPOS = ["Tudo"].concat(SOCIAL.map(function (a) { return a.tipo; })
+    .filter(function (t, i, l) { return l.indexOf(t) === i; }));
+  document.getElementById("filtrosSocial").innerHTML = TIPOS.map(function (t) {
+    return '<button class="fd" type="button" data-tipo="' + t + '" aria-pressed="' + (t === "Tudo") + '">' + t + "</button>";
+  }).join("");
+  document.getElementById("filtrosSocial").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-tipo]");
+    if (!b) return;
+    document.querySelectorAll("[data-tipo]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    const t = b.dataset.tipo;
+    desenha("galSocial", t === "Tudo" ? SOCIAL : SOCIAL.filter(function (a) { return a.tipo === t; }));
+  });
+
+  /* ---------- detalhe com navegacao entre pecas ---------- */
+  const SPECS = { "1": "1080 × 1080 px", "9/16": "1080 × 1920 px", "16/9": "1920 × 1080 px", "4/5": "1080 × 1350 px" };
+  function abrir(i) {
+    const a = TODAS[i];
+    ElevModal.abrir("modal",
+      '<div class="modal-arte">' +
+        '<div class="peca" style="--ar:' + a.ar + ';color:' + a.ink + '">' +
+          '<span class="fundo-arte slot-arte"' + (a.foto ? ' data-foto="' + a.foto + '"' : "") + '>' +
+            ElevArte.desenhar(a.arte, a.cor) + "</span>" +
+          '<span class="veu" style="position:absolute;inset:0;background:' + a.veu + '"></span>' +
+          '<div style="text-align:center;padding:26px">' +
+            '<div style="font-family:var(--d-display);font-weight:800;font-size:clamp(24px,4vw,40px);line-height:1.1;text-shadow:0 2px 16px rgba(0,0,0,.5)">' + a.t + "</div>" +
+            '<div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:12px;opacity:.9">' + a.s + "</div>" +
+          "</div>" +
+        "</div>" +
+        '<div class="info"><b>' + a.s + '</b><span class="d-selo" style="color:var(--d-accent-2)">Exemplo demonstrativo</span></div>' +
+        '<div class="ficha">' +
+          '<div><span>Formato</span><b>' + (SPECS[a.ar] || a.ar) + "</b></div>" +
+          '<div><span>Uso</span><b>' + a.tipo + "</b></div>" +
+          '<div><span>Entrega</span><b>PNG + arquivo editável</b></div>' +
+        "</div>" +
+        '<p style="color:var(--d-ink-2);margin-top:12px;font-size:15px">' + a.nota + "</p>" +
+        '<div class="nav-peca">' +
+          '<button type="button" data-ir="' + (i - 1) + '"' + (i === 0 ? " disabled" : "") + '>← Anterior</button>' +
+          '<button type="button" data-ir="' + (i + 1) + '"' + (i === TODAS.length - 1 ? " disabled" : "") + '>Próxima →</button>' +
+        "</div>" +
+        '<p style="color:var(--d-ink-2);margin-top:10px;font-size:12.6px">Marca fictícia criada pela ELEV. Não é trabalho de cliente real.</p>' +
+      "</div>");
+    ElevArte.plugarFotos(document.getElementById("modal"));
+  }
 
   ElevModal.ligar("modal");
   document.addEventListener("click", function (e) {
     const b = e.target.closest(".arte");
-    if (!b) return;
-    const a = (b.dataset.lista === "social" ? SOCIAL : MKT)[Number(b.dataset.i)];
-    ElevModal.abrir("modal",
-      '<div class="modal-arte">' +
-        '<div class="peca" style="background:' + a.bg + ';--ar:' + a.ar + ';color:' + a.cor + '">' +
-          '<div style="text-align:center;padding:26px"><div class="t" style="font-family:var(--d-display);font-weight:800;font-size:clamp(24px,4vw,40px);line-height:1.1">' +
-          a.t + '</div><div class="s" style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:12px;opacity:.85">' + a.s + "</div></div>" +
-        "</div>" +
-        '<div class="info"><b>' + a.s + '</b><span class="d-selo" style="color:var(--d-accent-2)">Exemplo demonstrativo</span></div>' +
-        '<p style="color:var(--d-ink-2);margin-top:12px;font-size:15px">' + a.nota + "</p>" +
-        '<p style="color:var(--d-ink-2);margin-top:10px;font-size:12.6px">Marca fictícia criada pela ELEV. Não é trabalho de cliente real.</p>' +
-      "</div>");
+    if (b) { abrir(Number(b.dataset.i)); return; }
+    const nav = e.target.closest("[data-ir]");
+    if (nav && !nav.disabled) abrir(Number(nav.dataset.ir));
   });
 })();
 </script>

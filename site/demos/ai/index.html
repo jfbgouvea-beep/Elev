@@ -288,10 +288,24 @@
       const acoes = document.createElement("div");
       acoes.className = "sugestoes";
       acoes.innerHTML = '<button class="sug" type="button" id="reiniciar">Recomeçar conversa</button>' +
+                        '<button class="sug" type="button" id="copiar">Copiar resumo</button>' +
                         '<a class="sug" href="../../index.html#contato">Quero um agente assim</a>';
       sugestoes.replaceWith(acoes);
       acoes.id = "sugestoes";
       document.getElementById("reiniciar").addEventListener("click", iniciar);
+      document.getElementById("copiar").addEventListener("click", function () {
+        const texto = "RESUMO DO ATENDIMENTO\n" +
+          "Necessidade: " + i.nome + "\n" +
+          "Relato: " + S.respostas.slice(0, 2).join(" / ") + "\n" +
+          "Solucao sugerida: " + i.solucao + "\n" +
+          "Contato: " + (S.nome ? S.nome + " - " : "") + (S.contato || "nao informado") + "\n" +
+          "Prioridade: " + i.prioridade;
+        const b = this;
+        const feito = function () { b.textContent = "Resumo copiado"; setTimeout(function () { b.textContent = "Copiar resumo"; }, 2200); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texto).then(feito, feito);
+        } else { feito(); }
+      });
       campo.disabled = true;
       campo.placeholder = "Conversa encerrada — recomece para testar outro caminho";
     }, 700);

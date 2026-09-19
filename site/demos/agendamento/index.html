@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="../../assets/demo.css">
+<script src="../../assets/arte.js"></script>
 <style>
 :root{
   --d-bg:#17100F; --d-surface:#211817; --d-line:#332624;
@@ -43,6 +44,8 @@
 }
 .op:hover{ border-color: var(--d-accent); transform: translateY(-2px); }
 .op[aria-pressed="true"]{ border-color: var(--d-accent); background: rgba(183,110,121,.16); }
+.op .mini-arte{ width: 46px; height: 46px; border-radius: 11px; overflow: hidden; flex: none; }
+.op .txt-op{ flex: 1; min-width: 0; }
 .op b{ font-weight: 600; font-size: 15.2px; display: block; }
 .op span{ color: var(--d-ink-2); font-size: 13.2px; }
 .op .preco{ font-weight: 700; color: var(--d-accent-2); white-space: nowrap; }
@@ -80,6 +83,15 @@
   color: var(--d-ink-2); padding: 10px 12px; border-bottom: 1px solid var(--d-line); font-weight: 600; }
 .tabela td{ padding: 12px; border-bottom: 1px solid var(--d-line); }
 .tabela tr:last-child td{ border-bottom: 0; }
+.tabela tr[data-cancelado="true"] td{ opacity: .42; text-decoration: line-through; }
+.acao-linha{ background: none; border: 1px solid var(--d-line); color: var(--d-ink-2); cursor: pointer;
+  border-radius: 8px; padding: 5px 11px; font-size: 12.4px; transition: all .2s var(--d-t); }
+.acao-linha:hover{ border-color: #F87171; color: #FCA5A5; }
+.acao-linha:disabled{ opacity: .35; cursor: not-allowed; }
+.filtro-prof{ display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.fp{ padding: 8px 15px; border-radius: 999px; border: 1px solid var(--d-line); background: transparent;
+  color: var(--d-ink-2); cursor: pointer; font-size: 13.4px; transition: all .22s var(--d-t); }
+.fp[aria-pressed="true"]{ background: var(--d-accent); color: #2A0F14; border-color: transparent; font-weight: 600; }
 .st{ padding: 4px 11px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
 .st[data-s="confirmado"]{ background: rgba(52,211,153,.14); color: #6EE7B7; }
 .st[data-s="aguardando"]{ background: rgba(234,179,8,.14); color: #FCD34D; }
@@ -113,10 +125,11 @@
       <div class="cartao"><b>4</b><span>serviços ativos</span></div>
       <div class="cartao"><b>3</b><span>profissionais</span></div>
     </div>
+    <div class="filtro-prof" id="filtroProf"></div>
     <div class="d-card" style="padding:0">
       <div class="rolagem">
         <table class="tabela">
-          <thead><tr><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Status</th></tr></thead>
+          <thead><tr><th>Horário</th><th>Cliente</th><th>Serviço</th><th>Profissional</th><th>Status</th><th></th></tr></thead>
           <tbody id="corpoTabela"></tbody>
         </table>
       </div>
@@ -132,15 +145,15 @@
 (function () {
   "use strict";
   const SERVICOS = [
-    { n:"Corte feminino", d:"50 min", p:90 },
-    { n:"Corte masculino", d:"30 min", p:55 },
-    { n:"Coloração", d:"2h", p:220 },
-    { n:"Escova e finalização", d:"40 min", p:70 }
+    { n:"Corte feminino", d:"50 min", p:90, arte:"tesoura" },
+    { n:"Corte masculino", d:"30 min", p:55, arte:"tesoura" },
+    { n:"Coloração", d:"2h", p:220, arte:"corTintura" },
+    { n:"Escova e finalização", d:"40 min", p:70, arte:"secador" }
   ];
   const PROFISSIONAIS = [
-    { n:"Marina", d:"cortes e coloração" },
-    { n:"Rafael", d:"cortes e barba" },
-    { n:"Júlia", d:"escova e tratamentos" }
+    { n:"Marina", d:"cortes e coloração", arte:"corTintura" },
+    { n:"Rafael", d:"cortes e barba", arte:"tesoura" },
+    { n:"Júlia", d:"escova e tratamentos", arte:"escova" }
   ];
   const HORAS = ["09:00","10:00","11:00","13:00","14:00","15:00","16:00","17:00"];
   const OCUPADOS = { 0:["10:00","14:00"], 1:["09:00"], 2:["15:00","16:00"], 3:[], 4:["11:00","13:00","17:00"], 5:["09:00","10:00"] };
@@ -190,13 +203,15 @@
       caixa.innerHTML = "<h2 style='font-family:var(--d-display);font-size:26px;margin-bottom:16px'>Escolha o serviço</h2>" +
         '<div class="grade-op">' + SERVICOS.map(function (s, i) {
           return '<button class="op" type="button" data-op="servico" data-i="' + i + '" aria-pressed="' + (E.servico === i) + '">' +
-            "<span><b>" + s.n + "</b><span>" + s.d + "</span></span><span class='preco'>" + elevMoeda(s.p) + "</span></button>";
+            '<span class="mini-arte slot-arte">' + ElevArte.desenhar(s.arte) + "</span>" +
+            "<span class='txt-op'><b>" + s.n + "</b><span>" + s.d + "</span></span><span class='preco'>" + elevMoeda(s.p) + "</span></button>";
         }).join("") + "</div>" + botoesNav(false, true);
     } else if (passo === 1) {
       caixa.innerHTML = "<h2 style='font-family:var(--d-display);font-size:26px;margin-bottom:16px'>Com quem você prefere?</h2>" +
         '<div class="grade-op">' + PROFISSIONAIS.map(function (p, i) {
           return '<button class="op" type="button" data-op="prof" data-i="' + i + '" aria-pressed="' + (E.prof === i) + '">' +
-            "<span><b>" + p.n + "</b><span>" + p.d + "</span></span></button>";
+            '<span class="mini-arte slot-arte">' + ElevArte.desenhar(p.arte) + "</span>" +
+            "<span class='txt-op'><b>" + p.n + "</b><span>" + p.d + "</span></span></button>";
         }).join("") + "</div>" + botoesNav(true, true);
     } else if (passo === 2) {
       caixa.innerHTML = "<h2 style='font-family:var(--d-display);font-size:26px;margin-bottom:16px'>Escolha o dia</h2>" +
@@ -243,11 +258,9 @@
         "<p style='color:var(--d-ink-2);font-size:13px;margin-top:14px'>No sistema real, o cliente receberia a confirmação e um lembrete. Aqui nada é enviado.</p>" +
         '<div class="navega" style="max-width:340px;margin:22px auto 0"><button class="d-btn d-btn-linha" type="button" data-reiniciar>Fazer outro agendamento</button></div>' +
         "</div>";
-      const linha = document.createElement("tr");
-      linha.innerHTML = "<td>" + E.hora + "</td><td>" + E.nome + "</td><td>" + s.n + "</td><td>" +
-        PROFISSIONAIS[E.prof].n + "</td><td><span class='st' data-s='aguardando'>aguardando</span></td>";
-      document.getElementById("corpoTabela").appendChild(linha);
-      document.getElementById("kpiHoje").textContent = String(AGENDA.length + 1);
+      AGENDA.push({ h: E.hora, c: E.nome, s: s.n, p: PROFISSIONAIS[E.prof].n, st: "aguardando" });
+      AGENDA.sort(function (a, b) { return a.h.localeCompare(b.h); });
+      desenhaAgenda();
       return;
     }
     atualizaAvancar();
@@ -276,10 +289,41 @@
     }
   });
 
-  document.getElementById("corpoTabela").innerHTML = AGENDA.map(function (a) {
-    return "<tr><td>" + a.h + "</td><td>" + a.c + "</td><td>" + a.s + "</td><td>" + a.p +
-           "</td><td><span class='st' data-s='" + a.st + "'>" + a.st + "</span></td></tr>";
-  }).join("");
+  let filtroProf = "Todos";
+  function desenhaAgenda() {
+    document.getElementById("corpoTabela").innerHTML = AGENDA
+      .filter(function (a) { return filtroProf === "Todos" || a.p === filtroProf; })
+      .map(function (a, i) {
+        const idx = AGENDA.indexOf(a);
+        const cancelado = a.st === "cancelado";
+        return '<tr data-cancelado="' + cancelado + '"><td>' + a.h + "</td><td>" + a.c + "</td><td>" + a.s +
+          "</td><td>" + a.p + "</td><td><span class='st' data-s='" + a.st + "'>" + a.st + "</span></td>" +
+          "<td><button class='acao-linha' type='button' data-cancelar='" + idx + "'" +
+          (cancelado || a.st === "concluído" ? " disabled" : "") + ">Cancelar</button></td></tr>";
+      }).join("");
+    const ativos = AGENDA.filter(function (a) { return a.st !== "cancelado"; }).length;
+    document.getElementById("kpiHoje").textContent = String(ativos);
+    document.getElementById("kpiLivres").textContent = String(HORAS.length - ativos > 0 ? HORAS.length - ativos : 0);
+  }
+
+  document.getElementById("filtroProf").innerHTML =
+    ["Todos"].concat(PROFISSIONAIS.map(function (p) { return p.n; })).map(function (n) {
+      return '<button class="fp" type="button" data-prof="' + n + '" aria-pressed="' + (n === "Todos") + '">' + n + "</button>";
+    }).join("");
+  document.getElementById("filtroProf").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-prof]");
+    if (!b) return;
+    filtroProf = b.dataset.prof;
+    document.querySelectorAll("[data-prof]").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+    desenhaAgenda();
+  });
+  document.getElementById("corpoTabela").addEventListener("click", function (e) {
+    const b = e.target.closest("[data-cancelar]");
+    if (!b) return;
+    AGENDA[Number(b.dataset.cancelar)].st = "cancelado";
+    desenhaAgenda();
+  });
+  desenhaAgenda();
 
   document.querySelectorAll(".aba").forEach(function (b) {
     b.addEventListener("click", function () {

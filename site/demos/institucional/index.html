@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Manrope:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="../../assets/demo.css">
+<script src="../../assets/arte.js"></script>
 <style>
 :root{
   --d-bg:#0C1418; --d-surface:#121E23; --d-line:#1E2F36;
@@ -65,6 +66,20 @@
 .dif{ display: grid; gap: 12px; margin-top: 20px; }
 .dif div{ display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: var(--d-ink-2); }
 .dif svg{ width: 18px; height: 18px; flex: none; margin-top: 3px; color: var(--d-accent-2); }
+.obras{ display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 26px; }
+@media (max-width: 860px){ .obras{ grid-template-columns: 1fr; } }
+.obra{ border: 1px solid var(--d-line); border-radius: 16px; overflow: hidden; background: var(--d-surface);
+  transition: transform .35s var(--d-t), border-color .35s var(--d-t); }
+.obra:hover{ transform: translateY(-4px); border-color: var(--d-accent); }
+.obra .img{ aspect-ratio: 4/3; position: relative; overflow: hidden; }
+.obra .img .arte-svg{ transition: transform .5s var(--d-t); }
+.obra:hover .img .arte-svg{ transform: scale(1.07); }
+.obra .txt{ padding: 16px 18px 18px; }
+.obra .txt b{ font-family: var(--d-display); font-size: 18px; text-transform: uppercase; letter-spacing: .03em; display: block; }
+.obra .txt span{ color: var(--d-ink-2); font-size: 13.8px; }
+.obra .txt .tags{ display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+.obra .txt .tags i{ font-style: normal; font-size: 11px; padding: 3px 9px; border-radius: 999px;
+  border: 1px solid var(--d-line); color: var(--d-ink-2); }
 .form-v{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 640px){ .form-v{ grid-template-columns: 1fr; } }
 .form-v .largo{ grid-column: 1/-1; }
@@ -82,6 +97,7 @@
   <div class="d-wrap nav-in">
     <span class="logo-v"><span class="sim">V</span><b>Vértice</b></span>
     <a href="#servicos-v" class="oculta">Serviços</a>
+    <a href="#obras-v" class="oculta">Projetos</a>
     <a href="#sobre-v" class="oculta">Sobre</a>
     <a href="#contato-v" class="oculta">Contato</a>
     <a class="d-btn d-btn-cheio" href="#contato-v" style="padding:9px 18px;font-size:14px">Orçamento</a>
@@ -99,12 +115,7 @@
         <a class="d-btn d-btn-linha" href="#servicos-v">Ver serviços</a>
       </div>
     </div>
-    <div class="hero-arte">
-      <div class="malha"></div>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 21h18M5 21V9.5L12 4l7 5.5V21"/><path d="M9.5 21v-6.5h5V21M9.5 11.5h5"/>
-      </svg>
-    </div>
+    <div class="hero-arte slot-arte" id="heroArte"></div>
   </section>
 
   <div class="faixa-n">
@@ -143,12 +154,13 @@
         <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Relatório de obra a cada quinzena</div>
       </div>
     </div>
-    <div class="hero-arte" style="aspect-ratio:4/3">
-      <div class="malha"></div>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 20h18M7 20V8h5v12M12 20V4h5v16"/><path d="M9 11h1M9 14h1M14 8h1M14 12h1M14 16h1"/>
-      </svg>
-    </div>
+    <div class="hero-arte slot-arte" style="aspect-ratio:4/3" id="sobreArte"></div>
+  </section>
+
+  <section class="d-wrap sec-v" id="obras-v">
+    <h2>Projetos</h2>
+    <p class="lead">Exemplos do tipo de obra que a Vértice executa. Peças demonstrativas — a empresa e os projetos são fictícios.</p>
+    <div class="obras" id="obras"></div>
   </section>
 
   <section class="d-wrap sec-v" id="contato-v">
@@ -179,6 +191,24 @@
 
 <script src="../../assets/demo.js" data-demo="Site institucional"></script>
 <script>
+(function () {
+  document.getElementById("heroArte").innerHTML = ElevArte.desenhar("obra");
+  document.getElementById("sobreArte").innerHTML = ElevArte.desenhar("planta2d");
+
+  const OBRAS = [
+    { t:"Residência Aroeira", d:"Projeto e execução · 180 m²", arte:"obra", tags:["Projeto","Execução","12 meses"] },
+    { t:"Loja Centro", d:"Reforma comercial · 90 m²", arte:"reforma", tags:["Reforma","4 meses"] },
+    { t:"Edifício Ipê", d:"Compatibilização de projetos", arte:"planta2d", tags:["Projeto","Consultoria"] }
+  ];
+  document.getElementById("obras").innerHTML = OBRAS.map(function (o) {
+    return '<figure class="obra" style="margin:0"><div class="img slot-arte">' + ElevArte.desenhar(o.arte) + "</div>" +
+      '<figcaption class="txt"><b>' + o.t + "</b><span>" + o.d + "</span>" +
+      '<span class="tags">' + o.tags.map(function (x) { return "<i>" + x + "</i>"; }).join("") + "</span>" +
+      "</figcaption></figure>";
+  }).join("");
+  ElevArte.plugarFotos();
+})();
+
 document.getElementById("formV").addEventListener("submit", function (e) {
   e.preventDefault();
   const n = document.getElementById("vn");

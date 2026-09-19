@@ -82,6 +82,36 @@
   transform: translateY(140%); transition: transform .45s var(--d-t);
 }
 .notificacao[data-on="true"]{ transform: translateY(0); }
+
+/* resposta automatica que o cliente recebe: o texto muda com a classificacao */
+.resposta{ padding: 22px; display: none; }
+.resposta[data-visivel="true"]{ display: block; }
+.resposta h2{ font-family: var(--d-display); font-size: 17px; margin-bottom: 4px; }
+.resposta .quem{ font-size: 12.6px; color: var(--d-ink-2); margin-bottom: 13px; }
+.balao{ background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); border-radius: 16px 16px 16px 5px;
+        padding: 15px 17px; font-size: 14.4px; line-height: 1.6; white-space: pre-line; }
+.balao .hora{ display: block; text-align: right; font-size: 11px; color: var(--d-ink-2); margin-top: 8px; }
+
+/* fila: o que a automacao acumula quando varios leads chegam */
+.fila{ padding: 22px; }
+.fila h2{ font-family: var(--d-display); font-size: 17px; }
+.fila .sub{ font-size: 12.8px; color: var(--d-ink-2); margin-top: 3px; }
+.kpis{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 15px 0; }
+.kpi{ background: rgba(255,255,255,.04); border: 1px solid var(--d-line); border-radius: 13px; padding: 12px; text-align: center; }
+.kpi b{ display: block; font-family: var(--d-display); font-size: 22px; }
+.kpi span{ font-size: 11.4px; color: var(--d-ink-2); }
+.item-fila{ display: flex; align-items: center; gap: 11px; padding: 11px 0; border-bottom: 1px solid var(--d-line); font-size: 14px; }
+.item-fila:last-child{ border-bottom: 0; }
+.item-fila .qual{ flex: 1; min-width: 0; }
+.item-fila .qual b{ display: block; font-weight: 600; }
+.item-fila .qual span{ color: var(--d-ink-2); font-size: 12.6px; }
+.item-fila .h{ color: var(--d-ink-2); font-size: 12px; font-family: "IBM Plex Mono", ui-monospace, monospace; }
+.fila-vazia{ color: var(--d-ink-2); font-size: 14px; padding: 16px 0; }
+.economia{ margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--d-line); font-size: 13.4px; color: var(--d-ink-2); }
+.economia b{ color: var(--ok); }
+.limpar{ background: none; border: 0; color: var(--d-ink-2); font: inherit; font-size: 12.6px;
+         cursor: pointer; text-decoration: underline; padding: 0; margin-top: 12px; }
+.limpar:hover{ color: var(--d-ink); }
 .notificacao b{ font-family: var(--d-display); font-size: 14.6px; display: flex; align-items: center; gap: 8px; }
 .notificacao b svg{ width: 16px; height: 16px; color: var(--ok); }
 .notificacao p{ color: var(--d-ink-2); font-size: 13.2px; margin-top: 6px; }
@@ -115,6 +145,10 @@
         <div class="d-campo"><label for="p">Prazo</label>
           <select id="p"><option>Para ontem</option><option>Nas próximas semanas</option><option>Só pesquisando</option></select>
         </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="d-btn d-btn-linha" type="button" data-cenario="quente" style="flex:1;padding:10px 14px;font-size:13.4px">Cenário urgente</button>
+          <button class="d-btn d-btn-linha" type="button" data-cenario="frio" style="flex:1;padding:10px 14px;font-size:13.4px">Cenário curioso</button>
+        </div>
         <button class="d-btn d-btn-cheio" type="submit" id="executar">Executar demonstração</button>
         <p class="obs">Nada é enviado. Todo o processo roda no seu navegador.</p>
       </form>
@@ -122,6 +156,25 @@
       <div class="d-card resultado" id="resultado">
         <h2>O que a equipe recebe</h2>
         <div id="linhas"></div>
+      </div>
+
+      <div class="d-card resposta" id="resposta">
+        <h2>O que o cliente recebe</h2>
+        <p class="quem">Resposta automática, enviada no mesmo minuto.</p>
+        <div class="balao" id="balao"></div>
+      </div>
+
+      <div class="d-card fila">
+        <h2>Fila de atendimento</h2>
+        <p class="sub">Cada execução entra aqui, como aconteceria em um dia de movimento.</p>
+        <div class="kpis">
+          <div class="kpi"><b id="kTotal">0</b><span>leads</span></div>
+          <div class="kpi"><b id="kQuentes">0</b><span>quentes</span></div>
+          <div class="kpi"><b id="kTempo">0s</b><span>até responder</span></div>
+        </div>
+        <div id="listaFila"></div>
+        <p class="economia" id="economia"></p>
+        <button class="limpar" type="button" id="limpar" hidden>Limpar a fila</button>
       </div>
     </aside>
   </div>
@@ -170,6 +223,64 @@
     return p >= 3 ? "quente" : p === 2 ? "morno" : "frio";
   }
 
+  /* O texto da resposta muda com a classificacao: e isso que o cliente le.
+     Nada sai do navegador — nenhuma mensagem e enviada de verdade. */
+  const RESPOSTAS = {
+    quente: "Oi {nome}, recebemos seu pedido de {servico}.\n\nComo seu prazo é curto, já colocamos você no topo da fila: alguém da equipe retorna ainda hoje pelo telefone informado.\n\nSe preferir adiantar, é só responder esta mensagem.",
+    morno:  "Oi {nome}, recebemos seu pedido de {servico}.\n\nVamos preparar uma proposta com prazo e valor e retornamos em até um dia útil.\n\nQualquer detalhe que queira acrescentar, pode responder por aqui.",
+    frio:   "Oi {nome}, obrigado pelo contato sobre {servico}.\n\nEstamos à disposição quando quiser avançar. Enquanto isso, deixamos guardado o que você já nos contou, para não precisar repetir depois."
+  };
+  function respostaDe(classe, dados) {
+    return RESPOSTAS[classe]
+      .replace("{nome}", dados.nome.split(" ")[0])
+      .replace("{servico}", dados.servico.toLowerCase());
+  }
+
+  /* ---------- fila: mostra o acumulado de varias execucoes ---------- */
+  const FILA = [];
+  const MIN_MANUAL = 6;   /* minutos que o mesmo trabalho leva digitado a mao */
+  function desenhaFila() {
+    const lista = document.getElementById("listaFila");
+    if (!FILA.length) {
+      lista.innerHTML = '<p class="fila-vazia">Nenhum lead ainda. Execute a demonstração para ver a fila encher.</p>';
+      document.getElementById("economia").textContent = "";
+      document.getElementById("limpar").hidden = true;
+    } else {
+      lista.innerHTML = FILA.map(function (l) {
+        return '<div class="item-fila">' +
+          '<span class="classificacao" data-n="' + l.classe + '">' + l.classe + "</span>" +
+          '<span class="qual"><b>' + l.nome + "</b><span>" + l.servico + " · " + l.prazo + "</span></span>" +
+          '<span class="h">' + l.hora + "</span></div>";
+      }).join("");
+      const poupado = FILA.length * MIN_MANUAL;
+      document.getElementById("economia").innerHTML =
+        "Mesma triagem feita à mão: cerca de " + MIN_MANUAL + " min por lead. " +
+        "Com " + FILA.length + (FILA.length > 1 ? " leads" : " lead") + ", são <b>" + poupado +
+        " min</b> que a equipe não gasta copiando dado de um lugar para outro.";
+      document.getElementById("limpar").hidden = false;
+    }
+    document.getElementById("kTotal").textContent = String(FILA.length);
+    document.getElementById("kQuentes").textContent =
+      String(FILA.filter(function (l) { return l.classe === "quente"; }).length);
+  }
+  desenhaFila();
+  document.getElementById("limpar").addEventListener("click", function () {
+    FILA.length = 0;
+    desenhaFila();
+    document.getElementById("kTempo").textContent = "0s";
+  });
+
+  /* atalhos para o visitante ver as duas pontas da classificacao */
+  document.querySelectorAll("[data-cenario]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      const quente = b.dataset.cenario === "quente";
+      document.getElementById("n").value = quente ? "Ana Ribeiro" : "Visitante";
+      document.getElementById("t").value = quente ? "19 99999-0000" : "";
+      document.getElementById("s").value = quente ? "Agendamento online" : "Dúvida geral";
+      document.getElementById("p").value = quente ? "Para ontem" : "Só pesquisando";
+    });
+  });
+
   let rodando = false;
   document.getElementById("form").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -189,7 +300,7 @@
       "aguardando envio...",
       "enviado: " + dados.nome + " · " + dados.servico,
       "recebido às " + agora,
-      "nome: " + dados.nome + "\\ntelefone: " + dados.tel + "\\nserviço: " + dados.servico + "\\nprazo: " + dados.prazo,
+      "nome: " + dados.nome + "<br>telefone: " + dados.tel + "<br>serviço: " + dados.servico + "<br>prazo: " + dados.prazo,
       "prioridade calculada: <b>" + classe.toUpperCase() + "</b>",
       "notificação enviada para a equipe"
     ];
@@ -197,12 +308,18 @@
     etapas.forEach(function (el) { el.dataset.estado = "espera"; el.querySelector(".saida").innerHTML = ""; });
     conectores.forEach(function (c) { c.dataset.on = "false"; });
     document.getElementById("resultado").dataset.visivel = "false";
+    document.getElementById("resposta").dataset.visivel = "false";
     noti.dataset.on = "false";
+    const inicio = Date.now();
     document.getElementById("executar").disabled = true;
 
     let i = 0;
     (function passo() {
-      if (i > 0) { etapas[i - 1].dataset.estado = "feita"; conectores[i - 1].dataset.on = "true"; }
+      if (i > 0) {
+        etapas[i - 1].dataset.estado = "feita";
+        /* ha um conector a menos que etapas: no ultimo passo nao existe proximo */
+        if (conectores[i - 1]) conectores[i - 1].dataset.on = "true";
+      }
       if (i >= etapas.length) {
         document.getElementById("executar").disabled = false;
         rodando = false;
@@ -220,6 +337,17 @@
           '<div class="linha-r"><span>Recebido às</span><b>' + agora + "</b></div>" +
           '<div class="linha-r"><span>Classificação</span><b><span class="classificacao" data-n="' + classe + '">' + classe + "</span></b></div>";
         document.getElementById("resultado").dataset.visivel = "true";
+        document.getElementById("balao").innerHTML =
+          respostaDe(classe, dados).replace(/\n/g, "<br>") +
+          '<span class="hora">' + agora + " ✓✓</span>";
+        document.getElementById("resposta").dataset.visivel = "true";
+
+        FILA.unshift({ nome: dados.nome, servico: dados.servico, prazo: dados.prazo, classe: classe, hora: agora });
+        desenhaFila();
+        /* tempo real da execucao: e o que a automacao leva de ponta a ponta */
+        document.getElementById("kTempo").textContent =
+          ((Date.now() - inicio) / 1000).toFixed(1).replace(".", ",") + "s";
+
         document.getElementById("notiTexto").textContent = dados.nome + " — " + dados.servico + " (" + classe + ")";
         noti.dataset.on = "true";
         setTimeout(function () { noti.dataset.on = "false"; }, 5200);
